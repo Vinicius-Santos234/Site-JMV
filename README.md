@@ -1,16 +1,100 @@
-# React + Vite
+# JMV Engenharia e Construções
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Site institucional desenvolvido para a **JMV Engenharia e Construções**, empresa especializada em montagem industrial, caldeiraria, estruturas metálicas, manutenção industrial e soluções para o setor sucroenergético e petroquímico.
 
-Currently, two official plugins are available:
+##  Tecnologias Utilizadas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React
+- Vite
+- JavaScript (ES6+)
+- CSS3
+- Lucide React
+- Framer Motion
 
-## React Compiler
+##  Funcionalidades
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Landing page moderna e responsiva
+- Hero com animações
+- Apresentação institucional
+- Seção de serviços
+- Portfólio de projetos
+- Clientes parceiros
+- Políticas de qualidade
+- Formulário de contato
+- Botão flutuante do WhatsApp
+- Botão de voltar ao topo
+- Animações ao rolar a página
 
-## Expanding the ESLint configuration
+##  Estrutura do Projeto
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```
+src/
+├── assets/
+├── components/
+├── data/
+├── styles/
+├── App.jsx
+└── main.jsx
+```
+
+##  Instalação
+
+Clone o repositório:
+
+```bash
+git clone https://github.com/seu-usuario/jmv-site.git
+```
+
+Entre na pasta do projeto:
+
+```bash
+cd jmv-site
+```
+
+Instale as dependências:
+
+```bash
+npm install
+```
+
+Execute o projeto:
+
+```bash
+npm run dev
+```
+
+O projeto estará disponível em:
+
+```
+http://localhost:5173
+```
+
+##  Responsividade
+
+O site foi desenvolvido para funcionar em:
+
+- Desktop
+- Notebook
+- Tablet
+- Smartphones
+
+##  Características
+
+- Interface moderna
+- Design industrial
+- Navegação fluida
+- Componentização em React
+- Código organizado e reutilizável
+- Fácil manutenção e expansão
+
+##  Contato
+
+**JMV Engenharia e Construções**
+(16) 99741-8402
+jpsantos@jmv.ind.br
+
+Especializada em soluções completas para montagem industrial, manutenção, caldeiraria e estruturas metálicas.
+
+---
+
+Desenvolvido utilizando React + Vite.
