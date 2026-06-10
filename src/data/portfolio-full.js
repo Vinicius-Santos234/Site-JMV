@@ -1,0 +1,88 @@
+import e2g from "../assets/portfolio/e2g.jpg";
+import tubulacao from "../assets/portfolio/tubulacao.jpg";
+import tanque from "../assets/portfolio/tanque.jpg";
+import evaporacao from "../assets/portfolio/evaporacao.jpg";
+
+export const ALL_PROJECTS = [
+  {
+    id: 101,
+    title: "Etanol 2G",
+    client: "Raízen",
+    year: "2024",
+    category: "Montagem Industrial",
+    image: e2g,
+    placeholder: false,
+  },
+  {
+    id: 102,
+    title: "Tubulação P11/P22",
+    client: "Bunge",
+    year: "2023",
+    category: "Estruturas Metálicas",
+    image: tubulacao,
+    placeholder: false,
+  },
+  {
+    id: 103,
+    title: "Tanque de Armazenamento",
+    client: "Cutrale",
+    year: "2023",
+    category: "Caldeiraria",
+    image: tanque,
+    placeholder: false,
+  },
+  {
+    id: 104,
+    title: "Sistema de Evaporação",
+    client: "Ipiranga Agroindustrial",
+    year: "2022",
+    category: "Tubulações Industriais",
+    image: evaporacao,
+    placeholder: false,
+  },
+  {
+    id: 105,
+    title: "Projeto em breve",
+    client: "A definir",
+    year: "—",
+    category: "Manutenção Industrial",
+    image: null,
+    placeholder: true,
+  },
+  {
+    id: 106,
+    title: "Projeto em breve",
+    client: "A definir",
+    year: "—",
+    category: "Montagem Industrial",
+    image: null,
+    placeholder: true,
+  },
+  {
+    id: 106,
+    title: "Projeto em breve",
+    client: "A definir",
+    year: "—",
+    category: "Montagem Industrial",
+    image: null,
+    placeholder: true,
+  },
+  {
+    id: 106,
+    title: "Projeto em breve",
+    client: "A definir",
+    year: "—",
+    category: "Montagem Industrial",
+    image: null,
+    placeholder: true,
+  },
+  {
+    id: 106,
+    title: "Projeto em breve",
+    client: "A definir",
+    year: "—",
+    category: "Montagem Industrial",
+    image: null,
+    placeholder: true,
+  },
+];
