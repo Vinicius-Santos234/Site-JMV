@@ -59,7 +59,7 @@ export const ALL_PROJECTS = [
     placeholder: true,
   },
   {
-    id: 106,
+    id: 107,
     title: "Projeto em breve",
     client: "A definir",
     year: "—",
@@ -68,7 +68,7 @@ export const ALL_PROJECTS = [
     placeholder: true,
   },
   {
-    id: 106,
+    id: 108,
     title: "Projeto em breve",
     client: "A definir",
     year: "—",
@@ -77,7 +77,7 @@ export const ALL_PROJECTS = [
     placeholder: true,
   },
   {
-    id: 106,
+    id: 109,
     title: "Projeto em breve",
     client: "A definir",
     year: "—",
