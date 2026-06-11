@@ -39,6 +39,13 @@ export default function Navbar() {
 
   const closeMenu = () => setMenuOpen(false);
 
+  const scrollTo = (hash) => (e) => {
+    e.preventDefault();
+    const el = document.querySelector(hash);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+    closeMenu();
+  };
+
   return (
     <>
       <nav className={`navbar${scrolled ? " navbar--scrolled" : ""}`}>
@@ -51,7 +58,7 @@ export default function Navbar() {
                 key={href}
                 href={href}
                 className={activeSection === href.slice(1) ? "active" : ""}
-                onClick={closeMenu}
+                onClick={scrollTo(href)}
               >
                 {label}
               </a>
@@ -68,7 +75,7 @@ export default function Navbar() {
         </div>
 
         {isHome ? (
-          <a href="#contato" className="btn-primary" onClick={closeMenu}>
+          <a href="#contato" className="btn-primary" onClick={scrollTo("#contato")}>
             Solicitar orçamento
           </a>
         ) : (

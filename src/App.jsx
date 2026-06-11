@@ -23,7 +23,10 @@ function ScrollToHash() {
   useEffect(() => {
     if (!hash) return;
     const el = document.querySelector(hash);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+      history.replaceState(null, "", "/");
+    }
   }, [hash]);
   return null;
 }
