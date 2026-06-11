@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 import Navbar          from "./components/Navbar";
 import Hero            from "./components/Hero";
@@ -17,9 +18,20 @@ import CookieBanner    from "./components/CookieBanner";
 
 import PortfolioPage   from "./pages/PortfolioPage";
 
+function ScrollToHash() {
+  const { hash } = useLocation();
+  useEffect(() => {
+    if (!hash) return;
+    const el = document.querySelector(hash);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  }, [hash]);
+  return null;
+}
+
 function Home() {
   return (
     <>
+      <ScrollToHash />
       <Navbar />
       <Hero />
       <Stats />

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { LINKS } from "../data/navbar";
 
@@ -33,6 +34,9 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+
   const closeMenu = () => setMenuOpen(false);
 
   return (
@@ -42,20 +46,36 @@ export default function Navbar() {
 
         <div className={`nav-links${menuOpen ? " nav-links--open" : ""}`}>
           {LINKS.map(({ href, label }) => (
-            <a
-              key={href}
-              href={href}
-              className={activeSection === href.slice(1) ? "active" : ""}
-              onClick={closeMenu}
-            >
-              {label}
-            </a>
+            isHome ? (
+              <a
+                key={href}
+                href={href}
+                className={activeSection === href.slice(1) ? "active" : ""}
+                onClick={closeMenu}
+              >
+                {label}
+              </a>
+            ) : (
+              <Link
+                key={href}
+                to={`/${href}`}
+                onClick={closeMenu}
+              >
+                {label}
+              </Link>
+            )
           ))}
         </div>
 
-        <a href="#contato" className="btn-primary" onClick={closeMenu}>
-          Solicitar orçamento
-        </a>
+        {isHome ? (
+          <a href="#contato" className="btn-primary" onClick={closeMenu}>
+            Solicitar orçamento
+          </a>
+        ) : (
+          <Link to="/#contato" className="btn-primary" onClick={closeMenu}>
+            Solicitar orçamento
+          </Link>
+        )}
 
         <button
           className={`hamburger${menuOpen ? " hamburger--open" : ""}`}
