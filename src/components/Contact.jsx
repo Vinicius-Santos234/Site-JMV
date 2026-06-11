@@ -9,27 +9,8 @@ import {
 
 import FadeInSection from "../components/FadeInSection";
 
-const SERVICES = [
-  "Montagem Industrial",
-  "Manutenção Mecânica",
-  "Caldeiraria e Soldagem",
-  "Tubulação Industrial",
-  "Estruturas Metálicas",
-  "Instalação de Equipamentos",
-  "Parada de Manutenção",
-  "Outro",
-];
-
-const INITIAL = {
-  nome: "",
-  empresa: "",
-  email: "",
-  telefone: "",
-  cnpj: "",
-  servico: "",
-  prazo: "",
-  mensagem: "",
-};
+import { SERVICES } from "../data/contact";
+import { INITIAL } from "../data/contact";
 
 function formatPhone(value) {
   const digits = value.replace(/\D/g, "").slice(0, 11);

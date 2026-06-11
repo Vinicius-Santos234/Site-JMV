@@ -2,22 +2,8 @@ import { Link, useLocation } from "react-router-dom";
 import { Phone, Mail, MapPin, ArrowUpRight } from "lucide-react";
 import logo from "../assets/logo.png";
 
-const NAV_LINKS = [
-  { href: "#sobre",     label: "Sobre nós"   },
-  { href: "#servicos",  label: "Serviços"    },
-  { href: "#portfolio", label: "Portfólio"   },
-  { href: "#clientes",  label: "Clientes"    },
-  { href: "#contato",   label: "Contato"     },
-];
-
-const SERVICES = [
-  "Montagem Industrial",
-  "Estruturas Metálicas",
-  "Tubulações Industriais",
-  "Caldeiraria",
-  "Manutenção Industrial",
-  "SSMA",
-];
+import { NAV_LINKS } from "../data/footer";
+import { SERVICES } from "../data/footer";
 
 export default function Footer() {
   const location = useLocation();
