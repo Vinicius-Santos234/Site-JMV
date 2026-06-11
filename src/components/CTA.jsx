@@ -1,14 +1,52 @@
+import { CheckCircle2 } from "lucide-react";
 import FadeInSection from "../components/FadeInSection";
 
+import { DIFFERENTIALS } from "../data/cta";
+
 export default function CTA() {
+  const scrollTo = (e) => {
+    e.preventDefault();
+    const el = document.querySelector("#contato");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <FadeInSection>
       <section className="cta">
-        <h2>Vamos construir seu próximo projeto?</h2>
-        <a href="#contato" className="btn-primary">
-          Fale conosco
-        </a>
+        <div className="cta-inner container">
+          <div className="cta-text">
+            <span className="cta-tag">Vamos trabalhar juntos</span>
+            <h2>Pronto para o próximo projeto?</h2>
+            <p>
+              Entre em contato e descubra como a JMV Engenharia pode transformar
+              sua operação industrial com segurança, precisão e qualidade.
+            </p>
+            <div className="cta-actions">
+              <a href="#contato" className="btn-primary" onClick={scrollTo}>
+                Solicitar orçamento
+              </a>
+              <a
+                href="https://wa.me/5516997418402?text=Olá,%20gostaria%20de%20solicitar%20um%20orçamento."
+                target="_blank"
+                rel="noreferrer"
+                className="btn-secondary cta-whatsapp"
+              >
+                Falar no WhatsApp
+              </a>
+            </div>
+          </div>
+
+          <ul className="cta-list">
+            {DIFFERENTIALS.map((item) => (
+              <li key={item}>
+                <CheckCircle2 size={22} />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
     </FadeInSection>
   );
 }
+
