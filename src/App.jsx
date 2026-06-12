@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { usePageTracking } from "./hooks/usePageTracking";
 
 import Navbar          from "./components/Navbar";
 import Hero            from "./components/Hero";
@@ -17,6 +18,11 @@ import FloatingButtons from "./components/FloatingButtons";
 import CookieBanner    from "./components/CookieBanner";
 
 import PortfolioPage   from "./pages/PortfolioPage";
+
+function PageTracker() {
+  usePageTracking();
+  return null;
+}
 
 function ScrollToHash() {
   const { hash } = useLocation();
@@ -56,6 +62,7 @@ function Home() {
 export default function App() {
   return (
     <BrowserRouter>
+      <PageTracker />
       <Routes>
         <Route path="/"          element={<Home />} />
         <Route path="/portfolio" element={<PortfolioPage />} />

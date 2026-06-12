@@ -613,6 +613,19 @@ img{
   cursor: not-allowed;
 }
 
+.form-send-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff3f3;
+  border: 1px solid #f5c6c6;
+  color: #c0392b;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
 .contact-form--success {
   display: flex;
   flex-direction: column;

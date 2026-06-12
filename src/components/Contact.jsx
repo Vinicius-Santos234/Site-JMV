@@ -1,16 +1,22 @@
 import { useState } from "react";
+import emailjs from "@emailjs/browser";
 import {
   Phone,
   Mail,
   MapPin,
   Send,
   CheckCircle,
+  AlertCircle,
 } from "lucide-react";
 
 import FadeInSection from "../components/FadeInSection";
 
 import { SERVICES } from "../data/contact";
 import { INITIAL } from "../data/contact";
+
+const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
 function formatPhone(value) {
   const digits = value.replace(/\D/g, "").slice(0, 11);
@@ -37,6 +43,7 @@ export default function Contact() {
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState(false);
 
   function validate() {
     const e = {};
@@ -61,7 +68,7 @@ export default function Contact() {
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: undefined }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length) {
@@ -69,18 +76,30 @@ export default function Contact() {
       return;
     }
     setSending(true);
-    const subject = encodeURIComponent(
-      `Solicitação de Orçamento – ${form.servico} | ${form.empresa}`
-    );
-    const body = encodeURIComponent(
-      `Nome: ${form.nome}\nEmpresa: ${form.empresa}\nCNPJ: ${form.cnpj || "Não informado"}\nE-mail: ${form.email}\nTelefone: ${form.telefone}\nServiço: ${form.servico}\nPrazo desejado: ${form.prazo || "Não informado"}\n\nDescrição:\n${form.mensagem}`
-    );
-    window.location.href = `mailto:jpsantos@jmv.ind.br?subject=${subject}&body=${body}`;
-    setTimeout(() => {
-      setSending(false);
+    setSendError(false);
+    try {
+      await emailjs.send(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        {
+          from_name: form.nome,
+          empresa: form.empresa,
+          cnpj: form.cnpj || "Não informado",
+          reply_to: form.email,
+          telefone: form.telefone,
+          servico: form.servico,
+          prazo: form.prazo || "Não informado",
+          mensagem: form.mensagem,
+        },
+        PUBLIC_KEY
+      );
       setSubmitted(true);
       setForm(INITIAL);
-    }, 800);
+    } catch {
+      setSendError(true);
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
@@ -111,10 +130,9 @@ export default function Contact() {
           {submitted ? (
             <div className="contact-form contact-form--success">
               <CheckCircle size={48} />
-              <p>Solicitação enviada!</p>
+              <p>Mensagem enviada!</p>
               <span>
-                Seu cliente de e-mail foi aberto com os dados preenchidos.
-                Em breve nossa equipe entrará em contato.
+                Recebemos sua solicitação. Em breve nossa equipe entrará em contato.
               </span>
               <button
                 className="btn-primary"
@@ -243,6 +261,13 @@ export default function Contact() {
                 />
                 {errors.mensagem && <span className="field-error">{errors.mensagem}</span>}
               </div>
+
+              {sendError && (
+                <div className="form-send-error">
+                  <AlertCircle size={16} />
+                  Falha ao enviar. Tente novamente ou nos contate pelo telefone.
+                </div>
+              )}
 
               <button
                 type="submit"

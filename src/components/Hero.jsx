@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import welder from "../assets/welder.png";
+import welder from "../assets/welder.webp";
 import FadeInSection from "../components/FadeInSection";
 
 export default function Hero() {
