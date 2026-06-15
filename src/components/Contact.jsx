@@ -1,22 +1,10 @@
 import { useState } from "react";
-import emailjs from "@emailjs/browser";
-import {
-  Phone,
-  Mail,
-  MapPin,
-  Send,
-  CheckCircle,
-  AlertCircle,
-} from "lucide-react";
-
+import { Phone, Mail, MapPin, Send } from "lucide-react";
 import FadeInSection from "../components/FadeInSection";
 
-import { SERVICES } from "../data/contact";
-import { INITIAL } from "../data/contact";
+const COMPANY_EMAIL = "jpsantos@jmv.ind.br";
 
-const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+const EMPTY = { nome: "", email: "", telefone: "", mensagem: "" };
 
 function formatPhone(value) {
   const digits = value.replace(/\D/g, "").slice(0, 11);
@@ -27,79 +15,42 @@ function formatPhone(value) {
   return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
 }
 
-function formatCNPJ(value) {
-  const digits = value.replace(/\D/g, "").slice(0, 14);
-  if (digits.length <= 2) return digits;
-  if (digits.length <= 5) return `${digits.slice(0, 2)}.${digits.slice(2)}`;
-  if (digits.length <= 8)
-    return `${digits.slice(0, 2)}.${digits.slice(2, 5)}.${digits.slice(5)}`;
-  if (digits.length <= 12)
-    return `${digits.slice(0, 2)}.${digits.slice(2, 5)}.${digits.slice(5, 8)}/${digits.slice(8)}`;
-  return `${digits.slice(0, 2)}.${digits.slice(2, 5)}.${digits.slice(5, 8)}/${digits.slice(8, 12)}-${digits.slice(12)}`;
-}
-
 export default function Contact() {
-  const [form, setForm] = useState(INITIAL);
+  const [form, setForm] = useState(EMPTY);
   const [errors, setErrors] = useState({});
-  const [submitted, setSubmitted] = useState(false);
-  const [sending, setSending] = useState(false);
-  const [sendError, setSendError] = useState(false);
 
   function validate() {
     const e = {};
     if (!form.nome.trim()) e.nome = "Nome obrigatório";
-    if (!form.empresa.trim()) e.empresa = "Empresa obrigatória";
     if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
       e.email = "E-mail inválido";
     if (!form.telefone || form.telefone.replace(/\D/g, "").length < 10)
       e.telefone = "Telefone inválido";
-    if (!form.servico) e.servico = "Selecione um serviço";
-    if (!form.mensagem.trim() || form.mensagem.trim().length < 20)
-      e.mensagem = "Descreva o projeto (mínimo 20 caracteres)";
+    if (!form.mensagem.trim()) e.mensagem = "Mensagem obrigatória";
     return e;
   }
 
   function handleChange(e) {
     const { name, value } = e.target;
-    let formatted = value;
-    if (name === "telefone") formatted = formatPhone(value);
-    if (name === "cnpj") formatted = formatCNPJ(value);
+    const formatted = name === "telefone" ? formatPhone(value) : value;
     setForm((prev) => ({ ...prev, [name]: formatted }));
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: undefined }));
   }
 
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length) {
       setErrors(errs);
       return;
     }
-    setSending(true);
-    setSendError(false);
-    try {
-      await emailjs.send(
-        SERVICE_ID,
-        TEMPLATE_ID,
-        {
-          from_name: form.nome,
-          empresa: form.empresa,
-          cnpj: form.cnpj || "Não informado",
-          reply_to: form.email,
-          telefone: form.telefone,
-          servico: form.servico,
-          prazo: form.prazo || "Não informado",
-          mensagem: form.mensagem,
-        },
-        PUBLIC_KEY
-      );
-      setSubmitted(true);
-      setForm(INITIAL);
-    } catch {
-      setSendError(true);
-    } finally {
-      setSending(false);
-    }
+
+    const subject = encodeURIComponent(`Contato via site - ${form.nome}`);
+    const body = encodeURIComponent(
+      `Nome: ${form.nome}\nE-mail: ${form.email}\nTelefone: ${form.telefone}\n\nMensagem:\n${form.mensagem}`
+    );
+
+    window.location.href = `mailto:${COMPANY_EMAIL}?subject=${subject}&body=${body}`;
   }
 
   return (
@@ -110,9 +61,7 @@ export default function Contact() {
           <div className="contact-info">
             <span className="section-subtitle">Contato</span>
             <h2 className="section-title">VAMOS CONVERSAR</h2>
-            <p>
-              Solicite um orçamento ou entre em contato com nossa equipe.
-            </p>
+            <p>Solicite um orçamento ou entre em contato com nossa equipe.</p>
             <div className="contact-item">
               <Phone size={18} />
               <span>(16) 99741-8402</span>
@@ -127,162 +76,72 @@ export default function Contact() {
             </div>
           </div>
 
-          {submitted ? (
-            <div className="contact-form contact-form--success">
-              <CheckCircle size={48} />
-              <p>Mensagem enviada!</p>
-              <span>
-                Recebemos sua solicitação. Em breve nossa equipe entrará em contato.
-              </span>
-              <button
-                className="btn-primary"
-                onClick={() => setSubmitted(false)}
-              >
-                Enviar nova solicitação
-              </button>
+          <form className="contact-form" onSubmit={handleSubmit} noValidate>
+            <h3 className="form-title">Solicitar Orçamento</h3>
+
+            <div className="form-group">
+              <label htmlFor="nome">Nome completo *</label>
+              <input
+                id="nome"
+                name="nome"
+                type="text"
+                placeholder="Seu nome"
+                value={form.nome}
+                onChange={handleChange}
+                className={errors.nome ? "input-error" : ""}
+              />
+              {errors.nome && <span className="field-error">{errors.nome}</span>}
             </div>
-          ) : (
-            <form className="contact-form" onSubmit={handleSubmit} noValidate>
-              <h3 className="form-title">Solicitar Orçamento</h3>
 
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="nome">Nome completo *</label>
-                  <input
-                    id="nome"
-                    name="nome"
-                    type="text"
-                    placeholder="Seu nome"
-                    value={form.nome}
-                    onChange={handleChange}
-                    className={errors.nome ? "input-error" : ""}
-                  />
-                  {errors.nome && <span className="field-error">{errors.nome}</span>}
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="empresa">Empresa *</label>
-                  <input
-                    id="empresa"
-                    name="empresa"
-                    type="text"
-                    placeholder="Nome da empresa"
-                    value={form.empresa}
-                    onChange={handleChange}
-                    className={errors.empresa ? "input-error" : ""}
-                  />
-                  {errors.empresa && <span className="field-error">{errors.empresa}</span>}
-                </div>
-              </div>
-
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="email">E-mail *</label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="seu@email.com"
-                    value={form.email}
-                    onChange={handleChange}
-                    className={errors.email ? "input-error" : ""}
-                  />
-                  {errors.email && <span className="field-error">{errors.email}</span>}
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="telefone">Telefone *</label>
-                  <input
-                    id="telefone"
-                    name="telefone"
-                    type="tel"
-                    placeholder="(16) 99999-9999"
-                    value={form.telefone}
-                    onChange={handleChange}
-                    className={errors.telefone ? "input-error" : ""}
-                  />
-                  {errors.telefone && <span className="field-error">{errors.telefone}</span>}
-                </div>
-              </div>
-
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="cnpj">CNPJ</label>
-                  <input
-                    id="cnpj"
-                    name="cnpj"
-                    type="text"
-                    placeholder="00.000.000/0000-00"
-                    value={form.cnpj}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="servico">Tipo de serviço *</label>
-                  <select
-                    id="servico"
-                    name="servico"
-                    value={form.servico}
-                    onChange={handleChange}
-                    className={errors.servico ? "input-error" : ""}
-                  >
-                    <option value="">Selecione...</option>
-                    {SERVICES.map((s) => (
-                      <option key={s} value={s}>{s}</option>
-                    ))}
-                  </select>
-                  {errors.servico && <span className="field-error">{errors.servico}</span>}
-                </div>
-              </div>
-
+            <div className="form-row">
               <div className="form-group">
-                <label htmlFor="prazo">Prazo desejado</label>
+                <label htmlFor="email">E-mail *</label>
                 <input
-                  id="prazo"
-                  name="prazo"
-                  type="text"
-                  placeholder="Ex: 30 dias, urgente, a definir..."
-                  value={form.prazo}
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="seu@email.com"
+                  value={form.email}
                   onChange={handleChange}
+                  className={errors.email ? "input-error" : ""}
                 />
+                {errors.email && <span className="field-error">{errors.email}</span>}
               </div>
 
               <div className="form-group">
-                <label htmlFor="mensagem">Descrição do projeto / serviço *</label>
-                <textarea
-                  id="mensagem"
-                  name="mensagem"
-                  rows={5}
-                  placeholder="Descreva o serviço, localidade, escopo, equipamentos envolvidos..."
-                  value={form.mensagem}
+                <label htmlFor="telefone">Telefone *</label>
+                <input
+                  id="telefone"
+                  name="telefone"
+                  type="tel"
+                  placeholder="(16) 99999-9999"
+                  value={form.telefone}
                   onChange={handleChange}
-                  className={errors.mensagem ? "input-error" : ""}
+                  className={errors.telefone ? "input-error" : ""}
                 />
-                {errors.mensagem && <span className="field-error">{errors.mensagem}</span>}
+                {errors.telefone && <span className="field-error">{errors.telefone}</span>}
               </div>
+            </div>
 
-              {sendError && (
-                <div className="form-send-error">
-                  <AlertCircle size={16} />
-                  Falha ao enviar. Tente novamente ou nos contate pelo telefone.
-                </div>
-              )}
+            <div className="form-group">
+              <label htmlFor="mensagem">Mensagem *</label>
+              <textarea
+                id="mensagem"
+                name="mensagem"
+                rows={5}
+                placeholder="Descreva o serviço, localidade, escopo..."
+                value={form.mensagem}
+                onChange={handleChange}
+                className={errors.mensagem ? "input-error" : ""}
+              />
+              {errors.mensagem && <span className="field-error">{errors.mensagem}</span>}
+            </div>
 
-              <button
-                type="submit"
-                className="btn-primary form-submit"
-                disabled={sending}
-              >
-                {sending ? "Enviando..." : (
-                  <>
-                    <Send size={16} />
-                    Enviar solicitação
-                  </>
-                )}
-              </button>
-            </form>
-          )}
+            <button type="submit" className="btn-primary form-submit">
+              <Send size={16} />
+              Enviar mensagem
+            </button>
+          </form>
 
         </div>
       </section>
