@@ -97,4 +97,14 @@ Especializada em soluções completas para montagem industrial, manutenção, ca
 
 ---
 
-Desenvolvido utilizando React + Vite.
+##  Autor
+
+Desenvolvido por **Vinicius Santos**.
+
+Este projeto faz parte do meu portfólio e foi desenvolvido para representar uma empresa do setor industrial, utilizando React e tecnologias modernas para criação de interfaces responsivas e de alto desempenho.
+
+### Direitos Autorais
+
+© 2026 Vinicius Santos. Todos os direitos reservados sobre a identidade visual, conteúdo, imagens personalizadas e marca apresentada no projeto.
+
+O código-fonte está disponível conforme os termos da licença MIT presente neste repositório.
