@@ -5,20 +5,25 @@ export default function CookieBanner() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const consent = localStorage.getItem("lgpd-consent");
-    if (!consent) {
-      const timer = setTimeout(() => setVisible(true), 1200);
-      return () => clearTimeout(timer);
+    try {
+      const consent = localStorage.getItem("lgpd-consent");
+      if (!consent) {
+        const timer = setTimeout(() => setVisible(true), 1200);
+        return () => clearTimeout(timer);
+      }
+    } catch {
+      console.warn("[ERR_STORAGE] localStorage indisponível — banner de cookies desativado.");
     }
   }, []);
 
   const accept = () => {
-    localStorage.setItem("lgpd-consent", "accepted");
+    try { localStorage.setItem("lgpd-consent", "accepted"); } catch { /* inacessível */ }
+    window.dispatchEvent(new Event("lgpd-consent"));
     setVisible(false);
   };
 
   const decline = () => {
-    localStorage.setItem("lgpd-consent", "declined");
+    try { localStorage.setItem("lgpd-consent", "declined"); } catch { /* inacessível */ }
     setVisible(false);
   };
 

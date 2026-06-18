@@ -1,9 +1,15 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Clock } from "lucide-react";
 import { ALL_PROJECTS } from "../data/portfolio-full";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import FloatingButtons from "../components/FloatingButtons";
+
+const CATEGORIES = [
+  "Todos",
+  ...new Set(ALL_PROJECTS.filter((p) => !p.placeholder).map((p) => p.category)),
+];
 
 function ProjectCard({ project }) {
   if (project.placeholder) {
@@ -36,6 +42,13 @@ function ProjectCard({ project }) {
 }
 
 export default function PortfolioPage() {
+  const [active, setActive] = useState("Todos");
+
+  const visible =
+    active === "Todos"
+      ? ALL_PROJECTS
+      : ALL_PROJECTS.filter((p) => !p.placeholder && p.category === active);
+
   return (
     <>
       <Navbar />
@@ -58,11 +71,25 @@ export default function PortfolioPage() {
 
       <section className="section">
         <div className="container">
+
+          <div className="portfolio-filters">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                className={`portfolio-filter-btn${active === cat ? " portfolio-filter-btn--active" : ""}`}
+                onClick={() => setActive(cat)}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
           <div className="portfolio-grid">
-            {ALL_PROJECTS.map((project) => (
+            {visible.map((project) => (
               <ProjectCard key={project.id} project={project} />
             ))}
           </div>
+
         </div>
       </section>
 

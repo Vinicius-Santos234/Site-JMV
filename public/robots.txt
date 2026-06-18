@@ -1,0 +1,44 @@
+# Crawlers legitimos -- permitir tudo
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Crawlers agressivos e scrapers conhecidos -- bloquear
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+User-agent: PetalBot
+Disallow: /
+
+User-agent: DataForSeoBot
+Disallow: /
+
+User-agent: serpstatbot
+Disallow: /
+
+User-agent: ia_archiver
+Disallow: /
+
+# Todos os outros -- permitir rastreamento normal
+User-agent: *
+Allow: /
+Disallow: /node_modules/
+
+Sitemap: https://site-jmv.vercel.app/sitemap.xml

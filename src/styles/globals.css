@@ -1210,6 +1210,56 @@ img {
 }
 
 /* ═══════════════════════════════════════════════════════════
+   ERROR BOUNDARY
+═══════════════════════════════════════════════════════════ */
+
+.error-boundary {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f7fb;
+  padding: 24px;
+}
+
+.error-boundary-card {
+  background: white;
+  border-radius: 12px;
+  padding: 48px 40px;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+.error-boundary-card h2 {
+  font-size: 22px;
+  color: #0c1c30;
+  margin-bottom: 12px;
+}
+
+.error-boundary-card p {
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.error-boundary-code {
+  display: block;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-family: monospace;
+  font-size: 13px;
+  color: #e53e3e;
+  letter-spacing: 0.5px;
+  margin-bottom: 28px;
+  word-break: break-all;
+}
+
+/* ═══════════════════════════════════════════════════════════
    FLOATING BUTTONS  (WhatsApp + scroll ao topo)
 ═══════════════════════════════════════════════════════════ */
 
@@ -1944,4 +1994,147 @@ img {
   .client-card img {
     height: 50px;
   }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TESTIMONIALS — CARROSSEL MOBILE
+═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .testimonials-grid {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 16px;
+    padding-bottom: 16px;
+    /* esconde scrollbar visualmente mas mantém funcional */
+    scrollbar-width: none;
+  }
+
+  .testimonials-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .testimonial-card {
+    min-width: 82vw;
+    max-width: 340px;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PORTFOLIO PAGE — FILTROS DE CATEGORIA
+═══════════════════════════════════════════════════════════ */
+
+.portfolio-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 36px;
+}
+
+.portfolio-filter-btn {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1.5px solid #cbd5e1;
+  background: white;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+
+.portfolio-filter-btn:hover {
+  border-color: #4a8fd4;
+  color: #4a8fd4;
+}
+
+.portfolio-filter-btn--active {
+  background: #4a8fd4;
+  border-color: #4a8fd4;
+  color: white;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PÁGINA DE PRIVACIDADE
+═══════════════════════════════════════════════════════════ */
+
+.privacidade-content {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.privacidade-content h2 {
+  font-size: 18px;
+  color: #0c1c30;
+  margin: 36px 0 12px;
+}
+
+.privacidade-content p,
+.privacidade-content li {
+  color: #475569;
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.privacidade-content ul {
+  padding-left: 20px;
+  margin: 8px 0 0;
+}
+
+.privacidade-content li {
+  margin-bottom: 6px;
+}
+
+.privacidade-content a {
+  color: #4a8fd4;
+  text-decoration: underline;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PÁGINA 404
+═══════════════════════════════════════════════════════════ */
+
+.not-found-section {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+}
+
+.not-found-inner {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.not-found-icon {
+  color: #4a8fd4;
+}
+
+.not-found-inner h1 {
+  font-size: 96px;
+  font-weight: 800;
+  color: #0c1c30;
+  line-height: 1;
+}
+
+.not-found-inner p {
+  font-size: 17px;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.not-found-inner .btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }

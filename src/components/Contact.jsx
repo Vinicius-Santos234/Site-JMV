@@ -4,7 +4,7 @@ import FadeInSection from "../components/FadeInSection";
 
 const COMPANY_EMAIL = "jpsantos@jmv.ind.br";
 
-const EMPTY = { nome: "", email: "", telefone: "", mensagem: "" };
+const EMPTY = { nome: "", email: "", telefone: "", mensagem: "", website: "" };
 
 function formatPhone(value) {
   const digits = value.replace(/\D/g, "").slice(0, 11);
@@ -39,6 +39,8 @@ export default function Contact() {
 
   function handleSubmit(e) {
     e.preventDefault();
+    // Honeypot: bots preenchem campos ocultos; humanos não veem este campo
+    if (form.website) return;
     const errs = validate();
     if (Object.keys(errs).length) {
       setErrors(errs);
@@ -77,6 +79,16 @@ export default function Contact() {
           </div>
 
           <form className="contact-form" onSubmit={handleSubmit} noValidate>
+            {/* Honeypot — visualmente oculto; bots preenchem, humanos não */}
+            <input
+              name="website"
+              value={form.website}
+              onChange={handleChange}
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, width: 0 }}
+            />
             <h3 className="form-title">Solicitar Orçamento</h3>
 
             <div className="form-group">
@@ -89,6 +101,7 @@ export default function Contact() {
                 value={form.nome}
                 onChange={handleChange}
                 className={errors.nome ? "input-error" : ""}
+                maxLength={100}
               />
               {errors.nome && <span className="field-error">{errors.nome}</span>}
             </div>
@@ -104,6 +117,7 @@ export default function Contact() {
                   value={form.email}
                   onChange={handleChange}
                   className={errors.email ? "input-error" : ""}
+                  maxLength={150}
                 />
                 {errors.email && <span className="field-error">{errors.email}</span>}
               </div>
@@ -118,6 +132,7 @@ export default function Contact() {
                   value={form.telefone}
                   onChange={handleChange}
                   className={errors.telefone ? "input-error" : ""}
+                  maxLength={20}
                 />
                 {errors.telefone && <span className="field-error">{errors.telefone}</span>}
               </div>
@@ -132,6 +147,7 @@ export default function Contact() {
                 placeholder="Descreva o serviço, localidade, escopo..."
                 value={form.mensagem}
                 onChange={handleChange}
+                maxLength={1000}
                 className={errors.mensagem ? "input-error" : ""}
               />
               {errors.mensagem && <span className="field-error">{errors.mensagem}</span>}
