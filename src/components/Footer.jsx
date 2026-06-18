@@ -2,8 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Phone, Mail, MapPin, ArrowUpRight } from "lucide-react";
 import logo from "../assets/logo.png";
 
-import { NAV_LINKS } from "../data/footer";
-import { SERVICES } from "../data/footer";
+import { NAV_LINKS, SERVICES } from "../data/footer";
 
 export default function Footer() {
   const location = useLocation();

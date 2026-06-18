@@ -28,16 +28,4 @@ export const PROJECTS = [
     year: "2022",
     image: evaporacao,
   },
-  {
-    title: "Exemplo de Projeto",
-    client: "a definir",
-    year: "--",
-    image: null,
-  },
-  {
-    title: "Exemplo de Projeto",
-    client: "a definir",
-    year: "--",
-    image: null,
-  },
 ];

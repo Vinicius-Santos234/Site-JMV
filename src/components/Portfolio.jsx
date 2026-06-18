@@ -45,7 +45,7 @@ export default function Portfolio() {
               <ChevronLeft size={28} />
             </button>
 
-            <div className="slideshow-track">
+            <div className={`slideshow-track${dir ? ` slideshow-track--${dir}` : ""}`}>
               <div className="portfolio-card slideshow-card" key={current}>
                 <img
                   src={project.image}
@@ -82,7 +82,7 @@ export default function Portfolio() {
 
           <div className="portfolio-cta">
             <Link to="/portfolio" className="btn-secondary">
-              Ver todos os projetos
+              Ver mais projetos
             </Link>
           </div>
         </div>

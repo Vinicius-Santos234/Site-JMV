@@ -1,4 +1,3 @@
-import { Clock, CheckCircle, Users, Award } from "lucide-react";
 import FadeInSection from "../components/FadeInSection";
 import { DIFFERENTIALS } from "../data/about";
 

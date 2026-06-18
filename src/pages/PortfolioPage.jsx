@@ -51,7 +51,7 @@ export default function PortfolioPage() {
           </Link>
 
           <span className="section-subtitle">Portfólio</span>
-          <h1 className="section-title">TODOS OS PROJETOS</h1>
+          <h1 className="section-title">PROJETOS</h1>
           <p className="section-description">
             Conheça os projetos industriais realizados pela JMV Engenharia
             ao longo de mais de 13 anos de atuação no mercado.
