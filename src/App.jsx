@@ -20,6 +20,7 @@ import Footer          from "./components/Footer";
 import FloatingButtons from "./components/FloatingButtons";
 import CookieBanner    from "./components/CookieBanner";
 import ErrorBoundary   from "./components/ErrorBoundary";
+import FAQ             from "./components/FAQ";
 
 import PortfolioPage   from "./pages/PortfolioPage";
 import PrivacidadePage from "./pages/PrivacidadePage";
@@ -116,6 +117,7 @@ function Home() {
       <Testimonials />
       <Clients />
       <CTA />
+      <FAQ />
       <Contact />
       <Footer />
       <FloatingButtons />

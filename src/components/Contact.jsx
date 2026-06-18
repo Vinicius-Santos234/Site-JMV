@@ -64,18 +64,20 @@ export default function Contact() {
             <span className="section-subtitle">Contato</span>
             <h2 className="section-title">VAMOS CONVERSAR</h2>
             <p>Solicite um orçamento ou entre em contato com nossa equipe.</p>
-            <div className="contact-item">
-              <Phone size={18} />
-              <span>(16) 99741-8402</span>
-            </div>
-            <div className="contact-item">
-              <Mail size={18} />
-              <span>jpsantos@jmv.ind.br</span>
-            </div>
-            <div className="contact-item">
-              <MapPin size={18} />
-              <span>Rua São Lourenço, 2170, IV Centenário, Matão - SP</span>
-            </div>
+            <address className="contact-address">
+              <div className="contact-item">
+                <Phone size={18} />
+                <a href="tel:+5516997418402">(16) 99741-8402</a>
+              </div>
+              <div className="contact-item">
+                <Mail size={18} />
+                <a href="mailto:jpsantos@jmv.ind.br">jpsantos@jmv.ind.br</a>
+              </div>
+              <div className="contact-item">
+                <MapPin size={18} />
+                <span>Rua São Lourenço, 2170, IV Centenário, Matão - SP</span>
+              </div>
+            </address>
           </div>
 
           <form className="contact-form" onSubmit={handleSubmit} noValidate>

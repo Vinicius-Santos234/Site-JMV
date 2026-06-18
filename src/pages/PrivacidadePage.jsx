@@ -2,8 +2,15 @@ import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { useSEO } from "../hooks/useSEO";
 
 export default function PrivacidadePage() {
+  useSEO({
+    title: "Política de Privacidade | JMV Engenharia e Construções",
+    description:
+      "Política de privacidade da JMV Engenharia e Construções. Saiba como tratamos seus dados pessoais em conformidade com a LGPD.",
+  });
+
   return (
     <>
       <Navbar />
