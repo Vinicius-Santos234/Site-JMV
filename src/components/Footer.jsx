@@ -4,20 +4,16 @@ import logo from "../assets/logo.png";
 
 import { NAV_LINKS, SERVICES } from "../data/footer";
 
+function NavLink({ href, isHome, children }) {
+  if (isHome) {
+    return <a href={href}>{children}</a>;
+  }
+  return <Link to={`/${href}`}>{children}</Link>;
+}
+
 export default function Footer() {
   const location = useLocation();
   const isHome = location.pathname === "/";
-
-  function navHref(hash) {
-    return isHome ? hash : `/${hash}`;
-  }
-
-  function NavLink({ href, children }) {
-    if (isHome) {
-      return <a href={href}>{children}</a>;
-    }
-    return <Link to={`/${href}`}>{children}</Link>;
-  }
 
   return (
     <footer className="footer">
@@ -36,7 +32,7 @@ export default function Footer() {
             <ul>
               {NAV_LINKS.map(({ href, label }) => (
                 <li key={href}>
-                  <NavLink href={href}>{label}</NavLink>
+                  <NavLink href={href} isHome={isHome}>{label}</NavLink>
                 </li>
               ))}
             </ul>
@@ -47,7 +43,7 @@ export default function Footer() {
             <ul>
               {SERVICES.map((s) => (
                 <li key={s}>
-                  <NavLink href="#servicos">{s}</NavLink>
+                  <NavLink href="#servicos" isHome={isHome}>{s}</NavLink>
                 </li>
               ))}
             </ul>
@@ -69,7 +65,7 @@ export default function Footer() {
                 <span>Rua São Lourenço, 2170<br />IV Centenário — Matão, SP</span>
               </li>
             </ul>
-            <NavLink href="#contato">
+            <NavLink href="#contato" isHome={isHome}>
               <span className="footer-cta-link">
                 Solicitar orçamento <ArrowUpRight size={14} />
               </span>
@@ -83,6 +79,7 @@ export default function Footer() {
         <div className="container footer-bottom-inner">
           <span>© {new Date().getFullYear()} JMV Engenharia e Construções. Todos os direitos reservados.</span>
           <span>Matão — São Paulo — Brasil</span>
+          <span>Desenvolvido por Vinicius Santos</span>
         </div>
       </div>
     </footer>
