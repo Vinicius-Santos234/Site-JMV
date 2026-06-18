@@ -7,7 +7,6 @@ function genId(prefix) {
   return `${prefix}_${Date.now().toString(36).toUpperCase()}`;
 }
 
-// Erros JavaScript síncronos não capturados pelo React
 window.addEventListener("error", (event) => {
   const id = genId("ERR_GLOBAL");
   console.error(`[${id}] Erro global não tratado:`, {
@@ -19,7 +18,6 @@ window.addEventListener("error", (event) => {
   });
 });
 
-// Promises rejeitadas sem .catch()
 window.addEventListener("unhandledrejection", (event) => {
   const id = genId("ERR_PROMISE");
   console.error(`[${id}] Promise rejeitada sem tratamento:`, event.reason);

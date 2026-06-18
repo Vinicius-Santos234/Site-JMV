@@ -41,7 +41,6 @@ export default function FAQ() {
   return (
     <FadeInSection>
       <section className="section faq-section">
-        {/* FAQ schema — lido pelo Google para People Also Ask */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_SCHEMA) }}
