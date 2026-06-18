@@ -1183,25 +1183,30 @@ img {
 .portfolio-card--placeholder {
   background: #f4f7fb;
   border: 2px dashed #cbd5e1;
-  min-height: 240px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .portfolio-placeholder-inner {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 8px;
   color: #94a3b8;
 }
 
 .portfolio-placeholder-inner span {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+.portfolio-placeholder-inner small {
+  font-size: 11px;
+  color: #b0bec5;
+  letter-spacing: 0.5px;
 }
 
 /* ═══════════════════════════════════════════════════════════

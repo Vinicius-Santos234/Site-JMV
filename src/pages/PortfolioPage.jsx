@@ -11,11 +11,8 @@ function ProjectCard({ project }) {
       <div className="portfolio-card portfolio-card--placeholder">
         <div className="portfolio-placeholder-inner">
           <Clock size={32} />
-          <span>Em breve</span>
-        </div>
-        <div className="portfolio-overlay portfolio-overlay--placeholder">
-          <span className="portfolio-overlay-client">{project.category}</span>
-          <h3>{project.title}</h3>
+          <span>{project.category}</span>
+          <small>Em breve</small>
         </div>
       </div>
     );
