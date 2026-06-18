@@ -20,9 +20,9 @@ export default function Clients() {
           </h2>
 
           <div className="clients-grid">
-            {CLIENTS.map((client, index) => (
+            {CLIENTS.map((client) => (
               <div
-                key={client.id ?? index}
+                key={client.id}
                 className="client-card"
               >
                 <img

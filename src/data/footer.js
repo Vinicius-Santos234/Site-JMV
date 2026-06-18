@@ -1,10 +1,11 @@
-export const NAV_LINKS = [
-  { href: "#sobre",     label: "Sobre nós"   },
-  { href: "#servicos",  label: "Serviços"    },
-  { href: "#portfolio", label: "Portfólio"   },
-  { href: "#clientes",  label: "Clientes"    },
-  { href: "#contato",   label: "Contato"     },
-];
+import { LINKS } from "./navbar";
+
+const FOOTER_LABELS = { "#sobre": "Sobre nós" };
+
+export const NAV_LINKS = LINKS.map(({ href, label }) => ({
+  href,
+  label: FOOTER_LABELS[href] ?? label,
+}));
 
 export const SERVICES = [
   "Montagem Industrial",

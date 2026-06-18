@@ -1,14 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { PROJECTS as projects } from "../data/portfolio";
+import { ALL_PROJECTS } from "../data/portfolio-full";
 import FadeInSection from "../components/FadeInSection";
 
-const real = projects.filter((p) => p.image);
+const real = ALL_PROJECTS.filter((p) => !p.placeholder);
 
 export default function Portfolio() {
   const [current, setCurrent] = useState(0);
   const [dir, setDir] = useState(null);
+
+  useEffect(() => {
+    if (!dir) return;
+    const id = setTimeout(() => setDir(null), 400);
+    return () => clearTimeout(id);
+  }, [dir]);
 
   function go(next) {
     setDir(next > current ? "right" : "left");
