@@ -481,7 +481,7 @@ img {
 .services-grid { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
 .quality-grid   { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
 .portfolio-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
-.clients-grid   { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.clients-grid   { grid-template-columns: repeat(5, 1fr); }
 
 .service-card,
 .quality-card {
@@ -1462,7 +1462,7 @@ img {
   }
 
   .clients-grid {
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(5, 1fr);
   }
 }
 
@@ -1532,7 +1532,7 @@ img {
   }
 
   .clients-grid {
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 40px;
   }
 
@@ -1683,7 +1683,7 @@ img {
   }
 
   .clients-grid {
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 56px;
   }
 
