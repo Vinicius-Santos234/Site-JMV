@@ -931,6 +931,14 @@ img {
   font-weight: 500;
 }
 
+.contact-item a {
+  color: #0c1c30;
+}
+
+.contact-item a:hover {
+  color: #4a8fd4;
+}
+
 .contact-item svg {
   color: #4a8fd4;
 }
@@ -2145,6 +2153,7 @@ img {
 .faq-answer {
   display: grid;
   grid-template-rows: 0fr;
+  overflow: hidden;
   transition: grid-template-rows 0.3s ease;
 }
 
