@@ -84,7 +84,7 @@ export default function PortfolioPage() {
           <h1 className="section-title">PROJETOS</h1>
           <p className="section-description">
             Conheça os projetos industriais realizados pela JMV Engenharia
-            ao longo de mais de 13 anos de atuação no mercado.
+            ao longo de mais de {new Date().getFullYear() - 2013} anos de atuação no mercado.
           </p>
         </div>
       </header>

@@ -13,7 +13,7 @@ const FAQS = [
   },
   {
     q: "Há quanto tempo a JMV está no mercado?",
-    a: "A JMV Engenharia e Construções foi fundada em 2013 e acumula mais de 13 anos de experiência na execução de projetos industriais de grande porte.",
+    a: `A JMV Engenharia e Construções foi fundada em 2013 e acumula mais de ${new Date().getFullYear() - 2013} anos de experiência na execução de projetos industriais de grande porte.`,
   },
   {
     q: "Quais setores industriais a JMV atende?",

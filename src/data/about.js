@@ -10,7 +10,7 @@ export const DIFFERENTIALS = [
     id: 1,
     icon: Clock,
     title: "Experiência comprovada",
-    text: "Mais de 13 anos entregando projetos industriais de grande porte para os principais grupos do setor.",
+    text: `Mais de ${new Date().getFullYear() - 2013} anos entregando projetos industriais de grande porte para os principais grupos do setor.`,
   },
   {
     id: 2,

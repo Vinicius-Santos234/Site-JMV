@@ -23,7 +23,7 @@ export default function Footer() {
           <div className="footer-brand">
             <img src={logo} alt="JMV Engenharia" className="footer-logo" />
             <p className="footer-tagline">
-              Excelência técnica em montagem e manutenção industrial há mais de 13 anos.
+              Excelência técnica em montagem e manutenção industrial há mais de {new Date().getFullYear() - 2013} anos.
             </p>
           </div>
 
