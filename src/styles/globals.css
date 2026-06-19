@@ -2151,18 +2151,16 @@ img {
 }
 
 .faq-answer {
-  display: grid;
-  grid-template-rows: 0fr;
+  max-height: 0;
   overflow: hidden;
-  transition: grid-template-rows 0.3s ease;
+  transition: max-height 0.35s ease;
 }
 
 .faq-item--open .faq-answer {
-  grid-template-rows: 1fr;
+  max-height: 400px;
 }
 
 .faq-answer p {
-  overflow: hidden;
   padding: 0 24px 20px;
   margin: 0;
   color: #475569;
