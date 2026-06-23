@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Clock } from "lucide-react";
 import { ALL_PROJECTS } from "../data/portfolio-full";
@@ -59,6 +59,14 @@ export default function PortfolioPage() {
     canonical: "https://site-jmv.vercel.app/portfolio",
   });
 
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.textContent = JSON.stringify(BREADCRUMB_SCHEMA);
+    document.head.appendChild(script);
+    return () => { if (document.head.contains(script)) document.head.removeChild(script); };
+  }, []);
+
   const [active, setActive] = useState("Todos");
 
   const visible =
@@ -68,10 +76,6 @@ export default function PortfolioPage() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(BREADCRUMB_SCHEMA) }}
-      />
       <Navbar />
 
       <header className="portfolio-page-header">

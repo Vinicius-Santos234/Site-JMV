@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 import FadeInSection from "./FadeInSection";
 
@@ -42,13 +42,17 @@ const FAQ_SCHEMA = {
 export default function FAQ() {
   const [open, setOpen] = useState(null);
 
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.textContent = JSON.stringify(FAQ_SCHEMA);
+    document.head.appendChild(script);
+    return () => { if (document.head.contains(script)) document.head.removeChild(script); };
+  }, []);
+
   return (
     <FadeInSection>
       <section className="section faq-section">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_SCHEMA) }}
-        />
 
         <div className="container">
           <span className="section-subtitle">Dúvidas Frequentes</span>
