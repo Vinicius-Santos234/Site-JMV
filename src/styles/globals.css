@@ -1038,20 +1038,23 @@ img {
   gap: 12px;
   padding: 48px 24px;
   text-align: center;
-  color: #f59e0b;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  color: #16a34a;
 }
 
 .form-success p {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 22px;
   letter-spacing: 0.05em;
-  color: #f5f5f5;
+  color: #14532d;
   margin: 0;
 }
 
 .form-success small {
   font-size: 14px;
-  color: #aaa;
+  color: #166534;
 }
 
 /* ═══════════════════════════════════════════════════════════
