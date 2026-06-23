@@ -1,18 +1,18 @@
-import raizenLogo from "../assets/clients/raizenLogo.png";
-import bungeLogo from "../assets/clients/bungeLogo.png";
-import petrobrasLogo from "../assets/clients/petrobrasLogo.png";
-import cutraleLogo from "../assets/clients/cutraleLogo.png";
-import ipirangaLogo from "../assets/clients/ipirangaLogo.png";
-import cofcoLogo from "../assets/clients/cofcoLogo.png";
-import jallesmachadoLogo from "../assets/clients/jallesmachadoLogo.png";
-import guaraniLogo from "../assets/clients/guaraniLogo.png";
-import cerradinhoLogo from "../assets/clients/cerradinhoLogo.png";
-import cerradaoLogo from "../assets/clients/cerradaoLogo.png";
-import morrinhosLogo from "../assets/clients/morrinhosLogo.png";
-import planusiLogo from "../assets/clients/planusiLogo.png";
-import sebigasLogo from "../assets/clients/sebigasLogo.png";
-import usinalinsLogo from "../assets/clients/usinalinsLogo.png";
-import iacangaLogo from "../assets/clients/iacangaLogo.png";
+import raizenLogo from "../assets/clients/raizenLogo.webp";
+import bungeLogo from "../assets/clients/bungeLogo.webp";
+import petrobrasLogo from "../assets/clients/petrobrasLogo.webp";
+import cutraleLogo from "../assets/clients/cutraleLogo.webp";
+import ipirangaLogo from "../assets/clients/ipirangaLogo.webp";
+import cofcoLogo from "../assets/clients/cofcoLogo.webp";
+import jallesmachadoLogo from "../assets/clients/jallesmachadoLogo.webp";
+import guaraniLogo from "../assets/clients/guaraniLogo.webp";
+import cerradinhoLogo from "../assets/clients/cerradinhoLogo.webp";
+import cerradaoLogo from "../assets/clients/cerradaoLogo.webp";
+import morrinhosLogo from "../assets/clients/morrinhosLogo.webp";
+import planusiLogo from "../assets/clients/planusiLogo.webp";
+import sebigasLogo from "../assets/clients/sebigasLogo.webp";
+import usinalinsLogo from "../assets/clients/usinalinsLogo.webp";
+import iacangaLogo from "../assets/clients/iacangaLogo.webp";
 
 export const CLIENTS = [
   { id: 1,  name: "Raízen",       logo: raizenLogo        },

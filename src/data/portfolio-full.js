@@ -1,7 +1,7 @@
-import e2g from "../assets/portfolio/e2g.jpg";
-import tubulacao from "../assets/portfolio/tubulacao.jpg";
-import tanque from "../assets/portfolio/tanque.jpg";
-import evaporacao from "../assets/portfolio/evaporacao.jpg";
+import e2g from "../assets/portfolio/e2g.webp";
+import tubulacao from "../assets/portfolio/tubulacao.webp";
+import tanque from "../assets/portfolio/tanque.webp";
+import evaporacao from "../assets/portfolio/evaporacao.webp";
 
 export const ALL_PROJECTS = [
   {

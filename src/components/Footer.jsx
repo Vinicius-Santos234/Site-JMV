@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { Phone, Mail, MapPin, ArrowUpRight } from "lucide-react";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo.webp";
 
 import { NAV_LINKS, SERVICES } from "../data/footer";
 
