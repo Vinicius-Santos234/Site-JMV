@@ -23,6 +23,10 @@ const FAQS = [
     q: "Como solicitar um orçamento da JMV Engenharia?",
     a: "Entre em contato pelo telefone (16) 99741-8402, pelo e-mail jpsantos@jmv.ind.br ou pelo formulário neste site. Nossa equipe responde em até 24 horas úteis.",
   },
+  {
+    q: "A JMV Engenharia trabalha com ligas especiais como P11 e P22?",
+    a: "Sim. Nossa equipe é especializada na montagem de tubulações com ligas especiais como P11 e P22, aplicadas em linhas de alta pressão e alta temperatura em processos industriais exigentes.",
+  },
 ];
 
 const FAQ_SCHEMA = {

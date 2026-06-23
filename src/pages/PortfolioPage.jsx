@@ -56,6 +56,7 @@ export default function PortfolioPage() {
     title: "Portfólio de Projetos | JMV Engenharia e Construções",
     description:
       "Conheça os projetos industriais realizados pela JMV Engenharia: montagem, caldeiraria, estruturas metálicas e mais. Clientes como Raízen, Bunge, Petrobras e Cutrale.",
+    canonical: "https://site-jmv.vercel.app/portfolio",
   });
 
   const [active, setActive] = useState("Todos");

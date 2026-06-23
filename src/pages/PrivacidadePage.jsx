@@ -9,6 +9,7 @@ export default function PrivacidadePage() {
     title: "Política de Privacidade | JMV Engenharia e Construções",
     description:
       "Política de privacidade da JMV Engenharia e Construções. Saiba como tratamos seus dados pessoais em conformidade com a LGPD.",
+    canonical: "https://site-jmv.vercel.app/privacidade",
   });
 
   return (

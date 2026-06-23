@@ -1,21 +1,40 @@
 import { useEffect } from "react";
 
+const BASE_URL   = "https://site-jmv.vercel.app";
 const BASE_TITLE = "JMV Engenharia e Construções | Montagem Industrial em Matão - SP";
-const BASE_DESC =
-  `Especialistas em montagem industrial, estruturas metálicas, caldeiraria e tubulações. Mais de ${new Date().getFullYear() - 2013} anos atendendo os setores sucroenergético e petroquímico. Matão - SP.`;
+const BASE_DESC  = `Especialistas em montagem industrial, estruturas metálicas, caldeiraria e tubulações. Mais de ${new Date().getFullYear() - 2013} anos atendendo os setores sucroenergético e petroquímico. Matão - SP.`;
 
-export function useSEO({ title = BASE_TITLE, description = BASE_DESC } = {}) {
+function swapMeta(selector, attr, next) {
+  const el = document.querySelector(selector);
+  const prev = el?.getAttribute(attr) ?? "";
+  if (el) el.setAttribute(attr, next);
+  return prev;
+}
+
+export function useSEO({ title = BASE_TITLE, description = BASE_DESC, canonical } = {}) {
   useEffect(() => {
-    const prevTitle = document.title;
-    document.title = title;
+    const resolvedCanonical = canonical ?? BASE_URL + "/";
 
-    const metaDesc = document.querySelector('meta[name="description"]');
-    const prevDesc = metaDesc?.getAttribute("content") ?? "";
-    metaDesc?.setAttribute("content", description);
+    const prevTitle      = document.title;
+    document.title       = title;
+
+    const prevDesc       = swapMeta('meta[name="description"]',         "content", description);
+    const prevOgTitle    = swapMeta('meta[property="og:title"]',        "content", title);
+    const prevOgDesc     = swapMeta('meta[property="og:description"]',  "content", description);
+    const prevOgUrl      = swapMeta('meta[property="og:url"]',          "content", resolvedCanonical);
+    const prevTwTitle    = swapMeta('meta[name="twitter:title"]',       "content", title);
+    const prevTwDesc     = swapMeta('meta[name="twitter:description"]', "content", description);
+    const prevCanonical  = swapMeta('link[rel="canonical"]',            "href",    resolvedCanonical);
 
     return () => {
       document.title = prevTitle;
-      metaDesc?.setAttribute("content", prevDesc);
+      swapMeta('meta[name="description"]',         "content", prevDesc);
+      swapMeta('meta[property="og:title"]',        "content", prevOgTitle);
+      swapMeta('meta[property="og:description"]',  "content", prevOgDesc);
+      swapMeta('meta[property="og:url"]',          "content", prevOgUrl);
+      swapMeta('meta[name="twitter:title"]',       "content", prevTwTitle);
+      swapMeta('meta[name="twitter:description"]', "content", prevTwDesc);
+      swapMeta('link[rel="canonical"]',            "href",    prevCanonical);
     };
-  }, [title, description]);
+  }, [title, description, canonical]);
 }
