@@ -1177,13 +1177,20 @@ img {
 }
 
 .footer-bottom-inner {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   align-items: center;
-  flex-wrap: wrap;
   gap: 8px;
   font-size: 13px;
   color: rgba(255, 255, 255, 0.3);
+}
+
+.footer-bottom-inner span:nth-child(2) {
+  text-align: center;
+}
+
+.footer-bottom-inner span:last-child {
+  text-align: right;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -2036,7 +2043,11 @@ img {
   }
 
   .footer-bottom-inner {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .footer-bottom-inner span:last-child {
     text-align: center;
   }
 }

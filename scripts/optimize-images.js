@@ -1,12 +1,3 @@
-/**
- * Converte imagens PNG/JPG para WebP usando sharp.
- * Execute com: node scripts/optimize-images.js
- *
- * Após rodar, atualize os imports nos componentes:
- *   import logo from '../assets/clients/raizenLogo.png'
- *   → import logo from '../assets/clients/raizenLogo.webp'
- */
-
 import sharp from 'sharp';
 import { readdir, stat, unlink } from 'fs/promises';
 import { join, extname, basename } from 'path';
@@ -29,7 +20,6 @@ async function convert(inputPath) {
   const saving = ((1 - outSize / inSize) * 100).toFixed(1);
   console.log(`  ${basename(inputPath).padEnd(30)} ${(inSize/1024).toFixed(1).padStart(7)} KB → ${(outSize/1024).toFixed(1).padStart(7)} KB  (-${saving}%)`);
 
-  // Remove o arquivo original após conversão bem-sucedida
   await unlink(inputPath);
 }
 
