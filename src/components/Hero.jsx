@@ -9,7 +9,7 @@ export default function Hero() {
         <div className="container hero-layout">
           <div className="hero-content">
             <span className="hero-tag">
-              Engenharia • Montagem Industrial • Caldeiraria
+              Engenharia • Fabricação • Soluções Industriais • Caldeiraria
             </span>
 
             <motion.h1
