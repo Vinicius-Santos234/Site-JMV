@@ -20,7 +20,7 @@ export default function Quality() {
               const Icon = item.icon;
 
               return (
-                <div key={item.id} className="quality-card">
+                <div key={item.id} className="service-card">
                   <div className="service-icon">
                     <Icon size={34} />
                   </div>
