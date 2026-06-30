@@ -1,18 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Clock } from "lucide-react";
 import { ALL_PROJECTS } from "../data/portfolio-full";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import FloatingButtons from "../components/FloatingButtons";
-import { useSEO } from "../hooks/useSEO";
+import { useSEO, BASE_URL } from "../hooks/useSEO";
 
 const BREADCRUMB_SCHEMA = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://site-jmv.vercel.app/" },
-    { "@type": "ListItem", position: 2, name: "Portfólio", item: "https://site-jmv.vercel.app/portfolio" },
+    { "@type": "ListItem", position: 1, name: "Home", item: `${BASE_URL}/` },
+    { "@type": "ListItem", position: 2, name: "Portfólio", item: `${BASE_URL}/portfolio` },
   ],
 };
 
@@ -56,22 +56,15 @@ export default function PortfolioPage() {
     title: "Portfólio de Projetos | JMV Engenharia e Construções",
     description:
       "Conheça os projetos industriais realizados pela JMV Engenharia: montagem, caldeiraria, estruturas metálicas e mais. Clientes como Raízen, Bunge, Petrobras e Cutrale.",
-    canonical: "https://site-jmv.vercel.app/portfolio",
+    canonical: `${BASE_URL}/portfolio`,
+    schema: BREADCRUMB_SCHEMA,
   });
-
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.type = "application/ld+json";
-    script.textContent = JSON.stringify(BREADCRUMB_SCHEMA);
-    document.head.appendChild(script);
-    return () => { if (document.head.contains(script)) document.head.removeChild(script); };
-  }, []);
 
   const [active, setActive] = useState("Todos");
 
   const visible =
     active === "Todos"
-      ? ALL_PROJECTS
+      ? ALL_PROJECTS.filter((p) => !p.placeholder)
       : ALL_PROJECTS.filter((p) => !p.placeholder && p.category === active);
 
   return (

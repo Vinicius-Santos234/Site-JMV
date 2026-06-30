@@ -1,13 +1,12 @@
 import { CheckCircle2 } from "lucide-react";
 import FadeInSection from "../components/FadeInSection";
-
 import { DIFFERENTIALS } from "../data/cta";
+import { scrollToSection } from "../utils/scrollToSection";
 
 export default function CTA() {
-  const scrollTo = (e) => {
+  const handleScroll = (e) => {
     e.preventDefault();
-    const el = document.querySelector("#contato");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    scrollToSection("#contato");
   };
 
   return (
@@ -22,7 +21,7 @@ export default function CTA() {
               sua operação industrial com segurança, precisão e qualidade.
             </p>
             <div className="cta-actions">
-              <a href="#contato" className="btn-primary" onClick={scrollTo}>
+              <a href="#contato" className="btn-primary" onClick={handleScroll}>
                 Solicitar orçamento
               </a>
               <a
@@ -49,4 +48,3 @@ export default function CTA() {
     </FadeInSection>
   );
 }
-

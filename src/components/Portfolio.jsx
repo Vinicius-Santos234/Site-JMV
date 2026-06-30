@@ -86,6 +86,10 @@ export default function Portfolio() {
             ))}
           </div>
 
+          <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+            Projeto {current + 1} de {real.length}: {project.title} — {project.client}
+          </div>
+
           <div className="portfolio-cta">
             <Link to="/portfolio" className="btn-secondary">
               Ver mais projetos

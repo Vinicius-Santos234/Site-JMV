@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const BASE_URL   = "https://site-jmv.vercel.app";
+export const BASE_URL   = "https://site-jmv.vercel.app";
 const BASE_TITLE = "JMV Engenharia e Construções | Soluções Industriais em Matão - SP";
 const BASE_DESC  = `Especialistas em montagem industrial, estruturas metálicas, caldeiraria e tubulações. Mais de ${new Date().getFullYear() - 2013} anos atendendo os setores sucroenergético e petroquímico. Matão - SP.`;
 
@@ -11,7 +11,7 @@ function swapMeta(selector, attr, next) {
   return prev;
 }
 
-export function useSEO({ title = BASE_TITLE, description = BASE_DESC, canonical } = {}) {
+export function useSEO({ title = BASE_TITLE, description = BASE_DESC, canonical, schema } = {}) {
   useEffect(() => {
     const resolvedCanonical = canonical ?? BASE_URL + "/";
 
@@ -37,4 +37,13 @@ export function useSEO({ title = BASE_TITLE, description = BASE_DESC, canonical 
       swapMeta('link[rel="canonical"]',            "href",    prevCanonical);
     };
   }, [title, description, canonical]);
+
+  useEffect(() => {
+    if (!schema) return;
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.textContent = JSON.stringify(schema);
+    document.head.appendChild(script);
+    return () => { if (document.head.contains(script)) document.head.removeChild(script); };
+  }, [schema]);
 }

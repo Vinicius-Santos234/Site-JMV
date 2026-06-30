@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/logo.webp";
 import { LINKS } from "../data/navbar";
+import { scrollToSection } from "../utils/scrollToSection";
 
 export default function Navbar() {
   const [scrolled,      setScrolled]      = useState(false);
@@ -39,10 +40,9 @@ export default function Navbar() {
 
   const closeMenu = () => setMenuOpen(false);
 
-  const scrollTo = (hash) => (e) => {
+  const handleNavLink = (hash) => (e) => {
     e.preventDefault();
-    const el = document.querySelector(hash);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    scrollToSection(hash);
     closeMenu();
   };
 
@@ -58,7 +58,7 @@ export default function Navbar() {
                 key={href}
                 href={href}
                 className={activeSection === href.slice(1) ? "active" : ""}
-                onClick={scrollTo(href)}
+                onClick={handleNavLink(href)}
               >
                 {label}
               </a>
@@ -75,7 +75,7 @@ export default function Navbar() {
         </div>
 
         {isHome ? (
-          <a href="#contato" className="btn-primary" onClick={scrollTo("#contato")}>
+          <a href="#contato" className="btn-primary" onClick={handleNavLink("#contato")}>
             Solicitar orçamento
           </a>
         ) : (
