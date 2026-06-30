@@ -576,6 +576,10 @@ img {
   margin-right: auto;
 }
 
+.quality-card .service-icon svg {
+  margin-bottom: 0;
+}
+
 /* ═══════════════════════════════════════════════════════════
    PORTFOLIO  (home slideshow)
 ═══════════════════════════════════════════════════════════ */
