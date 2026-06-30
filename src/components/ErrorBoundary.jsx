@@ -1,8 +1,5 @@
 import { Component } from "react";
-
-function genId(prefix) {
-  return `${prefix}_${Date.now().toString(36).toUpperCase()}`;
-}
+import { genId } from "../utils/genId";
 
 export default class ErrorBoundary extends Component {
   constructor(props) {
@@ -26,9 +23,7 @@ export default class ErrorBoundary extends Component {
     );
   }
 
-  handleReload() {
-    window.location.reload();
-  }
+  handleReload = () => window.location.reload();
 
   render() {
     if (!this.state.hasError) return this.props.children;

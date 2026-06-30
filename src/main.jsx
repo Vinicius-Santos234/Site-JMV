@@ -2,10 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./styles/globals.css";
-
-function genId(prefix) {
-  return `${prefix}_${Date.now().toString(36).toUpperCase()}`;
-}
+import { genId } from "./utils/genId";
 
 window.addEventListener("error", (event) => {
   const id = genId("ERR_GLOBAL");
