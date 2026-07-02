@@ -1,0 +1,109 @@
+/* ═══════════════════════════════════════════════════════════
+   ABOUT
+═══════════════════════════════════════════════════════════ */
+
+.about-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+  margin-top: 10px;
+}
+
+.about-text .section-description {
+  margin-bottom: 20px;
+}
+
+.about-differentials {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.about-differential-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 14px;
+  border-radius: 12px;
+  transition: transform 0.3s ease, background 0.3s ease;
+  cursor: default;
+}
+
+.about-differential-item:hover {
+  transform: translateX(6px);
+  background: rgba(74, 143, 212, 0.07);
+}
+
+.about-differential-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: #eef2f7;
+  color: #4a8fd4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.about-differential-item:hover .about-differential-icon {
+  background: #4a8fd4;
+  color: white;
+}
+
+.about-differential-item strong {
+  display: block;
+  color: #0c1c30;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+.about-differential-item p {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ─── RESPONSIVE ───────────────────────────────────────── */
+
+@media (min-width: 1920px) {
+  .about-layout {
+    gap: 80px;
+  }
+}
+
+@media (min-width: 2560px) {
+  .about-layout {
+    gap: 120px;
+  }
+
+  .about-differential-item {
+    padding: 20px;
+  }
+
+  .about-differential-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+  }
+
+  .about-differential-item strong {
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+
+  .about-differential-item p {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 992px) {
+  .about-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}

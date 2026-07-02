@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ALL_PROJECTS } from "../data/portfolio-full";
 import FadeInSection from "../components/FadeInSection";
+import "./Portfolio.css";
 
 const real = ALL_PROJECTS.filter((p) => !p.placeholder);
 

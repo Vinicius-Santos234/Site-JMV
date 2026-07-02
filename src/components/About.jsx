@@ -1,5 +1,6 @@
 import FadeInSection from "../components/FadeInSection";
 import { DIFFERENTIALS } from "../data/about";
+import "./About.css";
 
 export default function About() {
   return (

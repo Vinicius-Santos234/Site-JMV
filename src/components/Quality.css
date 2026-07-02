@@ -1,0 +1,28 @@
+/* ═══════════════════════════════════════════════════════════
+   QUALITY
+   Depende da base de card de Services.css (importado no
+   componente); aqui ficam apenas o grid e os ajustes próprios.
+═══════════════════════════════════════════════════════════ */
+
+.quality-grid {
+  display: grid;
+  gap: 30px;
+  margin-top: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.quality-card {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.quality-card .service-icon {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.quality-card .service-icon svg {
+  margin-bottom: 0;
+}

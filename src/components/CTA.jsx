@@ -2,6 +2,7 @@ import { CheckCircle2 } from "lucide-react";
 import FadeInSection from "../components/FadeInSection";
 import { DIFFERENTIALS } from "../data/cta";
 import { scrollToSection } from "../utils/scrollToSection";
+import "./CTA.css";
 
 export default function CTA() {
   const handleScroll = (e) => {

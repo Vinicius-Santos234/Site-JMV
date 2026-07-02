@@ -1,0 +1,66 @@
+/* ═══════════════════════════════════════════════════════════
+   FLOATING BUTTONS  (WhatsApp + scroll ao topo)
+═══════════════════════════════════════════════════════════ */
+
+.whatsapp-button {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #25D366;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  box-shadow: 0 10px 30px rgba(37, 211, 102, 0.35);
+  animation: whatsappPulse 2s infinite;
+  transition: 0.3s;
+}
+
+.whatsapp-button:hover {
+  transform: translateY(-5px) scale(1.05);
+}
+
+.whatsapp-button img {
+  width: 34px;
+  height: 34px;
+}
+
+.top-button {
+  position: fixed;
+  right: 25px;
+  bottom: 105px;
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  background: #4a8fd4;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 998;
+  box-shadow: 0 10px 25px rgba(74, 143, 212, 0.35);
+  animation: fadeUp 0.4s ease;
+  transition: 0.3s;
+}
+
+.top-button:hover {
+  transform: translateY(-4px);
+}
+
+/* ─── ANIMATIONS ───────────────────────────────────────── */
+
+@keyframes whatsappPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+  70%  { box-shadow: 0 0 0 18px rgba(37, 211, 102, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

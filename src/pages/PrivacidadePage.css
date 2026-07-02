@@ -1,0 +1,36 @@
+/* ═══════════════════════════════════════════════════════════
+   PÁGINA DE PRIVACIDADE
+═══════════════════════════════════════════════════════════ */
+
+.privacidade-content {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.privacidade-content h2 {
+  font-size: 18px;
+  color: #0c1c30;
+  margin: 36px 0 12px;
+}
+
+.privacidade-content p,
+.privacidade-content li {
+  color: #475569;
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.privacidade-content ul {
+  padding-left: 20px;
+  margin: 8px 0 0;
+}
+
+.privacidade-content li {
+  margin-bottom: 6px;
+}
+
+.privacidade-content a {
+  color: #4a8fd4;
+  text-decoration: underline;
+}

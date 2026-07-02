@@ -1,0 +1,202 @@
+/* ═══════════════════════════════════════════════════════════
+   PORTFOLIO  (cards, overlay e slideshow da home)
+   .portfolio-card / .portfolio-grid / .portfolio-overlay são
+   reutilizados pela PortfolioPage, que também importa este arquivo.
+═══════════════════════════════════════════════════════════ */
+
+.portfolio-grid {
+  display: grid;
+  gap: 30px;
+  margin-top: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.portfolio-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  aspect-ratio: 16 / 10;
+  background: #eef2f7;
+}
+
+.portfolio-card img,
+.portfolio-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.6s ease;
+}
+
+.portfolio-card:hover img {
+  transform: scale(1.08);
+}
+
+.portfolio-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(8, 23, 38, 0.92) 0%,
+    rgba(8, 23, 38, 0.4) 60%,
+    transparent 100%
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 28px;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.portfolio-card:hover .portfolio-overlay {
+  opacity: 1;
+}
+
+.portfolio-overlay-client {
+  color: #4a8fd4;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 6px;
+}
+
+.portfolio-overlay h3 {
+  color: white;
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.portfolio-overlay-year {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 13px;
+}
+
+.portfolio-cta {
+  margin-top: 48px;
+  text-align: center;
+}
+
+/* ─── SLIDESHOW ────────────────────────────────────────── */
+
+.slideshow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.slideshow-track {
+  flex: 1;
+  min-width: 0;
+}
+
+.slideshow-card {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 16px;
+  animation: slideFadeIn 0.4s ease;
+}
+
+.slideshow-overlay {
+  opacity: 1 !important;
+}
+
+.slideshow-btn {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid #4a8fd4;
+  background: white;
+  color: #4a8fd4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.slideshow-btn:hover {
+  background: #4a8fd4;
+  color: white;
+  transform: scale(1.08);
+}
+
+.slideshow-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.slideshow-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: #cbd5e1;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  padding: 0;
+}
+
+.slideshow-dot--active {
+  background: #4a8fd4;
+  transform: scale(1.35);
+}
+
+/* ─── ANIMATIONS ───────────────────────────────────────── */
+
+@keyframes slideFadeIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideFadeInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.slideshow-track--right .slideshow-card { animation: slideFadeIn     0.4s ease; }
+.slideshow-track--left  .slideshow-card { animation: slideFadeInLeft  0.4s ease; }
+
+/* ─── RESPONSIVE ───────────────────────────────────────── */
+
+@media (min-width: 1920px) {
+  .portfolio-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 36px;
+  }
+}
+
+@media (min-width: 2560px) {
+  .portfolio-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 48px;
+  }
+
+  .slideshow-btn {
+    width: 64px;
+    height: 64px;
+  }
+
+  .slideshow-dots {
+    margin-top: 32px;
+    gap: 14px;
+  }
+
+  .slideshow-dot {
+    width: 13px;
+    height: 13px;
+  }
+}
+
+@media (max-width: 600px) {
+  .slideshow-btn {
+    width: 40px;
+    height: 40px;
+  }
+}

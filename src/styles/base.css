@@ -1,0 +1,195 @@
+/* ═══════════════════════════════════════════════════════════
+   BASE — reset, utilidades de layout e botões (global)
+   Importado uma única vez em main.jsx.
+═══════════════════════════════════════════════════════════ */
+
+/* ─── RESET & BASE ─────────────────────────────────────── */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Barlow', sans-serif;
+  overflow-x: hidden;
+  color: #18274a;
+  background: #fff;
+  padding-top: 80px;
+}
+
+a {
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* ─── LAYOUT UTILITIES ─────────────────────────────────── */
+
+.container {
+  width: min(1200px, 90%);
+  margin: auto;
+}
+
+.section {
+  padding: 100px 0;
+}
+
+.section:nth-child(even) {
+  background: #f8fafc;
+}
+
+.section-subtitle {
+  color: #4a8fd4;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(40px, 6vw, 60px);
+  letter-spacing: 1px;
+  color: #0c1c30;
+  margin-bottom: 20px;
+}
+
+.section-description {
+  max-width: 700px;
+  color: #555;
+  line-height: 1.7;
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+/* ─── BUTTONS ──────────────────────────────────────────── */
+
+.btn-primary,
+.btn-secondary {
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+.btn-primary {
+  background: #4a8fd4;
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(74, 143, 212, 0.35);
+}
+
+.btn-secondary {
+  border: 2px solid #4a8fd4;
+  color: #4a8fd4;
+  background: transparent;
+}
+
+.btn-secondary:hover {
+  background: #4a8fd4;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* ─── RESPONSIVE ───────────────────────────────────────── */
+
+@media (min-width: 1440px) {
+  .container {
+    width: min(1360px, 90%);
+  }
+}
+
+@media (min-width: 1920px) {
+  body {
+    padding-top: 90px;
+  }
+
+  .container {
+    width: min(1680px, 88%);
+  }
+
+  .section {
+    padding: 130px 0;
+  }
+
+  .section-subtitle {
+    font-size: 15px;
+    letter-spacing: 3px;
+  }
+
+  .section-description {
+    font-size: 20px;
+    max-width: 860px;
+  }
+}
+
+@media (min-width: 2560px) {
+  body {
+    padding-top: 100px;
+  }
+
+  .container {
+    width: min(2240px, 88%);
+  }
+
+  .section {
+    padding: 160px 0;
+  }
+
+  .section-subtitle {
+    font-size: 16px;
+    letter-spacing: 4px;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-size: clamp(60px, 4.5vw, 90px);
+    margin-bottom: 28px;
+  }
+
+  .section-description {
+    font-size: 22px;
+    max-width: 1000px;
+    line-height: 1.8;
+    margin-bottom: 40px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 18px 38px;
+    font-size: 17px;
+    border-radius: 10px;
+  }
+}

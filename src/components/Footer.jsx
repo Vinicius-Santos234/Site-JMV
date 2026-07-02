@@ -3,6 +3,7 @@ import { Phone, Mail, MapPin, ArrowUpRight } from "lucide-react";
 import logo from "../assets/logo.webp";
 
 import { NAV_LINKS, SERVICES } from "../data/footer";
+import "./Footer.css";
 
 function NavLink({ href, isHome, children }) {
   if (isHome) {

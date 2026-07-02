@@ -1,0 +1,131 @@
+/* ═══════════════════════════════════════════════════════════
+   SERVICES  (+ base de card compartilhada com QUALITY)
+   Quality reutiliza .service-card / .service-icon, por isso
+   Quality.jsx também importa este arquivo.
+═══════════════════════════════════════════════════════════ */
+
+.services-grid {
+  display: grid;
+  gap: 30px;
+  margin-top: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+.service-card,
+.quality-card {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(12, 28, 48, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.service-card {
+  transition: 0.35s;
+  position: relative;
+}
+
+.service-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: #4a8fd4;
+  transform: scaleX(0);
+  transition: 0.35s;
+}
+
+.service-card:hover::before {
+  transform: scaleX(1);
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 35px rgba(12, 28, 48, 0.1);
+}
+
+.service-icon,
+.quality-card svg {
+  color: #4a8fd4;
+  margin-bottom: 20px;
+}
+
+.service-icon {
+  width: 60px;
+  height: 60px;
+  background: #eef2f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.service-card h3,
+.quality-card h3 {
+  font-size: 22px;
+  color: #0c1c30;
+  margin-bottom: 12px;
+}
+
+.service-card p,
+.quality-card p {
+  color: #666;
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+/* ─── RESPONSIVE  (afeta services + quality) ───────────── */
+
+@media (min-width: 1440px) {
+  .services-grid,
+  .quality-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1920px) {
+  .services-grid,
+  .quality-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+  }
+
+  .service-card,
+  .quality-card {
+    padding: 50px;
+  }
+}
+
+@media (min-width: 2560px) {
+  .services-grid,
+  .quality-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 56px;
+  }
+
+  .service-card,
+  .quality-card {
+    padding: 60px;
+    border-radius: 24px;
+  }
+
+  .service-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 16px;
+  }
+
+  .service-card h3,
+  .quality-card h3 {
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+
+  .service-card p,
+  .quality-card p {
+    font-size: 17px;
+    line-height: 1.7;
+  }
+}

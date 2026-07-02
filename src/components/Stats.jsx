@@ -1,6 +1,7 @@
 import { STATS } from "../data/stats";
 import { useCountUp } from "../hooks/useCountUp";
 import FadeInSection from "../components/FadeInSection";
+import "./Stats.css";
 
 function StatItem({ number, label }) {
   const [ref, displayValue] = useCountUp(number);

@@ -1,6 +1,7 @@
 import { Quote } from "lucide-react";
 import { TESTIMONIALS } from "../data/testimonials";
 import FadeInSection from "../components/FadeInSection";
+import "./Testimonials.css";
 
 export default function Testimonials() {
   return (

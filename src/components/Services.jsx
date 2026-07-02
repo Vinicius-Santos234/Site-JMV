@@ -1,5 +1,6 @@
 import { SERVICES } from "../data/services";
 import FadeInSection from "../components/FadeInSection";
+import "./Services.css";
 
 export default function Services() {
   return (

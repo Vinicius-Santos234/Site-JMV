@@ -1,5 +1,7 @@
 import { QUALITY_ITEMS } from "../data/quality";
 import FadeInSection from "../components/FadeInSection";
+import "./Services.css";
+import "./Quality.css";
 
 export default function Quality() {
   return (

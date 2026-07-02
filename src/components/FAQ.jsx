@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 import FadeInSection from "./FadeInSection";
 import { FAQS, FAQ_SCHEMA } from "../data/faqs";
+import "./FAQ.css";
 
 export default function FAQ() {
   const [open, setOpen] = useState(null);

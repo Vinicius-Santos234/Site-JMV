@@ -1,0 +1,140 @@
+/* ═══════════════════════════════════════════════════════════
+   CTA
+═══════════════════════════════════════════════════════════ */
+
+.cta {
+  color: white;
+  padding: 100px 0;
+  background: linear-gradient(135deg, #081420, #0c1c30, #17396d);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta::before {
+  content: "";
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  left: -200px;
+  bottom: -200px;
+  background: radial-gradient(rgba(74, 143, 212, 0.15), transparent 70%);
+  pointer-events: none;
+}
+
+.cta-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.cta-tag {
+  color: #4a8fd4;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.cta h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(36px, 5vw, 56px);
+  letter-spacing: 1px;
+  line-height: 1.05;
+  margin-bottom: 16px;
+}
+
+.cta p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 17px;
+  line-height: 1.7;
+  margin-bottom: 36px;
+}
+
+.cta-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.cta .btn-primary {
+  background: #4a8fd4;
+  font-size: 16px;
+  padding: 16px 36px;
+}
+
+.cta-whatsapp {
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  color: white !important;
+}
+
+.cta-whatsapp:hover {
+  background: white !important;
+  color: #0c1c30 !important;
+  border-color: white !important;
+}
+
+.cta-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 40px;
+}
+
+.cta-list li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.cta-list li svg {
+  color: #4a8fd4;
+  flex-shrink: 0;
+}
+
+/* ─── RESPONSIVE ───────────────────────────────────────── */
+
+@media (min-width: 1920px) {
+  .cta {
+    padding: 130px 0;
+  }
+
+  .cta-inner {
+    gap: 80px;
+  }
+}
+
+@media (min-width: 2560px) {
+  .cta {
+    padding: 160px 0;
+  }
+
+  .cta-inner {
+    gap: 120px;
+  }
+
+  .cta-list {
+    padding: 56px;
+    border-radius: 28px;
+    gap: 28px;
+  }
+
+  .cta-list li {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 992px) {
+  .cta-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}

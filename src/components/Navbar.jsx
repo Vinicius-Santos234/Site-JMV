@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/logo.webp";
 import { LINKS } from "../data/navbar";
 import { scrollToSection } from "../utils/scrollToSection";
+import "./Navbar.css";
 
 export default function Navbar() {
   const [scrolled,      setScrolled]      = useState(false);

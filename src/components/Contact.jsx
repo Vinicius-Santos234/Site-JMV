@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Phone, Mail, MapPin, Send, CheckCircle } from "lucide-react";
 import FadeInSection from "../components/FadeInSection";
+import "./Contact.css";
 
 const EMPTY = { nome: "", email: "", telefone: "", mensagem: "", website: "" };
 

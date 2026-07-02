@@ -6,6 +6,8 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import FloatingButtons from "../components/FloatingButtons";
 import { useSEO, BASE_URL } from "../hooks/useSEO";
+import "../components/Portfolio.css";
+import "./PortfolioPage.css";
 
 const BREADCRUMB_SCHEMA = {
   "@context": "https://schema.org",

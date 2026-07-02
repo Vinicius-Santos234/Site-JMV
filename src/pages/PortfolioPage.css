@@ -1,0 +1,93 @@
+/* ═══════════════════════════════════════════════════════════
+   PORTFOLIO PAGE  (página /portfolio)
+   Reutiliza os cards/grid de Portfolio.css, importado no componente.
+═══════════════════════════════════════════════════════════ */
+
+.portfolio-page-header {
+  background: linear-gradient(135deg, #071426 0%, #0c1c30 60%, #17396d 100%);
+  padding: 60px 0 80px;
+}
+
+.portfolio-page-header .section-subtitle,
+.portfolio-page-header .section-title {
+  color: white;
+}
+
+.portfolio-page-header .section-description {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.portfolio-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  margin-bottom: 32px;
+  transition: color 0.2s;
+}
+
+.portfolio-back-link:hover {
+  color: #4a8fd4;
+}
+
+.portfolio-card--placeholder {
+  background: #f4f7fb;
+  border: 2px dashed #cbd5e1;
+}
+
+.portfolio-placeholder-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #94a3b8;
+}
+
+.portfolio-placeholder-inner span {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.portfolio-placeholder-inner small {
+  font-size: 11px;
+  color: #b0bec5;
+  letter-spacing: 0.5px;
+}
+
+/* ─── FILTROS DE CATEGORIA ─────────────────────────────── */
+
+.portfolio-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 36px;
+}
+
+.portfolio-filter-btn {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1.5px solid #cbd5e1;
+  background: white;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+
+.portfolio-filter-btn:hover {
+  border-color: #4a8fd4;
+  color: #4a8fd4;
+}
+
+.portfolio-filter-btn--active {
+  background: #4a8fd4;
+  border-color: #4a8fd4;
+  color: white;
+}

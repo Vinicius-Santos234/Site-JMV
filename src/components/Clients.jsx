@@ -1,5 +1,6 @@
 import { CLIENTS } from "../data/clients";
 import FadeInSection from "../components/FadeInSection";
+import "./Clients.css";
 
 export default function Clients() {
   return (
