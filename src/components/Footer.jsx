@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Phone, Mail, MapPin, ArrowUpRight } from "lucide-react";
 import logo from "../assets/logo.webp";
 
-import { NAV_LINKS, SERVICES } from "../data/footer";
+import { NAV_LINKS, SERVICES, CNPJ } from "../data/footer";
 import "./Footer.css";
 
 function NavLink({ href, isHome, children }) {
@@ -26,6 +26,7 @@ export default function Footer() {
             <p className="footer-tagline">
               Excelência técnica em montagem e manutenção industrial há mais de {new Date().getFullYear() - 2013} anos.
             </p>
+            {CNPJ && <p className="footer-cnpj">CNPJ: {CNPJ}</p>}
           </div>
 
           <div className="footer-col">

@@ -3,7 +3,7 @@ import { Phone, Mail, MapPin, Send, CheckCircle } from "lucide-react";
 import FadeInSection from "../components/FadeInSection";
 import "./Contact.css";
 
-const EMPTY = { nome: "", email: "", telefone: "", mensagem: "", website: "" };
+const EMPTY = { nome: "", email: "", telefone: "", mensagem: "", website: "", consentimento: false };
 
 function formatPhone(value) {
   const digits = value.replace(/\D/g, "").slice(0, 11);
@@ -29,13 +29,15 @@ export default function Contact() {
     if (!form.telefone || form.telefone.replace(/\D/g, "").length < 10)
       e.telefone = "Telefone inválido";
     if (!form.mensagem.trim()) e.mensagem = "Mensagem obrigatória";
+    if (!form.consentimento) e.consentimento = "É necessário aceitar a Política de Privacidade";
     return e;
   }
 
   function handleChange(e) {
-    const { name, value } = e.target;
-    const formatted = name === "telefone" ? formatPhone(value) : value;
-    setForm((prev) => ({ ...prev, [name]: formatted }));
+    const { name, value, type, checked } = e.target;
+    const nextValue =
+      type === "checkbox" ? checked : name === "telefone" ? formatPhone(value) : value;
+    setForm((prev) => ({ ...prev, [name]: nextValue }));
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: undefined }));
   }
 
@@ -62,6 +64,7 @@ export default function Contact() {
           email:     form.email,
           telefone:  form.telefone,
           mensagem:  form.mensagem,
+          website:   form.website,
         }),
       });
 
@@ -182,6 +185,27 @@ export default function Contact() {
                     className={errors.mensagem ? "input-error" : ""}
                   />
                   {errors.mensagem && <span className="field-error">{errors.mensagem}</span>}
+                </div>
+
+                <div className="form-consent">
+                  <label className="consent-label">
+                    <input
+                      type="checkbox"
+                      name="consentimento"
+                      checked={form.consentimento}
+                      onChange={handleChange}
+                    />
+                    <span>
+                      Li e concordo com a{" "}
+                      <a href="/privacidade" target="_blank" rel="noopener noreferrer">
+                        Política de Privacidade
+                      </a>{" "}
+                      e autorizo o contato com meus dados.
+                    </span>
+                  </label>
+                  {errors.consentimento && (
+                    <span className="field-error">{errors.consentimento}</span>
+                  )}
                 </div>
 
                 {sendError && (

@@ -20,6 +20,7 @@ async function fillValidForm() {
   await userEvent.type(screen.getByLabelText(/e-mail/i),        'joao@teste.com')
   await userEvent.type(screen.getByLabelText(/telefone/i),      '16999999999')
   await userEvent.type(screen.getByLabelText(/mensagem/i),      'Preciso de um orçamento')
+  await userEvent.click(screen.getByRole('checkbox'))
 }
 
 describe('Contact — validação', () => {
@@ -43,6 +44,19 @@ describe('Contact — validação', () => {
     expect(screen.getByText('Nome obrigatório')).toBeInTheDocument()
     await userEvent.type(screen.getByLabelText(/nome completo/i), 'João')
     expect(screen.queryByText('Nome obrigatório')).not.toBeInTheDocument()
+  })
+
+  it('exige o consentimento LGPD antes de enviar', async () => {
+    fetch.mockResolvedValueOnce({ ok: true })
+    render(<Contact />)
+    await userEvent.type(screen.getByLabelText(/nome completo/i), 'João Silva')
+    await userEvent.type(screen.getByLabelText(/e-mail/i),        'joao@teste.com')
+    await userEvent.type(screen.getByLabelText(/telefone/i),      '16999999999')
+    await userEvent.type(screen.getByLabelText(/mensagem/i),      'Preciso de um orçamento')
+    // sem marcar o checkbox de consentimento
+    await userEvent.click(screen.getByRole('button', { name: /enviar mensagem/i }))
+    expect(screen.getByText(/aceitar a política de privacidade/i)).toBeInTheDocument()
+    expect(fetch).not.toHaveBeenCalled()
   })
 })
 

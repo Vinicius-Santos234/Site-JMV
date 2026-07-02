@@ -1,0 +1,22 @@
+{
+  "name": "JMV Soluções Industriais",
+  "short_name": "JMV",
+  "description": "Especialistas em montagem industrial, estruturas metálicas, caldeiraria e tubulações. Matão - SP.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0c1c30",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "/favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
