@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { ALL_PROJECTS } from "../data/portfolio-full";
+import { useProjects } from "../hooks/useProjects";
 import FadeInSection from "../components/FadeInSection";
 import "./Portfolio.css";
 
-const real = ALL_PROJECTS.filter((p) => !p.placeholder);
-
 export default function Portfolio() {
+  const { projects } = useProjects();
+  const real = projects.filter((p) => !p.placeholder);
+
   const [current, setCurrent] = useState(0);
   const [dir, setDir] = useState(null);
 
@@ -43,6 +44,12 @@ export default function Portfolio() {
             segmentos do mercado brasileiro.
           </p>
 
+          {!project ? (
+            <p className="section-description" role="status" aria-live="polite">
+              Carregando projetos…
+            </p>
+          ) : (
+          <>
           <div className="slideshow">
             <button
               className="slideshow-btn slideshow-btn--prev"
@@ -90,6 +97,8 @@ export default function Portfolio() {
           <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
             Projeto {current + 1} de {real.length}: {project.title} — {project.client}
           </div>
+          </>
+          )}
 
           <div className="portfolio-cta">
             <Link to="/portfolio" className="btn-secondary">

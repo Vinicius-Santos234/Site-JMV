@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Sanity Studio — artefatos gerados em runtime
+.sanity
+
 # Variáveis de ambiente — nunca commitar
 .env
 .env.local

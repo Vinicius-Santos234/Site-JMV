@@ -8,12 +8,16 @@ vi.mock('framer-motion', () => ({
   motion: { div: ({ children, ...p }) => <div {...p}>{children}</div> },
 }))
 
-vi.mock('@/data/portfolio-full', () => ({
-  ALL_PROJECTS: [
-    { id: 1, placeholder: false, category: 'Caldeiraria', image: '/a.jpg', title: 'Projeto Alpha', client: 'Cliente A', year: 2023 },
-    { id: 2, placeholder: false, category: 'Montagem',   image: '/b.jpg', title: 'Projeto Beta',  client: 'Cliente B', year: 2022 },
-    { id: 3, placeholder: true,  category: 'Em breve' },
-  ],
+vi.mock('@/hooks/useProjects', () => ({
+  useProjects: () => ({
+    projects: [
+      { id: 1, placeholder: false, category: 'Caldeiraria', image: '/a.jpg', title: 'Projeto Alpha', client: 'Cliente A', year: 2023 },
+      { id: 2, placeholder: false, category: 'Montagem',   image: '/b.jpg', title: 'Projeto Beta',  client: 'Cliente B', year: 2022 },
+      { id: 3, placeholder: true,  category: 'Em breve' },
+    ],
+    loading: false,
+    error: null,
+  }),
 }))
 
 beforeEach(() => {

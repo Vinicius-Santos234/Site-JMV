@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Clock } from "lucide-react";
-import { ALL_PROJECTS } from "../data/portfolio-full";
+import { useProjects } from "../hooks/useProjects";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import FloatingButtons from "../components/FloatingButtons";
@@ -17,11 +17,6 @@ const BREADCRUMB_SCHEMA = {
     { "@type": "ListItem", position: 2, name: "Portfólio", item: `${BASE_URL}/portfolio` },
   ],
 };
-
-const CATEGORIES = [
-  "Todos",
-  ...new Set(ALL_PROJECTS.filter((p) => !p.placeholder).map((p) => p.category)),
-];
 
 function ProjectCard({ project }) {
   if (project.placeholder) {
@@ -62,12 +57,18 @@ export default function PortfolioPage() {
     schema: BREADCRUMB_SCHEMA,
   });
 
+  const { projects } = useProjects();
   const [active, setActive] = useState("Todos");
+
+  const CATEGORIES = [
+    "Todos",
+    ...new Set(projects.filter((p) => !p.placeholder).map((p) => p.category)),
+  ];
 
   const visible =
     active === "Todos"
-      ? ALL_PROJECTS.filter((p) => !p.placeholder)
-      : ALL_PROJECTS.filter((p) => !p.placeholder && p.category === active);
+      ? projects.filter((p) => !p.placeholder)
+      : projects.filter((p) => !p.placeholder && p.category === active);
 
   return (
     <>
