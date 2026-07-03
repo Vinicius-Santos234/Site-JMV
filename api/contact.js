@@ -1,4 +1,6 @@
 import { Resend } from 'resend';
+import { isRateLimited } from './_rate-limit.js';
+import { verifyTurnstile } from './_turnstile.js';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -15,24 +17,6 @@ const LIMITS = {
   mensagem: 1000,
 };
 
-
-const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000; // 10 minutos
-const RATE_LIMIT_MAX       = 5;              // máx. de envios por IP na janela
-const hits = new Map();
-
-function isRateLimited(ip) {
-  const now = Date.now();
-  const timestamps = (hits.get(ip) ?? []).filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
-
-  if (timestamps.length >= RATE_LIMIT_MAX) {
-    hits.set(ip, timestamps);
-    return true;
-  }
-
-  timestamps.push(now);
-  hits.set(ip, timestamps);
-  return false;
-}
 
 function getClientIp(req) {
   const fwd = req.headers['x-forwarded-for'];
@@ -63,7 +47,7 @@ export default async function handler(req, res) {
     }
   }
 
-  const { nome, email, telefone, mensagem, website } = req.body ?? {};
+  const { nome, email, telefone, mensagem, website, turnstileToken } = req.body ?? {};
 
  
   if (website) {
@@ -88,8 +72,12 @@ export default async function handler(req, res) {
   }
 
   const ip = getClientIp(req);
-  if (isRateLimited(ip)) {
+  if (await isRateLimited(ip)) {
     return res.status(429).json({ error: 'Muitas tentativas. Tente novamente mais tarde.' });
+  }
+
+  if (!(await verifyTurnstile(turnstileToken, ip))) {
+    return res.status(403).json({ error: 'Falha na verificação de segurança' });
   }
 
   try {

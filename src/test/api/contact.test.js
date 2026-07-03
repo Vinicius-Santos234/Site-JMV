@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 
 const mockSend = vi.hoisted(() => vi.fn())
 vi.mock('resend', () => ({
@@ -128,5 +128,41 @@ describe('api/contact', () => {
     const res = mockRes()
     await handler(mockReq({ ip: '10.0.0.3', body: validBody() }), res)
     expect(res.statusCode).toBe(500)
+  })
+})
+
+describe('api/contact — Turnstile', () => {
+  beforeEach(() => {
+    mockSend.mockClear()
+    mockSend.mockResolvedValue({ id: 'email_123' })
+    vi.stubEnv('TURNSTILE_SECRET_KEY', 'test-secret') // ativa a verificação
+  })
+
+  afterEach(() => {
+    vi.unstubAllEnvs()
+    vi.unstubAllGlobals()
+  })
+
+  it('bloqueia com 403 quando o token do Turnstile está ausente', async () => {
+    const res = mockRes()
+    await handler(mockReq({ ip: '10.1.0.1', body: validBody() }), res)
+    expect(res.statusCode).toBe(403)
+    expect(mockSend).not.toHaveBeenCalled()
+  })
+
+  it('bloqueia com 403 quando o Turnstile rejeita o token', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ json: async () => ({ success: false }) }))
+    const res = mockRes()
+    await handler(mockReq({ ip: '10.1.0.2', body: { ...validBody(), turnstileToken: 'ruim' } }), res)
+    expect(res.statusCode).toBe(403)
+    expect(mockSend).not.toHaveBeenCalled()
+  })
+
+  it('envia quando o Turnstile valida o token', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ json: async () => ({ success: true }) }))
+    const res = mockRes()
+    await handler(mockReq({ ip: '10.1.0.3', body: { ...validBody(), turnstileToken: 'valido' } }), res)
+    expect(res.statusCode).toBe(200)
+    expect(mockSend).toHaveBeenCalledTimes(1)
   })
 })

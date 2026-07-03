@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Phone, Mail, MapPin, Send, CheckCircle } from "lucide-react";
 import FadeInSection from "../components/FadeInSection";
+import TurnstileWidget from "./TurnstileWidget";
+import { isTurnstileConfigured } from "../lib/turnstile";
 import "./Contact.css";
 
 const EMPTY = { nome: "", email: "", telefone: "", mensagem: "", website: "", consentimento: false };
@@ -20,6 +22,8 @@ export default function Contact() {
   const [sending, setSending]   = useState(false);
   const [sent, setSent]         = useState(false);
   const [sendError, setSendError] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState(null);
+  const [turnstileKey, setTurnstileKey] = useState(0); 
 
   function validate() {
     const e = {};
@@ -43,12 +47,16 @@ export default function Contact() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    // Honeypot: bots preenchem campos ocultos; humanos não veem este campo
     if (form.website) return;
 
     const errs = validate();
     if (Object.keys(errs).length) {
       setErrors(errs);
+      return;
+    }
+
+    if (isTurnstileConfigured && !turnstileToken) {
+      setSendError(true);
       return;
     }
 
@@ -65,6 +73,7 @@ export default function Contact() {
           telefone:  form.telefone,
           mensagem:  form.mensagem,
           website:   form.website,
+          turnstileToken,
         }),
       });
 
@@ -76,6 +85,8 @@ export default function Contact() {
       setSendError(true);
     } finally {
       setSending(false);
+      setTurnstileToken(null);
+      setTurnstileKey((k) => k + 1);
     }
   }
 
@@ -105,7 +116,6 @@ export default function Contact() {
           </div>
 
           <form className="contact-form" onSubmit={handleSubmit} noValidate>
-            {/* Honeypot — visualmente oculto; bots preenchem, humanos não */}
             <input
               name="website"
               value={form.website}
@@ -214,6 +224,12 @@ export default function Contact() {
                     <a href="mailto:jpsantos@jmv.ind.br">jpsantos@jmv.ind.br</a>.
                   </p>
                 )}
+
+                <TurnstileWidget
+                  key={turnstileKey}
+                  onVerify={setTurnstileToken}
+                  onExpire={() => setTurnstileToken(null)}
+                />
 
                 <button
                   type="submit"

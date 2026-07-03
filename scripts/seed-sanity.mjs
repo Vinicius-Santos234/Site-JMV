@@ -7,19 +7,26 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = resolve(__dirname, "..");
 const assetsDir = resolve(rootDir, "src/assets/portfolio");
 
-function readTokenFromEnvFile() {
-  const envPath = resolve(rootDir, ".env");
-  if (!existsSync(envPath)) return undefined;
-  const line = readFileSync(envPath, "utf8")
-    .split(/\r?\n/)
-    .find((l) => l.trim().startsWith("SANITY_WRITE_TOKEN="));
-  return line ? line.split("=").slice(1).join("=").trim() : undefined;
+// Procura SANITY_WRITE_TOKEN em .env.local (prioridade) e depois em .env.
+function readTokenFromEnvFiles() {
+  for (const file of [".env.local", ".env"]) {
+    const envPath = resolve(rootDir, file);
+    if (!existsSync(envPath)) continue;
+    const line = readFileSync(envPath, "utf8")
+      .split(/\r?\n/)
+      .find((l) => l.trim().startsWith("SANITY_WRITE_TOKEN="));
+    if (line) {
+      // Remove aspas envolventes (o `vercel env pull` grava valores entre aspas).
+      return line.split("=").slice(1).join("=").trim().replace(/^["']|["']$/g, "");
+    }
+  }
+  return undefined;
 }
 
-const token = process.env.SANITY_WRITE_TOKEN || readTokenFromEnvFile();
+const token = process.env.SANITY_WRITE_TOKEN || readTokenFromEnvFiles();
 if (!token) {
   console.error(
-    "Faltou o token. Adicione ao arquivo .env na raiz:\n" +
+    "Faltou o token. Adicione ao .env ou .env.local na raiz:\n" +
       "  SANITY_WRITE_TOKEN=seu_token_de_editor\n" +
       "e rode: node scripts/seed-sanity.mjs"
   );

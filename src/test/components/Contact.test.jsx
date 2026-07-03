@@ -7,6 +7,14 @@ vi.mock('framer-motion', () => ({
   motion: { div: ({ children, ...p }) => <div {...p}>{children}</div> },
 }))
 
+// Isola os testes do CAPTCHA: força "desativado" independentemente do .env
+// local (senão, ter VITE_TURNSTILE_SITE_KEY no .env.local quebraria o submit).
+vi.mock('@/lib/turnstile', () => ({
+  isTurnstileConfigured: false,
+  TURNSTILE_SITE_KEY: undefined,
+  TURNSTILE_SCRIPT_SRC: 'https://challenges.cloudflare.com/turnstile/v0/api.js',
+}))
+
 beforeEach(() => {
   vi.stubGlobal('fetch', vi.fn())
 })
