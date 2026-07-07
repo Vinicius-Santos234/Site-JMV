@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom'
 import PrivacidadePage from '@/pages/PrivacidadePage'
 
 vi.mock('framer-motion', () => ({
-  motion: { div: ({ children, ...p }) => <div {...p}>{children}</div> },
+  m: { div: ({ children, ...p }) => <div {...p}>{children}</div> },
 }))
 
 beforeEach(() => {

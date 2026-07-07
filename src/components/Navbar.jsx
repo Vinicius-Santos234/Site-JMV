@@ -50,7 +50,7 @@ export default function Navbar() {
   return (
     <>
       <nav className={`navbar${scrolled ? " navbar--scrolled" : ""}`}>
-        <img src={logo} alt="JMV Engenharia" className="logo" />
+        <img src={logo} alt="JMV Engenharia" className="logo" width="512" height="167" />
 
         <div className={`nav-links${menuOpen ? " nav-links--open" : ""}`}>
           {LINKS.map(({ href, label }) => (

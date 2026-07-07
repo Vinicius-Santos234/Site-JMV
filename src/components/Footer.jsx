@@ -22,7 +22,7 @@ export default function Footer() {
         <div className="container footer-grid">
 
           <div className="footer-brand">
-            <img src={logo} alt="JMV Engenharia" className="footer-logo" />
+            <img src={logo} alt="JMV Engenharia" className="footer-logo" width="512" height="167" />
             <p className="footer-tagline">
               Excelência técnica em montagem e manutenção industrial há mais de {new Date().getFullYear() - 2013} anos.
             </p>

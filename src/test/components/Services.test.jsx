@@ -4,7 +4,7 @@ import Services from '@/components/Services'
 import { SERVICES } from '@/data/services'
 
 vi.mock('framer-motion', () => ({
-  motion: {
+  m: {
     div: ({ children, ...props }) => <div {...props}>{children}</div>,
   },
 }))

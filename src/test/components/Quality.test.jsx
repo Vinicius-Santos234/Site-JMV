@@ -4,7 +4,7 @@ import Quality from '@/components/Quality'
 import { QUALITY_ITEMS } from '@/data/quality'
 
 vi.mock('framer-motion', () => ({
-  motion: {
+  m: {
     div: ({ children, ...props }) => <div {...props}>{children}</div>,
   },
 }))

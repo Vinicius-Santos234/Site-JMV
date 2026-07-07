@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom'
 import PortfolioPage from '@/pages/PortfolioPage'
 
 vi.mock('framer-motion', () => ({
-  motion: { div: ({ children, ...p }) => <div {...p}>{children}</div> },
+  m: { div: ({ children, ...p }) => <div {...p}>{children}</div> },
 }))
 
 vi.mock('@/hooks/useProjects', () => ({

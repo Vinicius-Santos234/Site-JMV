@@ -4,7 +4,7 @@ import Testimonials from '@/components/Testimonials'
 import { TESTIMONIALS } from '@/data/testimonials'
 
 vi.mock('framer-motion', () => ({
-  motion: {
+  m: {
     div: ({ children, ...props }) => <div {...props}>{children}</div>,
   },
 }))

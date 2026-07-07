@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import FadeInSection from "../components/FadeInSection";
 import "./Hero.css";
 
@@ -12,13 +12,13 @@ export default function Hero() {
               Engenharia • Fabricação • Soluções Industriais • Caldeiraria
             </span>
 
-            <motion.h1
+            <m.h1
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1 }}
             >
               SOLUÇÕES INDUSTRIAIS
-            </motion.h1>
+            </m.h1>
 
             <p>
               Mais de uma década entregando projetos industriais de grande porte

@@ -116,6 +116,7 @@ Numa SPA, o gargalo raramente é "código pesado" — o relatório mostrava `TBT
 - **Fontes self-hosted:** os `.woff2` são servidos do próprio domínio (`/fonts`), declarados via `@font-face` com `font-display: swap`. Elimina o `<link>` render-blocking para o Google Fonts — que, com o CSP restritivo do projeto (`script-src` sem `'unsafe-inline'`), não podia ser contornado pelo truque de `onload` inline.
 - **Imagens no tamanho certo:** redimensionadas com **Sharp** para ~2× as dimensões de exibição (retina), com `width`/`height` explícitos para não gerar layout shift.
 - **Terceiros sob demanda:** o Cloudflare Turnstile carregava centenas de kB de challenge no load inicial; passou a montar via `IntersectionObserver` só quando a seção de contato se aproxima — o token fica pronto antes do envio, sem custo na primeira pintura.
+- **Framer Motion enxuto:** migrado para `LazyMotion` + `m` (em vez de `motion`), carregando só as features de animação realmente usadas (`domAnimation`). O chunk de animação caiu de ~132 kB para ~86 kB.
 
 **Por quê:** score de performance é dominado por FCP/LCP, e ambos dependem do *critical rendering path*, não de quanta CPU o JS gasta. Preload da imagem certa e fontes locais movem a agulha muito mais do que microtuning de JavaScript.
 

@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom'
 import NotFoundPage from '@/pages/NotFoundPage'
 
 vi.mock('framer-motion', () => ({
-  motion: { div: ({ children, ...p }) => <div {...p}>{children}</div> },
+  m: { div: ({ children, ...p }) => <div {...p}>{children}</div> },
 }))
 
 beforeEach(() => {

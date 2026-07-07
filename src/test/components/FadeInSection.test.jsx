@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import FadeInSection from '@/components/FadeInSection'
 
 vi.mock('framer-motion', () => ({
-  motion: {
+  m: {
     div: ({ children, ...props }) => <div {...props}>{children}</div>,
   },
 }))

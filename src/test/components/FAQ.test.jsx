@@ -5,7 +5,7 @@ import FAQ from '@/components/FAQ'
 import { FAQS } from '@/data/faqs'
 
 vi.mock('framer-motion', () => ({
-  motion: { div: ({ children, ...p }) => <div {...p}>{children}</div> },
+  m: { div: ({ children, ...p }) => <div {...p}>{children}</div> },
 }))
 
 describe('FAQ — renderização', () => {

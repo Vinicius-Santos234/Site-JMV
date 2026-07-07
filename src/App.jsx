@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, LazyMotion, domAnimation, m } from "framer-motion";
 import { usePageTracking } from "./hooks/usePageTracking";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
@@ -100,7 +100,7 @@ const pageTransition = {
 };
 
 function PageWrapper({ children }) {
-  return <motion.div {...pageTransition}>{children}</motion.div>;
+  return <m.div {...pageTransition}>{children}</m.div>;
 }
 
 function Home() {
@@ -143,9 +143,11 @@ function AnimatedRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
-      <PageTracker />
-      <AnimatedRoutes />
-      <ConditionalAnalytics />
+      <LazyMotion features={domAnimation}>
+        <PageTracker />
+        <AnimatedRoutes />
+        <ConditionalAnalytics />
+      </LazyMotion>
     </BrowserRouter>
   );
 }

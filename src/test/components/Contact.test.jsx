@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event'
 import Contact from '@/components/Contact'
 
 vi.mock('framer-motion', () => ({
-  motion: { div: ({ children, ...p }) => <div {...p}>{children}</div> },
+  m: { div: ({ children, ...p }) => <div {...p}>{children}</div> },
 }))
 
 // Isola os testes do CAPTCHA: força "desativado" independentemente do .env
