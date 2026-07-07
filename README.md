@@ -38,6 +38,7 @@ O código é público de propósito — este README é a leitura principal para 
 
 | Métrica | Score |
 |---|---|
+| Performance | 89 |
 | Acessibilidade | 95 |
 | Boas práticas | 100 |
 | SEO | 100 |
