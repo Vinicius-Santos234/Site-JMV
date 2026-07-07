@@ -12,6 +12,7 @@ Projeto real, entregue para uma empresa em produção — desenvolvido do zero c
 
 - **Testes automatizados + CI** rodando a cada push
 - **Backend endurecido** (blindagem da API de contato contra abuso e injeção)
+- **Performance** otimizada no caminho de renderização (LCP, fontes, imagens)
 - **SEO técnico** com structured data (JSON-LD)
 - **LGPD** (consentimento e política de privacidade)
 - **Acessibilidade** (foco visível, `aria-live`, elementos semânticos)
@@ -23,33 +24,32 @@ O código é público de propósito — este README é a leitura principal para 
 
 ## Capturas de tela
 
-> _(a adicionar)_ Screenshots do site em produção — coloque as imagens em `docs/screenshots/` e referencie aqui.
-
-<!--
-Sugestão de capturas:
-- hero.png        → topo/hero da home
-- portfolio.png   → slideshow ou grade de portfólio
-- contato.png     → formulário de contato
-- mobile.png      → visão responsiva no celular
-
-Exemplo de embed:
 ![Hero](docs/screenshots/hero.png)
--->
+![Serviços](docs/screenshots/services.png)
+![Portfólio](docs/screenshots/portfolio.png)
+![Clientes](docs/screenshots/clients.png)
+![Formulário](docs/screenshots/form.png)
 
 ---
 
 ## Performance (Lighthouse)
 
-> _(a preencher)_ Rode uma auditoria Lighthouse em produção (DevTools → Lighthouse, ou `npx lighthouse https://site-jmv.vercel.app`) e registre os números:
+Última medição (mobile, com throttling):
 
 | Métrica | Score |
 |---|---|
-| Performance | — |
-| Acessibilidade | — |
-| Boas práticas | — |
-| SEO | — |
+| Acessibilidade | 95 |
+| Boas práticas | 100 |
+| SEO | 100 |
 
-Build de produção: **~402 módulos**, CSS final **29 kB (6,3 kB gzip)**, chunks separados para React, Framer Motion e Lucide.
+Build de produção: chunks separados para React, Framer Motion e Lucide; CSS final **~30 kB (6,5 kB gzip)**.
+
+**Otimizações do caminho de renderização** (detalhes em [Destaques técnicos #6](#6-performance-atacando-o-caminho-de-renderização)):
+
+- **Imagem LCP com `preload`** no HTML inicial — o navegador começa a baixar o herói sem esperar o bundle React.
+- **Fontes self-hosted** com `font-display: swap` — elimina o request render-blocking do Google Fonts.
+- **Imagens redimensionadas** (Sharp) ao tamanho de exibição — logo −52%, herói −35%.
+- **Scripts de terceiros sob demanda** — o CAPTCHA só carrega quando o formulário se aproxima da viewport.
 
 ---
 
@@ -64,7 +64,8 @@ Build de produção: **~402 módulos**, CSS final **29 kB (6,3 kB gzip)**, chunk
 | Estilo | CSS puro, co-localizado por componente |
 | CMS | Sanity (headless) — conteúdo do portfólio |
 | Rate limiting | @upstash/ratelimit + Vercel KV |
-| Anti-bot | Cloudflare Turnstile (CAPTCHA invisível) |
+| Anti-bot | Cloudflare Turnstile (carregado sob demanda) |
+| Fontes | Self-hosted (WebFont `.woff2`, `font-display: swap`) |
 | Testes | Vitest 4 + Testing Library |
 | Linting | ESLint 10 |
 | E-mail | Resend (Vercel Serverless Function) |
@@ -108,6 +109,16 @@ O `globals.css` monolítico (2291 linhas) foi dividido em um `base.css` global +
 
 **Por quê:** testes não são burocracia — são o que permite refatorar (ex.: a migração para o CMS) com confiança de que nada quebrou.
 
+### 6. Performance: atacando o caminho de renderização
+Numa SPA, o gargalo raramente é "código pesado" — o relatório mostrava `TBT` e `CLS` perfeitos, mas `FCP`/`LCP` altos. O HTML inicial é um `<div id="root">` vazio, então nada pinta até o bundle baixar, parsear e renderizar. As correções miram **quando** o navegador descobre e baixa os recursos críticos:
+
+- **Imagem LCP descobrível:** o herói vive em `/public` e é pré-carregado com `<link rel="preload" as="image" fetchpriority="high">` no `index.html`. Antes, sendo importada pelo React, ela só era requisitada **depois** de ~130 kB de JS.
+- **Fontes self-hosted:** os `.woff2` são servidos do próprio domínio (`/fonts`), declarados via `@font-face` com `font-display: swap`. Elimina o `<link>` render-blocking para o Google Fonts — que, com o CSP restritivo do projeto (`script-src` sem `'unsafe-inline'`), não podia ser contornado pelo truque de `onload` inline.
+- **Imagens no tamanho certo:** redimensionadas com **Sharp** para ~2× as dimensões de exibição (retina), com `width`/`height` explícitos para não gerar layout shift.
+- **Terceiros sob demanda:** o Cloudflare Turnstile carregava centenas de kB de challenge no load inicial; passou a montar via `IntersectionObserver` só quando a seção de contato se aproxima — o token fica pronto antes do envio, sem custo na primeira pintura.
+
+**Por quê:** score de performance é dominado por FCP/LCP, e ambos dependem do *critical rendering path*, não de quanta CPU o JS gasta. Preload da imagem certa e fontes locais movem a agulha muito mais do que microtuning de JavaScript.
+
 ---
 
 ## Funcionalidades
@@ -132,6 +143,9 @@ jmv-site/
 │   ├── optimize-images.js   # Otimização de imagens (Sharp)
 │   └── seed-sanity.mjs       # Popula o portfólio no Sanity (idempotente)
 ├── studio/                   # Sanity Studio (CMS) — schema, config
+├── public/
+│   ├── fonts/               # Fontes self-hosted (.woff2)
+│   └── welder.webp          # Imagem LCP (preload no index.html)
 ├── src/
 │   ├── assets/              # Imagens e logos (WebP)
 │   ├── components/          # Componentes + CSS co-localizado

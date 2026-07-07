@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import welder from "../assets/welder.webp";
 import FadeInSection from "../components/FadeInSection";
 import "./Hero.css";
 
@@ -47,9 +46,11 @@ export default function Hero() {
 
         <div className="hero-image-side">
           <img
-            src={welder}
+            src="/welder.webp"
             alt="Soldador trabalhando em obra industrial"
             className="welder-img"
+            width="900"
+            height="756"
             fetchPriority="high"
           />
 

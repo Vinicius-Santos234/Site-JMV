@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Phone, Mail, MapPin, Send, CheckCircle } from "lucide-react";
 import FadeInSection from "../components/FadeInSection";
 import TurnstileWidget from "./TurnstileWidget";
@@ -23,7 +23,28 @@ export default function Contact() {
   const [sent, setSent]         = useState(false);
   const [sendError, setSendError] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState(null);
-  const [turnstileKey, setTurnstileKey] = useState(0); 
+  const [turnstileKey, setTurnstileKey] = useState(0);
+  const [turnstileReady, setTurnstileReady] = useState(false);
+  const sectionRef = useRef(null);
+
+  // Só carrega o script/challenge do Turnstile quando a seção de contato se
+  // aproxima da viewport — evita ~400 KB de tráfego do Cloudflare no load inicial.
+  useEffect(() => {
+    if (!isTurnstileConfigured || turnstileReady) return;
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setTurnstileReady(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "300px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [turnstileReady]);
 
   function validate() {
     const e = {};
@@ -92,7 +113,7 @@ export default function Contact() {
 
   return (
     <FadeInSection>
-      <section id="contato" className="contact-section">
+      <section id="contato" className="contact-section" ref={sectionRef}>
         <div className="container">
 
           <div className="contact-info">
@@ -225,11 +246,13 @@ export default function Contact() {
                   </p>
                 )}
 
-                <TurnstileWidget
-                  key={turnstileKey}
-                  onVerify={setTurnstileToken}
-                  onExpire={() => setTurnstileToken(null)}
-                />
+                {turnstileReady && (
+                  <TurnstileWidget
+                    key={turnstileKey}
+                    onVerify={setTurnstileToken}
+                    onExpire={() => setTurnstileToken(null)}
+                  />
+                )}
 
                 <button
                   type="submit"
