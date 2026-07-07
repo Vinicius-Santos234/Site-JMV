@@ -4,7 +4,7 @@ import { verifyTurnstile } from './_turnstile.js';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const TO      = 'viniciusgsantos234@gmail.com';
+const TO      = 'jpsantos@jmv.ind.br';
 const FROM    = 'Formulário JMV <onboarding@resend.dev>';
 // Após verificar o domínio jmv.ind.br no Resend, troque FROM por:
 // 'Formulário JMV <contato@jmv.ind.br>'
