@@ -1,19 +1,21 @@
 import { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 import FadeInSection from "./FadeInSection";
-import { FAQS, FAQ_SCHEMA } from "../data/faqs";
+import { useFaqs } from "../hooks/useContent";
+import { buildFaqSchema } from "../data/faqs";
 import "./FAQ.css";
 
 export default function FAQ() {
   const [open, setOpen] = useState(null);
+  const faqs = useFaqs();
 
   useEffect(() => {
     const script = document.createElement("script");
     script.type = "application/ld+json";
-    script.textContent = JSON.stringify(FAQ_SCHEMA);
+    script.textContent = JSON.stringify(buildFaqSchema(faqs));
     document.head.appendChild(script);
     return () => { if (document.head.contains(script)) document.head.removeChild(script); };
-  }, []);
+  }, [faqs]);
 
   return (
     <FadeInSection>
@@ -24,7 +26,7 @@ export default function FAQ() {
           <h2 className="section-title">PERGUNTAS FREQUENTES</h2>
 
           <div className="faq-list">
-            {FAQS.map((faq, i) => (
+            {faqs.map((faq, i) => (
               <div
                 key={i}
                 className={`faq-item${open === i ? " faq-item--open" : ""}`}

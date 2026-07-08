@@ -1,9 +1,12 @@
-import { QUALITY_ITEMS } from "../data/quality";
+import { useQualityItems } from "../hooks/useContent";
+import { iconByName } from "../lib/icons";
 import FadeInSection from "../components/FadeInSection";
 import "./Services.css";
 import "./Quality.css";
 
 export default function Quality() {
+  const items = useQualityItems();
+
   return (
     <FadeInSection>
       <section className="section quality-section">
@@ -18,8 +21,8 @@ export default function Quality() {
           </h2>
 
           <div className="quality-grid">
-            {QUALITY_ITEMS.map((item) => {
-              const Icon = item.icon;
+            {items.map((item) => {
+              const Icon = iconByName(item.icon);
 
               return (
                 <div key={item.id} className="quality-card service-card">

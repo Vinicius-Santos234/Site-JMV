@@ -1,9 +1,11 @@
 import { Quote } from "lucide-react";
-import { TESTIMONIALS } from "../data/testimonials";
+import { useTestimonials } from "../hooks/useContent";
 import FadeInSection from "../components/FadeInSection";
 import "./Testimonials.css";
 
 export default function Testimonials() {
+  const testimonials = useTestimonials();
+
   return (
     <FadeInSection>
       <section className="section testimonials-section">
@@ -14,7 +16,7 @@ export default function Testimonials() {
           <h2 className="section-title">O QUE NOSSOS CLIENTES DIZEM</h2>
 
           <div className="testimonials-grid">
-            {TESTIMONIALS.map((t) => (
+            {testimonials.map((t) => (
               <div key={t.id} className="testimonial-card">
                 <Quote size={32} className="testimonial-quote-icon" />
 

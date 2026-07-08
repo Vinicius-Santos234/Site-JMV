@@ -8,8 +8,6 @@ export const NAV_LINKS = LINKS.map(({ href, label }) => ({
 }));
 
 
-export const CNPJ = "15.568.755/0001-64";
-
 export const SERVICES = [
   "Montagem Industrial",
   "Estruturas Metálicas",

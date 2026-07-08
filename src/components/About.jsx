@@ -1,8 +1,11 @@
 import FadeInSection from "../components/FadeInSection";
-import { DIFFERENTIALS } from "../data/about";
+import { useDifferentials } from "../hooks/useContent";
+import { iconByName } from "../lib/icons";
 import "./About.css";
 
 export default function About() {
+  const differentials = useDifferentials();
+
   return (
     <FadeInSection>
       <section id="sobre" className="section about-section">
@@ -28,7 +31,9 @@ export default function About() {
             </div>
 
             <div className="about-differentials">
-              {DIFFERENTIALS.map(({ id, icon: Icon, title, text }) => (
+              {differentials.map(({ id, icon, title, text }) => {
+                const Icon = iconByName(icon);
+                return (
                 <div key={id} className="about-differential-item">
                   <div className="about-differential-icon">
                     <Icon size={20} />
@@ -38,7 +43,8 @@ export default function About() {
                     <p>{text}</p>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
