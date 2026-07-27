@@ -1,6 +1,6 @@
-# JMV Engenharia e Construções — Site Institucional
+# JMV Soluções Industriais — Site Institucional
 
-Site institucional da **JMV Engenharia e Construções**, empresa de montagem industrial, caldeiraria, estruturas metálicas e manutenção para os setores sucroenergético e petroquímico.
+Site institucional da **JMV Soluções Industriais**, empresa de montagem industrial, caldeiraria, estruturas metálicas e manutenção para os setores sucroenergético e petroquímico.
 
 🌐 **Ao vivo:** [site-jmv.vercel.app](https://site-jmv.vercel.app)
 
@@ -244,7 +244,7 @@ Pipeline no GitHub Actions a cada push/PR para `main`: **Lint → Testes → Bui
 
 ## Contato
 
-**JMV Engenharia e Construções**
+**JMV Soluções Industriais**
 (16) 99741-8402 · jpsantos@jmv.ind.br · Matão — SP
 
 ---
@@ -253,4 +253,4 @@ Pipeline no GitHub Actions a cada push/PR para `main`: **Lint → Testes → Bui
 
 Desenvolvido por **Vinicius Santos**.
 
-Código-fonte sob licença [MIT](./LICENSE). Identidade visual, conteúdo e imagens são de propriedade da JMV Engenharia e Construções.
+Código-fonte sob licença [MIT](./LICENSE). Identidade visual, conteúdo e imagens são de propriedade da JMV Soluções Industriais.

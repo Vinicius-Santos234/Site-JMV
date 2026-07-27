@@ -18,7 +18,7 @@ export default function CTA() {
             <span className="cta-tag">Vamos trabalhar juntos</span>
             <h2>Pronto para o próximo projeto?</h2>
             <p>
-              Entre em contato e descubra como a JMV Engenharia pode transformar
+              Entre em contato e descubra como a JMV Soluções Industriais pode transformar
               sua operação industrial com segurança, precisão e qualidade.
             </p>
             <div className="cta-actions">

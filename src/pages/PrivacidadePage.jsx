@@ -7,9 +7,9 @@ import "./PrivacidadePage.css";
 
 export default function PrivacidadePage() {
   useSEO({
-    title: "Política de Privacidade | JMV Engenharia e Construções",
+    title: "Política de Privacidade | JMV Soluções Industriais",
     description:
-      "Política de privacidade da JMV Engenharia e Construções. Saiba como tratamos seus dados pessoais em conformidade com a LGPD.",
+      "Política de privacidade da JMV Soluções Industriais. Saiba como tratamos seus dados pessoais em conformidade com a LGPD.",
     canonical: "https://site-jmv.vercel.app/privacidade",
   });
 
@@ -36,7 +36,7 @@ export default function PrivacidadePage() {
 
           <h2>1. Quem somos</h2>
           <p>
-            JMV Engenharia e Construções, com sede na Rua São Lourenço, 2170,
+            JMV Soluções Industriais, com sede na Rua São Lourenço, 2170,
             IV Centenário, Matão — SP, é a controladora dos dados pessoais
             coletados neste site.
           </p>

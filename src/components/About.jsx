@@ -15,7 +15,7 @@ export default function About() {
           <div className="about-layout">
             <div className="about-text">
               <p className="section-description">
-                A JMV Engenharia atua em construção e montagem industrial,
+                A JMV Soluções Industriais atua em construção e montagem industrial,
                 fornecendo soluções completas para implantação, modernização
                 e manutenção de plantas industriais.
               </p>

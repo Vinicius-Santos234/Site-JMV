@@ -50,9 +50,9 @@ function ProjectCard({ project }) {
 
 export default function PortfolioPage() {
   useSEO({
-    title: "Portfólio de Projetos | JMV Engenharia e Construções",
+    title: "Portfólio de Projetos | JMV Soluções Industriais",
     description:
-      "Conheça os projetos industriais realizados pela JMV Engenharia: montagem, caldeiraria, estruturas metálicas e mais. Clientes como Raízen, Bunge, Petrobras e Cutrale.",
+      "Conheça os projetos industriais realizados pela JMV Soluções Industriais: montagem, caldeiraria, estruturas metálicas e mais. Clientes como Raízen, Bunge, Petrobras e Cutrale.",
     canonical: `${BASE_URL}/portfolio`,
     schema: BREADCRUMB_SCHEMA,
   });
@@ -84,7 +84,7 @@ export default function PortfolioPage() {
           <span className="section-subtitle">Portfólio</span>
           <h1 className="section-title">PROJETOS</h1>
           <p className="section-description">
-            Conheça os projetos industriais realizados pela JMV Engenharia
+            Conheça os projetos industriais realizados pela JMV Soluções Industriais
             ao longo de mais de {new Date().getFullYear() - 2013} anos de atuação no mercado.
           </p>
         </div>

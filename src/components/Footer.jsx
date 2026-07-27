@@ -22,7 +22,7 @@ export default function Footer() {
         <div className="container footer-grid">
 
           <div className="footer-brand">
-            <img src={logo} alt="JMV Engenharia" className="footer-logo" width="512" height="167" />
+            <img src={logo} alt="JMV Soluções Industriais" className="footer-logo" width="512" height="167" />
             <p className="footer-tagline">
               Excelência técnica em montagem e manutenção industrial há mais de {new Date().getFullYear() - 2013} anos.
             </p>
@@ -79,7 +79,7 @@ export default function Footer() {
 
       <div className="footer-bottom">
         <div className="container footer-bottom-inner">
-          <span>© {new Date().getFullYear()} JMV Engenharia e Construções. Todos os direitos reservados.</span>
+          <span>© {new Date().getFullYear()} JMV Soluções Industriais. Todos os direitos reservados.</span>
           <span>Matão — São Paulo — Brasil</span>
           <span>Desenvolvido por Vinicius Santos</span>
         </div>

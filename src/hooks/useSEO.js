@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 export const BASE_URL   = "https://site-jmv.vercel.app";
-const BASE_TITLE = "JMV Engenharia e Construções | Soluções Industriais em Matão - SP";
+const BASE_TITLE = "JMV Soluções Industriais | Montagem Industrial em Matão - SP";
 const BASE_DESC  = `Especialistas em montagem industrial, estruturas metálicas, caldeiraria e tubulações. Mais de ${new Date().getFullYear() - 2013} anos atendendo os setores sucroenergético e petroquímico. Matão - SP.`;
 
 function swapMeta(selector, attr, next) {
