@@ -1,4 +1,4 @@
-import { STATS } from "../data/stats";
+import { useStats } from "../hooks/useContent";
 import { useCountUp } from "../hooks/useCountUp";
 import FadeInSection from "../components/FadeInSection";
 import "./Stats.css";
@@ -15,10 +15,12 @@ function StatItem({ number, label }) {
 }
 
 export default function Stats() {
+  const stats = useStats();
+
   return (
     <FadeInSection>
       <section className="stats">
-        {STATS.map((stat) => (
+        {stats.map((stat) => (
           <StatItem key={stat.id} number={stat.number} label={stat.label} />
         ))}
       </section>

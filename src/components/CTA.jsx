@@ -1,10 +1,12 @@
 import { CheckCircle2 } from "lucide-react";
 import FadeInSection from "../components/FadeInSection";
-import { DIFFERENTIALS } from "../data/cta";
+import { useSiteSettings } from "../hooks/useContent";
 import { scrollToSection } from "../utils/scrollToSection";
 import "./CTA.css";
 
 export default function CTA() {
+  const { ctaHighlights } = useSiteSettings();
+
   const handleScroll = (e) => {
     e.preventDefault();
     scrollToSection("#contato");
@@ -37,7 +39,7 @@ export default function CTA() {
           </div>
 
           <ul className="cta-list">
-            {DIFFERENTIALS.map((item) => (
+            {ctaHighlights.map((item) => (
               <li key={item}>
                 <CheckCircle2 size={22} />
                 {item}

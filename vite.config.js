@@ -18,6 +18,10 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./src/test/setup.js'],
+    env: {
+      VITE_SANITY_PROJECT_ID: '',
+      VITE_SANITY_DATASET: '',
+    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],

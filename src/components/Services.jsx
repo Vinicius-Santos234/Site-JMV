@@ -1,8 +1,11 @@
-import { SERVICES } from "../data/services";
+import { useServices } from "../hooks/useContent";
+import { iconByName } from "../lib/icons";
 import FadeInSection from "../components/FadeInSection";
 import "./Services.css";
 
 export default function Services() {
+  const services = useServices();
+
   return (
     <FadeInSection>
       <section id="servicos" className="section services-section">
@@ -23,8 +26,8 @@ export default function Services() {
           </p>
 
           <div className="services-grid">
-            {SERVICES.map((service) => {
-              const Icon = service.icon;
+            {services.map((service) => {
+              const Icon = iconByName(service.icon);
 
               return (
                 <div key={service.id} className="service-card">

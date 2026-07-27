@@ -1,8 +1,10 @@
-import { CLIENTS } from "../data/clients";
+import { useClients } from "../hooks/useContent";
 import FadeInSection from "../components/FadeInSection";
 import "./Clients.css";
 
 export default function Clients() {
+  const clients = useClients();
+
   return (
     <FadeInSection>
       <section
@@ -21,7 +23,7 @@ export default function Clients() {
           </h2>
 
           <div className="clients-grid">
-            {CLIENTS.map((client) => (
+            {clients.map((client) => (
               <div
                 key={client.id}
                 className="client-card"
