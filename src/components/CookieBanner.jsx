@@ -3,31 +3,43 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Cookie } from "lucide-react";
+import { ler, gravar, assinar } from "@/lib/consent";
 import "./CookieBanner.css";
 
 export default function CookieBanner() {
   const [visible, setVisible] = useState(false);
 
+  // Antes isto lia o armazenamento SÓ na montagem. Como o banner vive no layout
+  // raiz, ele não remonta em navegação client-side — então revogar o
+  // consentimento em /privacidade não o trazia de volta, e a política prometia
+  // que traria. Agora ele acompanha a preferência.
   useEffect(() => {
-    try {
-      const consent = localStorage.getItem("lgpd-consent");
-      if (!consent) {
-        const timer = setTimeout(() => setVisible(true), 1200);
-        return () => clearTimeout(timer);
+    let timer;
+
+    const avaliar = () => {
+      clearTimeout(timer);
+      if (ler()) {
+        setVisible(false);
+      } else {
+        timer = setTimeout(() => setVisible(true), 1200);
       }
-    } catch {
-      console.warn("[ERR_STORAGE] localStorage indisponível — banner de cookies desativado.");
-    }
+    };
+
+    avaliar();
+    const cancelar = assinar(avaliar);
+    return () => {
+      clearTimeout(timer);
+      cancelar();
+    };
   }, []);
 
   const accept = () => {
-    try { localStorage.setItem("lgpd-consent", "accepted"); } catch { /* inacessível */ }
-    window.dispatchEvent(new Event("lgpd-consent"));
+    gravar("accepted");
     setVisible(false);
   };
 
   const decline = () => {
-    try { localStorage.setItem("lgpd-consent", "declined"); } catch { /* inacessível */ }
+    gravar("declined");
     setVisible(false);
   };
 

@@ -133,7 +133,9 @@
   justify-content: space-between;
   gap: 10px 24px;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.35);
+  /* 0.6 sobre o fundo do rodape da 7,1:1 — a 0.35 anterior dava 3,18:1 e
+     reprovava no minimo de 4,5:1 da WCAG 1.4.3 para texto de 13px. */
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .footer-bottom-group {
@@ -144,7 +146,7 @@
 }
 
 .footer-bottom-sep {
-  color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.35);
   user-select: none;
 }
 
@@ -223,7 +225,7 @@
 /* O link é o único elemento interativo da barra: fica um tom acima do texto
    ao redor para se distinguir sem gritar, e sublinha no hover/foco. */
 .footer-bottom-link {
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
   transition: color 0.2s;
 }

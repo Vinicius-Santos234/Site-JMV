@@ -4,17 +4,9 @@ import { useEffect, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import { ler, assinar } from "@/lib/consent";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
-
-function safeGetConsent() {
-  try {
-    return localStorage.getItem("lgpd-consent");
-  } catch {
-    console.warn("[ERR_STORAGE] localStorage indisponível — analytics desativado.");
-    return null;
-  }
-}
 
 function loadGA() {
   if (!GA_ID || window.__gaLoaded) return;
@@ -34,17 +26,8 @@ function loadGA() {
 // O consentimento é estado de fora do React (localStorage + um evento), e no
 // servidor não existe. `useSyncExternalStore` é feito para isso: o snapshot do
 // servidor é `null`, então o HTML sai sem analytics e a hidratação não briga.
-function subscribeConsent(onChange) {
-  window.addEventListener("lgpd-consent", onChange);
-  window.addEventListener("storage", onChange);
-  return () => {
-    window.removeEventListener("lgpd-consent", onChange);
-    window.removeEventListener("storage", onChange);
-  };
-}
-
 export default function ConditionalAnalytics() {
-  const consent = useSyncExternalStore(subscribeConsent, safeGetConsent, () => null);
+  const consent = useSyncExternalStore(assinar, ler, () => null);
   const pathname = usePathname();
 
   useEffect(() => {
