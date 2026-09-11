@@ -92,7 +92,7 @@ vez de esperar o bundle React montar a página.
 | Ícones | Lucide React |
 | Estilo | CSS puro, co-localizado por componente |
 | CMS | Sanity (headless) — conteúdo do portfólio |
-| Rate limiting | @upstash/ratelimit + Vercel KV |
+| Rate limiting | Regra do Vercel Firewall, na borda |
 | Anti-bot | Cloudflare Turnstile (carregado sob demanda) |
 | Fontes | Self-hosted (WebFont `.woff2`, `font-display: swap`) |
 | Testes | Vitest 4 + Testing Library |
@@ -108,7 +108,7 @@ vez de esperar o bundle React montar a página.
 ### 1. Segurança real na API de contato
 O endpoint `api/contact.js` (Serverless Function) foi endurecido além do trivial:
 - **Honeypot validado no servidor** — o campo isca é checado no backend, não só no cliente (bypass via POST direto não passa).
-- **Rate limiting persistente** por IP com janela deslizante (`@upstash/ratelimit` + **Vercel KV**), compartilhado entre todas as instâncias serverless — com fallback in-memory quando o KV não está configurado (dev/testes).
+- **Rate limiting na borda** — regra do Vercel Firewall (5 req/600s por IP em `POST /api/contact`), aplicada antes de a requisição chegar à função. Sem banco e sem estado que expire. Ver [Rate limiting](#rate-limiting).
 - **Limites de tamanho** server-side em todos os campos.
 - **Sanitização anti-injeção** de quebras de linha no `subject` (evita header injection de e-mail).
 - **Checagem de origem** (`Origin` vs. host), agnóstica ao domínio.
@@ -208,6 +208,33 @@ jmv-site/
 ```
 
 ---
+
+## Rate limiting
+
+O limite do formulário é uma **regra do Vercel Firewall**, aplicada na borda:
+
+```
+contato-rate-limit — 5 requisições / 600s por IP, em POST /api/contact
+```
+
+Ela não vive neste repositório. Para ver ou alterar:
+
+```bash
+vercel firewall rules list
+vercel firewall rules inspect contato-rate-limit
+```
+
+**Por que não é uma biblioteca.** Até 09/2026 o limite era `@upstash/ratelimit` +
+Vercel KV. O banco do Upstash foi **removido por inatividade** — o site tem
+pouco tráfego — e o código caiu no fallback em memória, que em serverless é por
+instância e quase não limita. Nada quebrou: o site seguiu funcionando e
+simplesmente parou de proteger, em silêncio, por semanas. A regra na borda não
+tem estado para expirar.
+
+`src/lib/api/rate-limit.js` continua existindo como **canário**: em operação
+normal ele nunca dispara, porque a borda já barrou antes. Se disparar, é porque
+a regra do firewall não pegou — e nesse caso ele grita no log em vez de degradar
+calado, que foi o erro da vez anterior.
 
 ## Variáveis de Ambiente
 

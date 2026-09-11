@@ -84,8 +84,11 @@ export async function POST(request) {
     return json({ error: "E-mail inválido" }, 400);
   }
 
+  // Rede de segurança. Quem limita de verdade é a regra `contato-rate-limit`
+  // do Vercel Firewall, na borda — isto aqui só dispara se ela falhar, e nesse
+  // caso o módulo grita no log. Ver src/lib/api/rate-limit.js.
   const ip = getClientIp(request);
-  if (await isRateLimited(ip)) {
+  if (isRateLimited(ip)) {
     return json({ error: "Muitas tentativas. Tente novamente mais tarde." }, 429);
   }
 

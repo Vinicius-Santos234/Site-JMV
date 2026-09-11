@@ -36,3 +36,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Vercel CLI (link local do projeto)
+.vercel
+
+.vercel
+.env*

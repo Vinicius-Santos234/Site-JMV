@@ -110,7 +110,11 @@ describe('api/contact', () => {
     expect(payload.subject).toBe('Contato via site — João Bcc: alvo@spam.com')
   })
 
-  it('aplica rate limiting após exceder o limite por IP', async () => {
+  // Desde 09/2026 quem limita de verdade e a regra `contato-rate-limit` do
+  // Vercel Firewall, na borda — fora do alcance de um teste unitario. O que
+  // este teste cobre e a REDE DE SEGURANCA em memoria, que so deveria disparar
+  // se a regra da borda falhar.
+  it('rede de seguranca em memoria bloqueia apos exceder o limite por IP', async () => {
     const ip = '10.0.0.99'
     for (let i = 0; i < 5; i++) {
         const res = await handler(mockReq({ ip, body: validBody() }))
