@@ -123,21 +123,29 @@
   padding: 20px 0;
 }
 
+/* Flex em vez de grid de N colunas: o layout deixa de depender de quantos
+   itens existem. Acrescentar ou remover um não reorganiza nada — foi o que
+   quebrou quando entrou o link da política num grid de 3 colunas. */
 .footer-bottom-inner {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
+  gap: 10px 24px;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.35);
 }
 
-.footer-bottom-inner span:nth-child(2) {
-  text-align: center;
+.footer-bottom-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
 }
 
-.footer-bottom-inner span:last-child {
-  text-align: right;
+.footer-bottom-sep {
+  color: rgba(255, 255, 255, 0.2);
+  user-select: none;
 }
 
 /* ─── RESPONSIVE ───────────────────────────────────────── */
@@ -202,25 +210,26 @@
   }
 
   .footer-bottom-inner {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     text-align: center;
+    gap: 12px;
   }
 
-  .footer-bottom-inner span:last-child {
-    text-align: center;
+  .footer-bottom-group {
+    justify-content: center;
   }
 }
 
-/* Link da política no rodapé — herda o tom do resto da barra inferior,
-   com sublinhado no hover para deixar claro que é clicável. */
-.footer-privacidade-link {
-  color: inherit;
+/* O link é o único elemento interativo da barra: fica um tom acima do texto
+   ao redor para se distinguir sem gritar, e sublinha no hover/foco. */
+.footer-bottom-link {
+  color: rgba(255, 255, 255, 0.55);
   text-decoration: none;
   transition: color 0.2s;
 }
 
-.footer-privacidade-link:hover,
-.footer-privacidade-link:focus-visible {
+.footer-bottom-link:hover,
+.footer-bottom-link:focus-visible {
   color: white;
   text-decoration: underline;
 }

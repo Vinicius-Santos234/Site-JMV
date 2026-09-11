@@ -79,15 +79,26 @@ export default function Footer({ isHome = false, cnpj = "" }) {
 
       <div className="footer-bottom">
         <div className="container footer-bottom-inner">
-          <span>© {new Date().getFullYear()} JMV Soluções Industriais. Todos os direitos reservados.</span>
-          <span>Matão — São Paulo — Brasil</span>
-          {/* A política precisa ser alcançável de QUALQUER página. Até 09/2026 o
-              único caminho era o formulário da home, então quem entrasse direto
-              em /portfolio não tinha como chegar nela. */}
-          <Link href="/privacidade" className="footer-privacidade-link">
-            Política de Privacidade
-          </Link>
-          <span>Desenvolvido por Vinicius Santos</span>
+          {/* Dois grupos em vez de uma fileira de itens soltos: à esquerda a
+              identificação legal da empresa, à direita os links e o crédito.
+              Antes era um grid de 3 colunas com alinhamento por posição
+              (`nth-child`), que desalinhou tudo assim que entrou um 4º item. */}
+          <div className="footer-bottom-group">
+            <span>© {new Date().getFullYear()} JMV Soluções Industriais</span>
+            <span className="footer-bottom-sep" aria-hidden="true">·</span>
+            <span>Matão — SP, Brasil</span>
+          </div>
+
+          <div className="footer-bottom-group">
+            {/* A política precisa ser alcançável de QUALQUER página: até 09/2026
+                o único caminho era o formulário da home, então quem entrasse
+                direto em /portfolio não tinha como chegar nela. */}
+            <Link href="/privacidade" className="footer-bottom-link">
+              Política de Privacidade
+            </Link>
+            <span className="footer-bottom-sep" aria-hidden="true">·</span>
+            <span>Desenvolvido por Vinicius Santos</span>
+          </div>
         </div>
       </div>
     </footer>
