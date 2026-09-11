@@ -62,6 +62,16 @@ export async function POST(request) {
 
   const { nome, email, telefone, mensagem, website, turnstileToken } = body ?? {};
 
+  // Sem isto, `{"nome": 123}` fazia `.trim()` lancar TypeError FORA do try, e a
+  // rota devolvia 500 antes de chegar ao rate limit ou ao CAPTCHA. Um cliente
+  // podia repetir isso a vontade sem consumir o contador.
+  const textos = { nome, email, telefone, mensagem };
+  for (const [campo, valor] of Object.entries(textos)) {
+    if (valor !== undefined && valor !== null && typeof valor !== "string") {
+      return json({ error: `Campo '${campo}' deve ser texto` }, 400);
+    }
+  }
+
   // Honeypot: campo escondido preenchido = bot. Responde 200 para não ensinar.
   if (website) {
     return json({ ok: true }, 200);
@@ -97,10 +107,14 @@ export async function POST(request) {
   }
 
   try {
-    await getResend().emails.send({
+    const { data, error } = await getResend().emails.send({
       from: FROM,
       to: TO,
-      reply_to: email,
+      // camelCase — o SDK e quem converte para `reply_to` no HTTP. Passar
+      // `reply_to` aqui faz o SDK DESCARTAR o campo em silencio, e quem recebe
+      // o orcamento acaba respondendo ao remetente do formulario em vez de
+      // responder ao interessado.
+      replyTo: email,
       subject: sanitizeHeader(`Contato via site — ${nome}`),
       text: [
         `Nome:      ${nome}`,
@@ -111,6 +125,19 @@ export async function POST(request) {
         mensagem,
       ].join("\n"),
     });
+
+    // O SDK NAO lanca em erro de API: devolve `{ data, error }`. Sem esta
+    // checagem, chave invalida ou remetente restrito viravam "enviado com
+    // sucesso" para o visitante, e o orcamento se perdia sem deixar rastro.
+    if (error) {
+      console.error("[resend] envio recusado:", error);
+      return json({ error: "Erro ao enviar mensagem" }, 502);
+    }
+
+    if (!data?.id) {
+      console.error("[resend] resposta sem id de e-mail:", data);
+      return json({ error: "Erro ao enviar mensagem" }, 502);
+    }
 
     return json({ ok: true }, 200);
   } catch (err) {

@@ -25,11 +25,35 @@
 
 const MAX = 5;
 const WINDOW_MS = 10 * 60 * 1000;
+const MAX_IPS = 10_000;
 
 const hits = new Map();
 
+/**
+ * Remove IPs cuja janela ja expirou. Sem isto o Map so crescia: a filtragem
+ * antiga expirava os timestamps do IP consultado, mas nunca removia a CHAVE —
+ * uma instancia de vida longa acumulava memoria proporcional ao total historico
+ * de IPs, incluindo os que nem chegaram a enviar nada.
+ */
+function limpar(now) {
+  for (const [chave, marcas] of hits) {
+    if (marcas.length === 0 || now - marcas[marcas.length - 1] >= WINDOW_MS) {
+      hits.delete(chave);
+    }
+  }
+}
+
 export function isRateLimited(ip) {
   const now = Date.now();
+
+  // Teto rigido: se a limpeza nao deu conta (rajada de IPs distintos dentro da
+  // mesma janela), zera. Preferimos perder a contagem a crescer sem limite —
+  // isto e rede de seguranca, nao o mecanismo principal.
+  if (hits.size >= MAX_IPS) {
+    limpar(now);
+    if (hits.size >= MAX_IPS) hits.clear();
+  }
+
   const timestamps = (hits.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
 
   if (timestamps.length >= MAX) {

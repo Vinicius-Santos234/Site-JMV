@@ -81,6 +81,19 @@ export async function getContent() {
   }
   if (!res) return FALLBACK;
 
+  // A TRANSFORMACAO tambem precisa estar protegida, nao so o fetch. `urlFor()`
+  // lanca com referencia de imagem malformada, e como isso acontecia depois do
+  // try/catch, o erro escapava e derrubava o build ou a renderizacao das tres
+  // paginas — em vez de cair no fallback local, que e o comportamento esperado.
+  try {
+    return transformar(res);
+  } catch (err) {
+    console.error("[ERR_SANITY] Conteúdo do CMS ilegível, usando fallback local:", err?.message);
+    return FALLBACK;
+  }
+}
+
+function transformar(res) {
   const projetosDoCms = orFallback(res.projects, null, mapProject);
 
   return {

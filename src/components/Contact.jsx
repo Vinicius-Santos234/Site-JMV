@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Phone, Mail, MapPin, Send, CheckCircle } from "lucide-react";
 import FadeInSection from "./FadeInSection";
 import TurnstileWidget from "./TurnstileWidget";
@@ -28,6 +28,12 @@ export default function Contact() {
   const [turnstileKey, setTurnstileKey] = useState(0);
   const [turnstileReady, setTurnstileReady] = useState(false);
   const sectionRef = useRef(null);
+
+  // Callbacks estaveis. Como o efeito do TurnstileWidget depende deles, um
+  // callback recriado a cada render destruia e remontava o widget a cada tecla
+  // digitada no formulario — inclusive DEPOIS de o desafio ter sido resolvido.
+  const aoVerificar = useCallback((token) => setTurnstileToken(token), []);
+  const aoExpirar = useCallback(() => setTurnstileToken(null), []);
 
   // Só carrega o script/challenge do Turnstile quando a seção de contato se
   // aproxima da viewport — evita ~400 KB de tráfego do Cloudflare no load inicial.
@@ -251,8 +257,8 @@ export default function Contact() {
                 {turnstileReady && (
                   <TurnstileWidget
                     key={turnstileKey}
-                    onVerify={setTurnstileToken}
-                    onExpire={() => setTurnstileToken(null)}
+                    onVerify={aoVerificar}
+                    onExpire={aoExpirar}
                   />
                 )}
 

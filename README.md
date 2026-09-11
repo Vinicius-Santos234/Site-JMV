@@ -241,12 +241,12 @@ calado, que foi o erro da vez anterior.
 Crie um `.env.local` (site) com base no `.env.example`:
 
 ```env
-VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX   # Google Analytics (opcional)
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX   # Google Analytics (opcional)
 RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxx # Formulário de contato
 
 # CMS Sanity — sem estas variáveis, o site usa os dados locais (fallback)
-VITE_SANITY_PROJECT_ID=xxxxxxxx
-VITE_SANITY_DATASET=production
+SANITY_PROJECT_ID=xxxxxxxx
+SANITY_DATASET=production
 ```
 
 > O Studio (`studio/`) tem seu próprio setup — ver [`studio/README.md`](./studio/README.md).

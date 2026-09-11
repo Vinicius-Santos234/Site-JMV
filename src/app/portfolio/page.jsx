@@ -1,5 +1,5 @@
 import { getContent } from "@/lib/content";
-import { BREADCRUMB_PORTFOLIO, ANOS_DE_CASA } from "@/lib/seo";
+import { BREADCRUMB_PORTFOLIO, ANOS_DE_CASA, socialMetadata } from "@/lib/seo";
 import JsonLd from "@/components/JsonLd";
 
 import Navbar          from "@/components/Navbar";
@@ -20,17 +20,12 @@ export const metadata = {
   description:
     "Conheça os projetos industriais realizados pela JMV Soluções Industriais: montagem, caldeiraria, estruturas metálicas e mais. Clientes como Raízen, Bunge, Petrobras e Cutrale.",
   alternates: { canonical: "/portfolio" },
-  openGraph: {
+  ...socialMetadata({
     url: "/portfolio",
     title: "Portfólio de Projetos | JMV Soluções Industriais",
     description:
       "Projetos industriais realizados pela JMV Soluções Industriais: montagem, caldeiraria, estruturas metálicas e tubulações.",
-  },
-  twitter: {
-    title: "Portfólio de Projetos | JMV Soluções Industriais",
-    description:
-      "Projetos industriais realizados pela JMV Soluções Industriais: montagem, caldeiraria, estruturas metálicas e tubulações.",
-  },
+  }),
 };
 
 export const revalidate = 3600;

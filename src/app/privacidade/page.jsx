@@ -1,4 +1,5 @@
 import { getContent } from "@/lib/content";
+import { socialMetadata } from "@/lib/seo";
 import Navbar        from "@/components/Navbar";
 import Footer        from "@/components/Footer";
 import ErrorBoundary from "@/components/ErrorBoundary";
@@ -11,17 +12,12 @@ export const metadata = {
   description:
     "Política de privacidade da JMV Soluções Industriais. Saiba como tratamos seus dados pessoais em conformidade com a LGPD.",
   alternates: { canonical: "/privacidade" },
-  openGraph: {
+  ...socialMetadata({
     url: "/privacidade",
     title: "Política de Privacidade | JMV Soluções Industriais",
     description:
       "Como a JMV Soluções Industriais trata seus dados pessoais, em conformidade com a LGPD.",
-  },
-  twitter: {
-    title: "Política de Privacidade | JMV Soluções Industriais",
-    description:
-      "Como a JMV Soluções Industriais trata seus dados pessoais, em conformidade com a LGPD.",
-  },
+  }),
 };
 
 export const revalidate = 3600;

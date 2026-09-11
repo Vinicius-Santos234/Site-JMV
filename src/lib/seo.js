@@ -55,3 +55,38 @@ export function buildFaqSchema(faqs) {
     })),
   };
 }
+
+/**
+ * Metadata de Open Graph/Twitter para uma rota interna.
+ *
+ * O Next NAO mescla `openGraph`/`twitter` campo a campo: o objeto da pagina
+ * SUBSTITUI o do layout inteiro. Declarar so `title` e `description` numa rota
+ * apagava o `og:image` herdado — foi o que aconteceu com /portfolio e
+ * /privacidade, justamente no site cuja migracao existiu para consertar cartao
+ * de link. Este helper reconstroi os campos comuns em toda rota.
+ */
+export function socialMetadata({ url, title, description }) {
+  const imagem = {
+    url: "/logo.webp",
+    type: "image/webp",
+    alt: "Logo JMV Soluções Industriais",
+  };
+
+  return {
+    openGraph: {
+      type: "website",
+      siteName: "JMV Soluções Industriais",
+      locale: "pt_BR",
+      url,
+      title,
+      description,
+      images: [imagem],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/logo.webp"],
+    },
+  };
+}
