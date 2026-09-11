@@ -182,6 +182,13 @@
     animation: slideDown 0.25s ease;
   }
 
+  /* ⚠️ NAO acrescentar `.nav-links { display: none }` em NENHUMA media query
+     depois desta linha. `.nav-links` e `.nav-links--open` tem a MESMA
+     especificidade (0,1,0), entao empate se resolve por ordem no arquivo — uma
+     regra posterior vence e o menu deixa de abrir, mesmo com a classe aplicada.
+     Foi o que um bloco `@media (max-width: 768px)` redundante fez entre 02/07 e
+     11/09/2026: em telas de ate 768px o overlay escurecia a tela e o menu nunca
+     aparecia. Dois meses no ar, invisivel para teste unitario. */
   .nav-links--open {
     display: flex;
   }
@@ -191,8 +198,3 @@
   }
 }
 
-@media (max-width: 768px) {
-  .nav-links {
-    display: none;
-  }
-}
