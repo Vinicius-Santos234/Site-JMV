@@ -41,7 +41,7 @@ const validBody = () => ({
 describe('api/contact', () => {
   beforeEach(() => {
     mockSend.mockClear()
-    mockSend.mockResolvedValue({ id: 'email_123' })
+    mockSend.mockResolvedValue({ data: { id: 'email_123' }, error: null })
   })
 
   // No App Router quem devolve 405 é o framework, para todo método não
@@ -97,7 +97,8 @@ describe('api/contact', () => {
     expect(res.body).toEqual({ ok: true })
     expect(mockSend).toHaveBeenCalledTimes(1)
     const payload = mockSend.mock.calls[0][0]
-    expect(payload.reply_to).toBe('joao@example.com')
+    expect(payload.replyTo).toBe('joao@example.com')
+    expect(payload.reply_to).toBeUndefined()
     expect(payload.to).toBe('jpsantos@jmv.ind.br')
   })
 
@@ -124,17 +125,35 @@ describe('api/contact', () => {
     expect(res.statusCode).toBe(429)
   })
 
-  it('retorna 500 quando o envio falha', async () => {
+  it('retorna 500 quando o SDK lanca (rede fora, por exemplo)', async () => {
     mockSend.mockRejectedValueOnce(new Error('resend down'))
     const res = await handler(mockReq({ ip: '10.0.0.3', body: validBody() }))
     expect(res.statusCode).toBe(500)
+  })
+
+  // O modo de falha REAL do SDK: ele nao lanca, devolve { data, error }. Sem a
+  // checagem no handler isto respondia 200 {ok:true} e o orcamento sumia.
+  it('NAO responde sucesso quando o Resend recusa o envio', async () => {
+    mockSend.mockResolvedValueOnce({
+      data: null,
+      error: { name: 'validation_error', message: 'Invalid from address' },
+    })
+    const res = await handler(mockReq({ ip: '10.0.0.31', body: validBody() }))
+    expect(res.statusCode).toBe(502)
+    expect(res.body).not.toEqual({ ok: true })
+  })
+
+  it('NAO responde sucesso quando a resposta vem sem id', async () => {
+    mockSend.mockResolvedValueOnce({ data: {}, error: null })
+    const res = await handler(mockReq({ ip: '10.0.0.32', body: validBody() }))
+    expect(res.statusCode).toBe(502)
   })
 })
 
 describe('api/contact — Turnstile', () => {
   beforeEach(() => {
     mockSend.mockClear()
-    mockSend.mockResolvedValue({ id: 'email_123' })
+    mockSend.mockResolvedValue({ data: { id: 'email_123' }, error: null })
     vi.stubEnv('TURNSTILE_SECRET_KEY', 'test-secret') // ativa a verificação
   })
 
