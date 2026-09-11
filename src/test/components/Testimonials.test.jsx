@@ -11,43 +11,43 @@ vi.mock('framer-motion', () => ({
 
 describe('Testimonials', () => {
   it('renderiza o título "O QUE NOSSOS CLIENTES DIZEM"', () => {
-    render(<Testimonials />)
+    render(<Testimonials testimonials={TESTIMONIALS} />)
     expect(screen.getByText('O QUE NOSSOS CLIENTES DIZEM')).toBeInTheDocument()
   })
 
   it('renderiza o subtítulo "Depoimentos"', () => {
-    render(<Testimonials />)
+    render(<Testimonials testimonials={TESTIMONIALS} />)
     expect(screen.getByText('Depoimentos')).toBeInTheDocument()
   })
 
   it('renderiza o nome de cada autor', () => {
-    render(<Testimonials />)
+    render(<Testimonials testimonials={TESTIMONIALS} />)
     TESTIMONIALS.forEach((t) => {
       expect(screen.getByText(t.author)).toBeInTheDocument()
     })
   })
 
   it('renderiza o texto de cada depoimento', () => {
-    render(<Testimonials />)
+    render(<Testimonials testimonials={TESTIMONIALS} />)
     TESTIMONIALS.forEach((t) => {
       expect(screen.getByText(t.quote)).toBeInTheDocument()
     })
   })
 
   it('renderiza cargo e empresa de cada autor', () => {
-    render(<Testimonials />)
+    render(<Testimonials testimonials={TESTIMONIALS} />)
     TESTIMONIALS.forEach((t) => {
       expect(screen.getByText(`${t.role} · ${t.company}`)).toBeInTheDocument()
     })
   })
 
   it('renderiza 3 cards de depoimento', () => {
-    const { container } = render(<Testimonials />)
+    const { container } = render(<Testimonials testimonials={TESTIMONIALS} />)
     expect(container.querySelectorAll('.testimonial-card')).toHaveLength(3)
   })
 
   it('exibe a inicial do nome em cada avatar', () => {
-    render(<Testimonials />)
+    render(<Testimonials testimonials={TESTIMONIALS} />)
     TESTIMONIALS.forEach((t) => {
       expect(screen.getByText(t.author.charAt(0))).toBeInTheDocument()
     })

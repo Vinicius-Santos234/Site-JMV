@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "lint": "eslint .",
-    "preview": "vite preview",
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage"
@@ -21,10 +21,11 @@
     "@vercel/speed-insights": "^2.0.0",
     "framer-motion": "^12.40.0",
     "lucide-react": "^1.17.0",
+    "next": "^16.3.4",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
-    "react-router-dom": "^7.17.0",
-    "resend": "^6.14.0"
+    "resend": "^6.14.0",
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -41,7 +42,6 @@
     "globals": "^17.6.0",
     "jsdom": "^29.1.1",
     "sharp": "^0.35.1",
-    "vite": "^8.0.12",
     "vitest": "^4.1.9"
   }
 }

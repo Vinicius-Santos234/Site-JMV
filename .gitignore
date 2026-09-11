@@ -8,6 +8,12 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+
+# Build do Next
+.next
+next-env.d.ts
+
+# Sobras do Vite (a pasta dist/ não é mais gerada)
 dist
 dist-ssr
 *.local

@@ -1,22 +1,20 @@
-import { Link, useLocation } from "react-router-dom";
+import Image from "next/image";
+import Link from "next/link";
 import { Phone, Mail, MapPin, ArrowUpRight } from "lucide-react";
 import logo from "../assets/logo.webp";
 
 import { NAV_LINKS, SERVICES } from "../data/footer";
-import { useSiteSettings } from "../hooks/useContent";
+import { ANOS_DE_CASA } from "../lib/seo";
 import "./Footer.css";
 
 function NavLink({ href, isHome, children }) {
   if (isHome) {
     return <a href={href}>{children}</a>;
   }
-  return <Link to={`/${href}`}>{children}</Link>;
+  return <Link href={`/${href}`}>{children}</Link>;
 }
 
-export default function Footer() {
-  const location = useLocation();
-  const isHome = location.pathname === "/";
-  const { cnpj } = useSiteSettings();
+export default function Footer({ isHome = false, cnpj = "" }) {
 
   return (
     <footer className="footer">
@@ -24,9 +22,9 @@ export default function Footer() {
         <div className="container footer-grid">
 
           <div className="footer-brand">
-            <img src={logo} alt="JMV Soluções Industriais" className="footer-logo" width="512" height="167" />
+            <Image src={logo} alt="JMV Soluções Industriais" className="footer-logo" width={512} height={167} />
             <p className="footer-tagline">
-              Excelência técnica em montagem e manutenção industrial há mais de {new Date().getFullYear() - 2013} anos.
+              Excelência técnica em montagem e manutenção industrial há mais de {ANOS_DE_CASA} anos.
             </p>
             {cnpj && <p className="footer-cnpj">CNPJ: {cnpj}</p>}
           </div>

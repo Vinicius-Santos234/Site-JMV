@@ -58,8 +58,9 @@ Build de produção: chunks separados para React, Framer Motion e Lucide; CSS fi
 
 | Camada | Tecnologia |
 |---|---|
-| UI | React 19 + Vite 8 |
-| Roteamento | React Router DOM 7 |
+| UI | React 19 + Next.js 16 (App Router) |
+| Renderização | Estática (SSG) com revalidação de 1h |
+| Roteamento | App Router (por pasta) |
 | Animações | Framer Motion 12 |
 | Ícones | Lucide React |
 | Estilo | CSS puro, co-localizado por componente |
@@ -69,7 +70,7 @@ Build de produção: chunks separados para React, Framer Motion e Lucide; CSS fi
 | Fontes | Self-hosted (WebFont `.woff2`, `font-display: swap`) |
 | Testes | Vitest 4 + Testing Library |
 | Linting | ESLint 10 |
-| E-mail | Resend (Vercel Serverless Function) |
+| E-mail | Resend (Route Handler) |
 | Deploy | Vercel |
 | Analytics | Vercel Analytics + Speed Insights |
 
@@ -96,12 +97,14 @@ A integração tem um **fallback automático**: se o CMS não estiver configurad
 **Por quê:** conteúdo hardcoded trava a entrega para clientes não-técnicos. Um CMS é o que separa "faço sites" de "entrego um produto que o cliente opera sozinho".
 
 ### 3. CSS co-localizado por componente
-O `globals.css` monolítico (2291 linhas) foi dividido em um `base.css` global + um CSS por componente/página, importado dentro do próprio `.jsx`. Estilos compartilhados são resolvidos por `import` (o Vite deduplica — sem duplicação no bundle).
+O `globals.css` monolítico (2291 linhas) foi dividido em um `base.css` global + um CSS por componente/página, importado dentro do próprio `.jsx`. Estilos compartilhados são resolvidos por `import` (o bundler deduplica). O cabeçalho comum de `/portfolio` e `/privacidade` vive em `src/styles/page-header.css`, importado pelas duas.
 
 **Por quê:** um CSS global cresce até virar um campo minado de colisões. Co-localizar mantém cada estilo perto de quem o usa e torna a manutenção previsível.
 
 ### 4. SEO técnico e structured data
-`useSEO` centraliza título/description/canonical por página e injeta **JSON-LD** (Organization, FAQPage, BreadcrumbList) sincronizado com o texto visível. `BASE_URL` elimina URLs duplicadas espalhadas pelo código.
+Cada rota exporta sua própria `metadata` (título, description, canonical, Open Graph, Twitter), que o Next escreve **no HTML servido** — antes de qualquer JavaScript. O **JSON-LD** (GeneralContractor, FAQPage, BreadcrumbList) é renderizado pelo componente `JsonLd`, a partir da mesma lista que a página exibe.
+
+> **Por que isto mudou.** Até 09/2026 o site era uma SPA que trocava as metas num `useEffect`. Funcionava no navegador e **não existia para o crawler de link**: WhatsApp, LinkedIn e Facebook não executam JS, então `/portfolio` e `/privacidade` eram servidas com a metadata da home — as quatro URLs devolviam HTML byte a byte idêntico, com `canonical` apontando para `/` em todas. Medido por `curl` e corrigido pela migração para o Next.
 
 **Por quê:** para um site que depende de ser achado no Google por buscas locais/técnicas, structured data melhora a elegibilidade a rich results e Knowledge Panel.
 
@@ -139,29 +142,40 @@ Numa SPA, o gargalo raramente é "código pesado" — o relatório mostrava `TBT
 
 ```
 jmv-site/
-├── api/
-│   └── contact.js           # Serverless Function — envio de e-mail (Resend) endurecido
 ├── scripts/
 │   ├── optimize-images.js   # Otimização de imagens (Sharp)
-│   └── seed-sanity.mjs       # Popula o portfólio no Sanity (idempotente)
-├── studio/                   # Sanity Studio (CMS) — schema, config
+│   └── seed-sanity.mjs      # Popula o conteúdo no Sanity (idempotente)
+├── studio/                  # Sanity Studio (CMS) — schema, config
 ├── public/
 │   ├── fonts/               # Fontes self-hosted (.woff2)
-│   └── welder.webp          # Imagem LCP (preload no index.html)
+│   └── welder.webp          # Imagem LCP (next/image com priority)
 ├── src/
+│   ├── app/                 # App Router — uma pasta por rota
+│   │   ├── layout.jsx       # Layout raiz + metadata base + JSON-LD do negócio
+│   │   ├── template.jsx     # Transição de entrada entre rotas
+│   │   ├── page.jsx         # Home (Server Component, busca o conteúdo)
+│   │   ├── not-found.jsx    # 404 de verdade (HTTP 404, não soft 404)
+│   │   ├── portfolio/       # /portfolio + metadata própria
+│   │   ├── privacidade/     # /privacidade + metadata própria
+│   │   └── api/contact/     # Route Handler — envio de e-mail (Resend)
 │   ├── assets/              # Imagens e logos (WebP)
 │   ├── components/          # Componentes + CSS co-localizado
-│   ├── data/                # Dados estáticos (fallback do portfólio)
-│   ├── hooks/               # useSEO, usePageTracking, useCountUp, useProjects
-│   ├── lib/                 # sanity.js (client + urlFor)
-│   ├── pages/               # PortfolioPage, PrivacidadePage, NotFoundPage
-│   ├── styles/              # base.css global
+│   ├── data/                # Dados estáticos (fallback do CMS)
+│   ├── hooks/               # useCountUp
+│   ├── lib/
+│   │   ├── content.js       # Busca do CMS no servidor (server-only)
+│   │   ├── sanity.js        # Client + urlFor
+│   │   ├── seo.js           # BASE_URL, schemas, título/descrição
+│   │   └── api/             # rate-limit, turnstile-verify
+│   ├── styles/              # base.css global + page-header.css
 │   ├── test/                # Testes (Vitest + Testing Library)
-│   └── utils/               # scrollToSection, genId
+│   ├── utils/               # scrollToSection, genId
+│   └── proxy.js             # Peneira de user-agent na borda (era middleware.js)
 ├── .env.example
 ├── .github/workflows/ci.yml # Pipeline de CI (lint + test + build)
-├── vercel.json
-└── vite.config.js
+├── jsconfig.json            # Alias @/ → src/
+├── next.config.mjs          # Headers de segurança, CSP e imagens remotas
+└── vitest.config.js
 ```
 
 ---
@@ -195,7 +209,7 @@ cp .env.example .env.local   # edite com suas chaves
 npm run dev
 ```
 
-Disponível em `http://localhost:5173`.
+Disponível em `http://localhost:3000`.
 
 ---
 
@@ -204,7 +218,7 @@ Disponível em `http://localhost:5173`.
 ```bash
 npm run dev          # Servidor de desenvolvimento
 npm run build        # Build de produção
-npm run preview      # Preview do build local
+npm run start        # Serve o build de produção localmente
 npm run lint         # ESLint
 npm run test         # Testes em modo watch
 npm run test:run     # Testes em modo CI
@@ -215,16 +229,16 @@ npm run test:coverage # Relatório de cobertura
 
 ## Testes
 
-**109 testes** em 19 arquivos, cobrindo componentes, hooks, páginas, dados e a API de contato.
+**101 testes** em 18 arquivos, cobrindo componentes, páginas, dados e a API de contato.
 
 ```bash
 npm run test:run
 ```
 
 Áreas cobertas:
-- **Componentes:** `Contact`, `CookieBanner`, `FAQ`, `FadeInSection`, `FloatingButtons`, `Portfolio`, `Quality`, `Services`, `Stats`, `Testimonials`
-- **Hooks:** `useSEO`, `usePageTracking`, `useCountUp`
-- **Páginas:** `NotFoundPage`, `PortfolioPage`, `PrivacidadePage`
+- **Componentes:** `Contact`, `CookieBanner`, `FAQ`, `FadeInSection`, `FloatingButtons`, `Portfolio`, `PortfolioGrid`, `Quality`, `Services`, `Stats`, `Testimonials`
+- **Hooks:** `useCountUp`
+- **Páginas:** `not-found`, `/portfolio` (inclusive a metadata da rota), `/privacidade`
 - **API:** `contact` (origem, honeypot, tamanho, sanitização, rate limit, CAPTCHA, sucesso/erro)
 - **Dados:** `services`, `stats`
 

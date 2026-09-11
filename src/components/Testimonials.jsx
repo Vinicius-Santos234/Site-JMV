@@ -1,10 +1,8 @@
 import { Quote } from "lucide-react";
-import { useTestimonials } from "../hooks/useContent";
-import FadeInSection from "../components/FadeInSection";
+import FadeInSection from "./FadeInSection";
 import "./Testimonials.css";
 
-export default function Testimonials() {
-  const testimonials = useTestimonials();
+export default function Testimonials({ testimonials = [] }) {
 
   return (
     <FadeInSection>

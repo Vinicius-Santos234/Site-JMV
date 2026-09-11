@@ -1,3 +1,5 @@
+"use client";
+
 import { m } from "framer-motion";
 
 export default function FadeInSection({ children, delay = 0 }) {

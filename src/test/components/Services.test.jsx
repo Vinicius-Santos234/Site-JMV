@@ -11,36 +11,36 @@ vi.mock('framer-motion', () => ({
 
 describe('Services', () => {
   it('renderiza a seção com id "servicos"', () => {
-    const { container } = render(<Services />)
+    const { container } = render(<Services services={SERVICES} />)
     expect(container.querySelector('#servicos')).toBeInTheDocument()
   })
 
   it('renderiza o título principal', () => {
-    render(<Services />)
+    render(<Services services={SERVICES} />)
     expect(screen.getByText('SOLUÇÕES INDUSTRIAIS COMPLETAS')).toBeInTheDocument()
   })
 
   it('renderiza o subtítulo "Serviços"', () => {
-    render(<Services />)
+    render(<Services services={SERVICES} />)
     expect(screen.getByText('Serviços')).toBeInTheDocument()
   })
 
   it('renderiza o título de cada serviço', () => {
-    render(<Services />)
+    render(<Services services={SERVICES} />)
     SERVICES.forEach((service) => {
       expect(screen.getByText(service.title)).toBeInTheDocument()
     })
   })
 
   it('renderiza a descrição de cada serviço', () => {
-    render(<Services />)
+    render(<Services services={SERVICES} />)
     SERVICES.forEach((service) => {
       expect(screen.getByText(service.description)).toBeInTheDocument()
     })
   })
 
   it('renderiza 6 cards de serviço', () => {
-    const { container } = render(<Services />)
+    const { container } = render(<Services services={SERVICES} />)
     expect(container.querySelectorAll('.service-card')).toHaveLength(6)
   })
 })

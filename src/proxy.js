@@ -1,5 +1,10 @@
+// Peneira de user-agent na fronteira de rede. No Next 16 o `middleware` virou
+// `proxy` e passou a rodar no runtime Node por padrão (não mais Edge) — aqui
+// não muda nada, porque a checagem é só string de header.
 export const config = {
-  matcher: ['/((?!_vercel|favicon\\.ico|robots\\.txt|sitemap\\.xml).*)'],
+  // _next/* entrou no negativo: no App Router os assets do build passam por
+  // aqui, e não faz sentido rodar a peneira de user-agent em cada chunk.
+  matcher: ['/((?!_next|_vercel|favicon\\.ico|robots\\.txt|sitemap\\.xml).*)'],
 };
 
 const BLOCKED_UA_PATTERNS = [
@@ -27,7 +32,7 @@ const BLOCKED_UA_PATTERNS = [
   'thc-hydra',
 ];
 
-export default function middleware(request) {
+export default function proxy(request) {
   const ua = (request.headers.get('user-agent') ?? '').toLowerCase().trim();
 
   if (!ua) {

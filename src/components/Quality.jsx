@@ -1,11 +1,9 @@
-import { useQualityItems } from "../hooks/useContent";
 import { iconByName } from "../lib/icons";
-import FadeInSection from "../components/FadeInSection";
+import FadeInSection from "./FadeInSection";
 import "./Services.css";
 import "./Quality.css";
 
-export default function Quality() {
-  const items = useQualityItems();
+export default function Quality({ items = [] }) {
 
   return (
     <FadeInSection>

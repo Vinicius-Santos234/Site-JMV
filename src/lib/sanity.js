@@ -1,8 +1,10 @@
 import { createClient } from "@sanity/client";
 import { createImageUrlBuilder } from "@sanity/image-url";
 
-const projectId = import.meta.env.VITE_SANITY_PROJECT_ID;
-const dataset = import.meta.env.VITE_SANITY_DATASET || "production";
+// Sem prefixo NEXT_PUBLIC_: todo acesso ao Sanity agora acontece no servidor.
+// O projectId não é segredo, mas não há motivo para ir ao bundle.
+const projectId = process.env.SANITY_PROJECT_ID;
+const dataset = process.env.SANITY_DATASET || "production";
 
 export const isSanityConfigured = Boolean(projectId);
 
@@ -11,7 +13,7 @@ export const sanityClient = isSanityConfigured
       projectId,
       dataset,
       apiVersion: "2024-01-01",
-      useCdn: true, 
+      useCdn: true,
     })
   : null;
 

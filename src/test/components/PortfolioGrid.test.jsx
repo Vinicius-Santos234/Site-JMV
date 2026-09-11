@@ -1,24 +1,17 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter } from 'react-router-dom'
-import PortfolioPage from '@/pages/PortfolioPage'
+import PortfolioGrid from '@/components/PortfolioGrid'
 
 vi.mock('framer-motion', () => ({
   m: { div: ({ children, ...p }) => <div {...p}>{children}</div> },
 }))
 
-vi.mock('@/hooks/useProjects', () => ({
-  useProjects: () => ({
-    projects: [
-      { id: 1, placeholder: false, category: 'Caldeiraria', image: '/a.jpg', title: 'Projeto Alpha', client: 'Cliente A', year: 2023 },
-      { id: 2, placeholder: false, category: 'Montagem',   image: '/b.jpg', title: 'Projeto Beta',  client: 'Cliente B', year: 2022 },
-      { id: 3, placeholder: true,  category: 'Em breve' },
-    ],
-    loading: false,
-    error: null,
-  }),
-}))
+const PROJETOS = [
+  { id: 1, placeholder: false, category: 'Caldeiraria', image: '/a.jpg', title: 'Projeto Alpha', client: 'Cliente A', year: 2023 },
+  { id: 2, placeholder: false, category: 'Montagem',   image: '/b.jpg', title: 'Projeto Beta',  client: 'Cliente B', year: 2022 },
+  { id: 3, placeholder: true,  category: 'Em breve' },
+]
 
 beforeEach(() => {
   vi.stubGlobal('IntersectionObserver', class {
@@ -28,19 +21,10 @@ beforeEach(() => {
 })
 
 function renderPage() {
-  return render(
-    <MemoryRouter initialEntries={['/portfolio']}>
-      <PortfolioPage />
-    </MemoryRouter>
-  )
+  return render(<PortfolioGrid projects={PROJETOS} />)
 }
 
-describe('PortfolioPage', () => {
-  it('exibe o título "PROJETOS"', () => {
-    renderPage()
-    expect(screen.getByRole('heading', { name: 'PROJETOS' })).toBeInTheDocument()
-  })
-
+describe('PortfolioGrid', () => {
   it('renderiza os filtros de categoria', () => {
     renderPage()
     expect(screen.getByRole('button', { name: 'Todos' })).toBeInTheDocument()
@@ -66,8 +50,4 @@ describe('PortfolioPage', () => {
     expect(screen.queryByText('Projeto Beta')).not.toBeInTheDocument()
   })
 
-  it('exibe link para voltar ao site', () => {
-    renderPage()
-    expect(screen.getByRole('link', { name: /voltar ao site/i })).toBeInTheDocument()
-  })
 })
