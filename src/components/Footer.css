@@ -210,3 +210,17 @@
     text-align: center;
   }
 }
+
+/* Link da política no rodapé — herda o tom do resto da barra inferior,
+   com sublinhado no hover para deixar claro que é clicável. */
+.footer-privacidade-link {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-privacidade-link:hover,
+.footer-privacidade-link:focus-visible {
+  color: white;
+  text-decoration: underline;
+}

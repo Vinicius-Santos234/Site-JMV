@@ -81,6 +81,12 @@ export default function Footer({ isHome = false, cnpj = "" }) {
         <div className="container footer-bottom-inner">
           <span>© {new Date().getFullYear()} JMV Soluções Industriais. Todos os direitos reservados.</span>
           <span>Matão — São Paulo — Brasil</span>
+          {/* A política precisa ser alcançável de QUALQUER página. Até 09/2026 o
+              único caminho era o formulário da home, então quem entrasse direto
+              em /portfolio não tinha como chegar nela. */}
+          <Link href="/privacidade" className="footer-privacidade-link">
+            Política de Privacidade
+          </Link>
           <span>Desenvolvido por Vinicius Santos</span>
         </div>
       </div>

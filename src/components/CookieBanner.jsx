@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Cookie } from "lucide-react";
 import "./CookieBanner.css";
 
@@ -39,9 +40,9 @@ export default function CookieBanner() {
         <p>
           Utilizamos cookies para melhorar sua experiência. Ao continuar
           navegando, você concorda com nossa{" "}
-          <a href="/privacidade" target="_blank" rel="noreferrer">
+          <Link href="/privacidade">
             Política de Privacidade
-          </a>{" "}
+          </Link>{" "}
           em conformidade com a <strong>LGPD (Lei nº 13.709/2018)</strong>.
         </p>
       </div>

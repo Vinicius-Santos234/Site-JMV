@@ -236,7 +236,17 @@ export default function Contact() {
                     />
                     <span>
                       Li e concordo com a{" "}
-                      <a href="/privacidade" target="_blank" rel="noopener noreferrer">
+                      {/* Este, sim, abre em nova aba de proposito: o visitante
+                          esta no meio do formulario, e navegar na mesma aba
+                          descartaria tudo que ele ja digitou (o estado vive em
+                          useState e some na desmontagem). O aria-label avisa,
+                          porque leitor de tela nao adivinha a troca de contexto. */}
+                      <a
+                        href="/privacidade"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Política de Privacidade (abre em nova aba)"
+                      >
                         Política de Privacidade
                       </a>{" "}
                       e autorizo o contato com meus dados.
