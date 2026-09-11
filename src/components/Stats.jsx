@@ -1,6 +1,7 @@
-import { useStats } from "../hooks/useContent";
+"use client";
+
 import { useCountUp } from "../hooks/useCountUp";
-import FadeInSection from "../components/FadeInSection";
+import FadeInSection from "./FadeInSection";
 import "./Stats.css";
 
 function StatItem({ number, label }) {
@@ -14,8 +15,7 @@ function StatItem({ number, label }) {
   );
 }
 
-export default function Stats() {
-  const stats = useStats();
+export default function Stats({ stats = [] }) {
 
   return (
     <FadeInSection>

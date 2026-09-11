@@ -1,12 +1,13 @@
+"use client";
+
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import Image from "next/image";
+import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useProjects } from "../hooks/useProjects";
-import FadeInSection from "../components/FadeInSection";
+import FadeInSection from "./FadeInSection";
 import "./Portfolio.css";
 
-export default function Portfolio() {
-  const { projects } = useProjects();
+export default function Portfolio({ projects = [] }) {
   const real = projects.filter((p) => !p.placeholder);
 
   const [current, setCurrent] = useState(0);
@@ -61,10 +62,12 @@ export default function Portfolio() {
 
             <div className={`slideshow-track${dir ? ` slideshow-track--${dir}` : ""}`}>
               <div className="portfolio-card slideshow-card" key={current}>
-                <img
+                <Image
                   src={project.image}
                   alt={`${project.title} — ${project.client}`}
                   className="portfolio-image"
+                  width={1200}
+                  height={800}
                 />
                 <div className="portfolio-overlay slideshow-overlay">
                   <span className="portfolio-overlay-client">{project.client}</span>
@@ -101,7 +104,7 @@ export default function Portfolio() {
           )}
 
           <div className="portfolio-cta">
-            <Link to="/portfolio" className="btn-secondary">
+            <Link href="/portfolio" className="btn-secondary">
               Ver mais projetos
             </Link>
           </div>

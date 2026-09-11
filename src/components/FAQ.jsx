@@ -1,21 +1,14 @@
-import { useState, useEffect } from "react";
+"use client";
+
+import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import FadeInSection from "./FadeInSection";
-import { useFaqs } from "../hooks/useContent";
-import { buildFaqSchema } from "../data/faqs";
 import "./FAQ.css";
 
-export default function FAQ() {
+// O JSON-LD do FAQPage saiu daqui: era injetado por JS depois do render, e
+// agora sai no HTML, montado na página a partir da mesma lista exibida.
+export default function FAQ({ faqs = [] }) {
   const [open, setOpen] = useState(null);
-  const faqs = useFaqs();
-
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.type = "application/ld+json";
-    script.textContent = JSON.stringify(buildFaqSchema(faqs));
-    document.head.appendChild(script);
-    return () => { if (document.head.contains(script)) document.head.removeChild(script); };
-  }, [faqs]);
 
   return (
     <FadeInSection>

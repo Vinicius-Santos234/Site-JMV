@@ -11,31 +11,31 @@ vi.mock('framer-motion', () => ({
 
 describe('Quality', () => {
   it('renderiza o título "COMPROMISSO COM QUALIDADE"', () => {
-    render(<Quality />)
+    render(<Quality items={QUALITY_ITEMS} />)
     expect(screen.getByText('COMPROMISSO COM QUALIDADE')).toBeInTheDocument()
   })
 
   it('renderiza o subtítulo "Excelência"', () => {
-    render(<Quality />)
+    render(<Quality items={QUALITY_ITEMS} />)
     expect(screen.getByText('Excelência')).toBeInTheDocument()
   })
 
   it('renderiza o título de cada item de qualidade', () => {
-    render(<Quality />)
+    render(<Quality items={QUALITY_ITEMS} />)
     QUALITY_ITEMS.forEach((item) => {
       expect(screen.getByText(item.title)).toBeInTheDocument()
     })
   })
 
   it('renderiza a descrição de cada item de qualidade', () => {
-    render(<Quality />)
+    render(<Quality items={QUALITY_ITEMS} />)
     QUALITY_ITEMS.forEach((item) => {
       expect(screen.getByText(item.description)).toBeInTheDocument()
     })
   })
 
   it('renderiza 3 cards de qualidade', () => {
-    const { container } = render(<Quality />)
+    const { container } = render(<Quality items={QUALITY_ITEMS} />)
     expect(container.querySelectorAll('.quality-card')).toHaveLength(3)
   })
 })

@@ -1,10 +1,8 @@
-import FadeInSection from "../components/FadeInSection";
-import { useDifferentials } from "../hooks/useContent";
+import FadeInSection from "./FadeInSection";
 import { iconByName } from "../lib/icons";
 import "./About.css";
 
-export default function About() {
-  const differentials = useDifferentials();
+export default function About({ differentials = [] }) {
 
   return (
     <FadeInSection>

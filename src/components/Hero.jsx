@@ -1,5 +1,8 @@
+"use client";
+
 import { m } from "framer-motion";
-import FadeInSection from "../components/FadeInSection";
+import Image from "next/image";
+import FadeInSection from "./FadeInSection";
 import "./Hero.css";
 
 export default function Hero() {
@@ -45,13 +48,15 @@ export default function Hero() {
         </div>
 
         <div className="hero-image-side">
-          <img
+          {/* Imagem do LCP. `priority` emite o preload que antes estava escrito
+              à mão no index.html — vem da rodada de performance de 07/07. */}
+          <Image
             src="/welder.webp"
             alt="Soldador trabalhando em obra industrial"
             className="welder-img"
-            width="900"
-            height="756"
-            fetchPriority="high"
+            width={900}
+            height={756}
+            priority
           />
 
           <div className="weld-glow"></div>

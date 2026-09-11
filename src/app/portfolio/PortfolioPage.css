@@ -1,0 +1,35 @@
+/* ═══════════════════════════════════════════════════════════
+   PORTFOLIO PAGE  (página /portfolio)
+   Reutiliza os cards/grid de Portfolio.css e o cabeçalho de
+   src/styles/page-header.css, ambos importados na página.
+═══════════════════════════════════════════════════════════ */
+
+.portfolio-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 36px;
+}
+
+.portfolio-filter-btn {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1.5px solid #cbd5e1;
+  background: white;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+
+.portfolio-filter-btn:hover {
+  border-color: #4a8fd4;
+  color: #4a8fd4;
+}
+
+.portfolio-filter-btn--active {
+  background: #4a8fd4;
+  border-color: #4a8fd4;
+  color: white;
+}

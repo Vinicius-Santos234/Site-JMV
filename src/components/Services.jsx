@@ -1,10 +1,8 @@
-import { useServices } from "../hooks/useContent";
 import { iconByName } from "../lib/icons";
-import FadeInSection from "../components/FadeInSection";
+import FadeInSection from "./FadeInSection";
 import "./Services.css";
 
-export default function Services() {
-  const services = useServices();
+export default function Services({ services = [] }) {
 
   return (
     <FadeInSection>

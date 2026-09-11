@@ -1,11 +1,14 @@
+"use client";
+
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import Image from "next/image";
+import Link from "next/link";
 import logo from "../assets/logo.webp";
 import { LINKS } from "../data/navbar";
 import { scrollToSection } from "../utils/scrollToSection";
 import "./Navbar.css";
 
-export default function Navbar() {
+export default function Navbar({ isHome = false }) {
   const [scrolled,      setScrolled]      = useState(false);
   const [menuOpen,      setMenuOpen]      = useState(false);
   const [activeSection, setActiveSection] = useState("");
@@ -36,9 +39,6 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  const location = useLocation();
-  const isHome = location.pathname === "/";
-
   const closeMenu = () => setMenuOpen(false);
 
   const handleNavLink = (hash) => (e) => {
@@ -50,7 +50,7 @@ export default function Navbar() {
   return (
     <>
       <nav className={`navbar${scrolled ? " navbar--scrolled" : ""}`}>
-        <img src={logo} alt="JMV Soluções Industriais" className="logo" width="512" height="167" />
+        <Image src={logo} alt="JMV Soluções Industriais" className="logo" width={512} height={167} priority />
 
         <div className={`nav-links${menuOpen ? " nav-links--open" : ""}`}>
           {LINKS.map(({ href, label }) => (
@@ -66,7 +66,7 @@ export default function Navbar() {
             ) : (
               <Link
                 key={href}
-                to={`/${href}`}
+                href={`/${href}`}
                 onClick={closeMenu}
               >
                 {label}
@@ -80,7 +80,7 @@ export default function Navbar() {
             Solicitar orçamento
           </a>
         ) : (
-          <Link to="/#contato" className="btn-primary" onClick={closeMenu}>
+          <Link href="/#contato" className="btn-primary" onClick={closeMenu}>
             Solicitar orçamento
           </Link>
         )}

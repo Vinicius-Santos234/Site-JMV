@@ -1,9 +1,8 @@
-import { useClients } from "../hooks/useContent";
-import FadeInSection from "../components/FadeInSection";
+import Image from "next/image";
+import FadeInSection from "./FadeInSection";
 import "./Clients.css";
 
-export default function Clients() {
-  const clients = useClients();
+export default function Clients({ clients = [] }) {
 
   return (
     <FadeInSection>
@@ -28,9 +27,11 @@ export default function Clients() {
                 key={client.id}
                 className="client-card"
               >
-                <img
+                <Image
                   src={client.logo}
                   alt={`Logo ${client.name}`}
+                  width={400}
+                  height={200}
                   loading="lazy"
                 />
               </div>

@@ -10,14 +10,14 @@ vi.mock('framer-motion', () => ({
 
 describe('FAQ — renderização', () => {
   it('renderiza todas as perguntas', () => {
-    render(<FAQ />)
+    render(<FAQ faqs={FAQS} />)
     FAQS.forEach((faq) => {
       expect(screen.getByText(faq.q)).toBeInTheDocument()
     })
   })
 
   it('nenhum item está aberto inicialmente', () => {
-    render(<FAQ />)
+    render(<FAQ faqs={FAQS} />)
     const buttons = screen.getAllByRole('button')
     buttons.forEach((btn) => {
       expect(btn).toHaveAttribute('aria-expanded', 'false')
@@ -27,14 +27,14 @@ describe('FAQ — renderização', () => {
 
 describe('FAQ — accordion', () => {
   it('abre um item ao clicar na pergunta', async () => {
-    render(<FAQ />)
+    render(<FAQ faqs={FAQS} />)
     const firstButton = screen.getAllByRole('button')[0]
     await userEvent.click(firstButton)
     expect(firstButton).toHaveAttribute('aria-expanded', 'true')
   })
 
   it('fecha o item ao clicar novamente', async () => {
-    render(<FAQ />)
+    render(<FAQ faqs={FAQS} />)
     const firstButton = screen.getAllByRole('button')[0]
     await userEvent.click(firstButton)
     await userEvent.click(firstButton)
@@ -42,13 +42,13 @@ describe('FAQ — accordion', () => {
   })
 
   it('exibe a resposta quando o item está aberto', async () => {
-    render(<FAQ />)
+    render(<FAQ faqs={FAQS} />)
     await userEvent.click(screen.getAllByRole('button')[0])
     expect(screen.getByText(FAQS[0].a)).toBeInTheDocument()
   })
 
   it('abrir um item fecha o anterior', async () => {
-    render(<FAQ />)
+    render(<FAQ faqs={FAQS} />)
     const buttons = screen.getAllByRole('button')
     await userEvent.click(buttons[0])
     expect(buttons[0]).toHaveAttribute('aria-expanded', 'true')

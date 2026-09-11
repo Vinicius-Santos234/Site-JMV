@@ -1,6 +1,8 @@
+"use client";
+
 import { useState, useEffect, useRef } from "react";
 import { Phone, Mail, MapPin, Send, CheckCircle } from "lucide-react";
-import FadeInSection from "../components/FadeInSection";
+import FadeInSection from "./FadeInSection";
 import TurnstileWidget from "./TurnstileWidget";
 import { isTurnstileConfigured } from "../lib/turnstile";
 import "./Contact.css";

@@ -1,28 +1,41 @@
-import { Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import { useSEO } from "../hooks/useSEO";
+import { getContent } from "@/lib/content";
+import Navbar        from "@/components/Navbar";
+import Footer        from "@/components/Footer";
+import ErrorBoundary from "@/components/ErrorBoundary";
+import BackLink      from "@/components/BackLink";
+import "@/styles/page-header.css";
 import "./PrivacidadePage.css";
 
-export default function PrivacidadePage() {
-  useSEO({
+export const metadata = {
+  title: "Política de Privacidade | JMV Soluções Industriais",
+  description:
+    "Política de privacidade da JMV Soluções Industriais. Saiba como tratamos seus dados pessoais em conformidade com a LGPD.",
+  alternates: { canonical: "/privacidade" },
+  openGraph: {
+    url: "/privacidade",
     title: "Política de Privacidade | JMV Soluções Industriais",
     description:
-      "Política de privacidade da JMV Soluções Industriais. Saiba como tratamos seus dados pessoais em conformidade com a LGPD.",
-    canonical: "https://site-jmv.vercel.app/privacidade",
-  });
+      "Como a JMV Soluções Industriais trata seus dados pessoais, em conformidade com a LGPD.",
+  },
+  twitter: {
+    title: "Política de Privacidade | JMV Soluções Industriais",
+    description:
+      "Como a JMV Soluções Industriais trata seus dados pessoais, em conformidade com a LGPD.",
+  },
+};
+
+export const revalidate = 3600;
+
+export default async function PrivacidadePage() {
+  const { cnpj } = await getContent();
 
   return (
-    <>
+    <ErrorBoundary>
       <Navbar />
 
       <header className="portfolio-page-header">
         <div className="container">
-          <Link to="/" className="portfolio-back-link">
-            <ArrowLeft size={18} />
-            Voltar ao site
-          </Link>
+          <BackLink />
           <span className="section-subtitle">Legal</span>
           <h1 className="section-title">POLÍTICA DE PRIVACIDADE</h1>
           <p className="section-description">
@@ -118,7 +131,7 @@ export default function PrivacidadePage() {
         </div>
       </section>
 
-      <Footer />
-    </>
+      <Footer cnpj={cnpj} />
+    </ErrorBoundary>
   );
 }

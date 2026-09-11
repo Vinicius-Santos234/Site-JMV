@@ -1,6 +1,9 @@
 /* ═══════════════════════════════════════════════════════════
-   PORTFOLIO PAGE  (página /portfolio)
-   Reutiliza os cards/grid de Portfolio.css, importado no componente.
+   CABEÇALHO DE PÁGINA INTERNA
+   Usado por /portfolio e /privacidade. Estava dentro de
+   PortfolioPage.css; no Vite a página de privacidade herdava
+   isto por acaso, porque o bundle era único. No App Router cada
+   rota carrega só o seu CSS, então a dependência virou explícita.
 ═══════════════════════════════════════════════════════════ */
 
 .portfolio-page-header {
@@ -61,33 +64,3 @@
 }
 
 /* ─── FILTROS DE CATEGORIA ─────────────────────────────── */
-
-.portfolio-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 36px;
-}
-
-.portfolio-filter-btn {
-  padding: 8px 18px;
-  border-radius: 999px;
-  border: 1.5px solid #cbd5e1;
-  background: white;
-  color: #475569;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: border-color 0.2s, background 0.2s, color 0.2s;
-}
-
-.portfolio-filter-btn:hover {
-  border-color: #4a8fd4;
-  color: #4a8fd4;
-}
-
-.portfolio-filter-btn--active {
-  background: #4a8fd4;
-  border-color: #4a8fd4;
-  color: white;
-}

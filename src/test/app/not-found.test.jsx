@@ -1,7 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
-import NotFoundPage from '@/pages/NotFoundPage'
+import NotFoundPage from '@/app/not-found'
 
 vi.mock('framer-motion', () => ({
   m: { div: ({ children, ...p }) => <div {...p}>{children}</div> },
@@ -16,10 +15,8 @@ beforeEach(() => {
 
 function renderPage() {
   return render(
-    <MemoryRouter initialEntries={['/404']}>
-      <NotFoundPage />
-    </MemoryRouter>
-  )
+    <NotFoundPage />
+    )
 }
 
 describe('NotFoundPage', () => {
