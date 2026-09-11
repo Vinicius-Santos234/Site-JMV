@@ -2,7 +2,16 @@ import { Resend } from "resend";
 import { isRateLimited } from "@/lib/api/rate-limit";
 import { verifyTurnstile } from "@/lib/api/turnstile-verify";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// O construtor do Resend explode se a chave estiver ausente, e no App Router
+// este módulo é avaliado durante o build ("Collecting page data") — não só a
+// cada requisição, como era na serverless function do Vite. Instanciar aqui
+// fora derrubava o build em qualquer ambiente sem o segredo, como a CI.
+// Preguiçoso: a chave só é exigida quando alguém de fato envia o formulário.
+let resendClient = null;
+function getResend() {
+  if (!resendClient) resendClient = new Resend(process.env.RESEND_API_KEY);
+  return resendClient;
+}
 
 const TO   = "jpsantos@jmv.ind.br";
 const FROM = "Formulário JMV <onboarding@resend.dev>";
@@ -85,7 +94,7 @@ export async function POST(request) {
   }
 
   try {
-    await resend.emails.send({
+    await getResend().emails.send({
       from: FROM,
       to: TO,
       reply_to: email,
