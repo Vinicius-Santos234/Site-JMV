@@ -34,22 +34,49 @@ O código é público de propósito — este README é a leitura principal para 
 
 ## Performance (Lighthouse)
 
-Última medição (mobile, com throttling):
+Medido em produção, mobile com throttling, Lighthouse 13.4.1 (11/09/2026):
 
-| Métrica | Score |
-|---|---|
-| Performance | 89 |
-| Acessibilidade | 95 |
-| Boas práticas | 100 |
-| SEO | 100 |
+| Métrica | `/` | `/portfolio` |
+|---|---|---|
+| Performance | 88 | 89 |
+| Acessibilidade | 95 | 95 |
+| Boas práticas | 100 | 100 |
+| SEO | 100 | 100 |
 
-Build de produção: chunks separados para React, Framer Motion e Lucide; CSS final **~30 kB (6,5 kB gzip)**.
+### Antes e depois da migração, medidos juntos
+
+Comparar com um score antigo **não funciona**: versões diferentes do Lighthouse
+pontuam de formas diferentes, e o mesmo build que marcava 89 em julho marca 77
+com a v13. Para medir o efeito da migração, os dois builds foram servidos lado a
+lado na mesma máquina, com a mesma versão, 3 execuções cada:
+
+| | Vite (`03f90e1`) | Next (`fdc1eb5`) |
+|---|---|---|
+| **Performance** | 76–78 | **82–85** |
+| FCP | 2,4 s | **1,7 s** |
+| LCP | 4,8 s | **4,1 s** |
+| TBT | 134–204 ms | 120–150 ms |
+| Speed Index | 2,5 s | 2,6 s |
+| CLS | 0 | 0 |
+
+A migração vale **~6 pontos**, vindos de FCP e LCP: o HTML já chega pintável, em
+vez de esperar o bundle React montar a página.
+
+> **O que não aconteceu:** o salto grande que se poderia esperar de sair do CSR.
+> O SSG conserta o **FCP**, que pesa 10% do score, enquanto a hidratação do
+> payload RSC piora um pouco o **TBT**, que pesa 30%. Sair do CSR não sobe o
+> placar sozinho — troca uma métrica leve por uma pesada.
+>
+> Hoje o maior custo de main-thread nem é JavaScript: **Style & Layout com
+> ~859 ms**, contra ~490 ms de execução de script. O próximo alvo de performance
+> é o CSS, não o bundle.
 
 **Otimizações do caminho de renderização** (detalhes em [Destaques técnicos #6](#6-performance-atacando-o-caminho-de-renderização)):
 
-- **Imagem LCP com `preload`** no HTML inicial — o navegador começa a baixar o herói sem esperar o bundle React.
+- **Renderização estática (SSG)** com revalidação de 1 h — o HTML sai pronto, com o conteúdo do CMS dentro.
+- **Imagem LCP com `priority`** (`next/image`) — emite o preload que antes era escrito à mão no `index.html`.
 - **Fontes self-hosted** com `font-display: swap` — elimina o request render-blocking do Google Fonts.
-- **Imagens redimensionadas** (Sharp) ao tamanho de exibição — logo −52%, herói −35%.
+- **Imagens otimizadas** por `next/image` (AVIF/WebP, resize responsivo), inclusive as que vêm da CDN do Sanity.
 - **Scripts de terceiros sob demanda** — o CAPTCHA só carrega quando o formulário se aproxima da viewport.
 
 ---
@@ -116,13 +143,15 @@ Cada rota exporta sua própria `metadata` (título, description, canonical, Open
 ### 6. Performance: atacando o caminho de renderização
 Numa SPA, o gargalo raramente é "código pesado" — o relatório mostrava `TBT` e `CLS` perfeitos, mas `FCP`/`LCP` altos. O HTML inicial é um `<div id="root">` vazio, então nada pinta até o bundle baixar, parsear e renderizar. As correções miram **quando** o navegador descobre e baixa os recursos críticos:
 
-- **Imagem LCP descobrível:** o herói vive em `/public` e é pré-carregado com `<link rel="preload" as="image" fetchpriority="high">` no `index.html`. Antes, sendo importada pelo React, ela só era requisitada **depois** de ~130 kB de JS.
+- **Imagem LCP descobrível:** o herói é servido de `/public` com `priority` no `next/image`, que emite o preload. Antes da rodada de otimização, sendo importada pelo React, ela só era requisitada **depois** de ~130 kB de JS.
 - **Fontes self-hosted:** os `.woff2` são servidos do próprio domínio (`/fonts`), declarados via `@font-face` com `font-display: swap`. Elimina o `<link>` render-blocking para o Google Fonts — que, com o CSP restritivo do projeto (`script-src` sem `'unsafe-inline'`), não podia ser contornado pelo truque de `onload` inline.
 - **Imagens no tamanho certo:** redimensionadas com **Sharp** para ~2× as dimensões de exibição (retina), com `width`/`height` explícitos para não gerar layout shift.
 - **Terceiros sob demanda:** o Cloudflare Turnstile carregava centenas de kB de challenge no load inicial; passou a montar via `IntersectionObserver` só quando a seção de contato se aproxima — o token fica pronto antes do envio, sem custo na primeira pintura.
 - **Framer Motion enxuto:** migrado para `LazyMotion` + `m` (em vez de `motion`), carregando só as features de animação realmente usadas (`domAnimation`). O chunk de animação caiu de ~132 kB para ~86 kB.
 
-**Por quê:** score de performance é dominado por FCP/LCP, e ambos dependem do *critical rendering path*, não de quanta CPU o JS gasta. Preload da imagem certa e fontes locais movem a agulha muito mais do que microtuning de JavaScript.
+**Por quê:** FCP e LCP dependem do *critical rendering path*, não de quanta CPU o JS gasta. Preload da imagem certa e fontes locais movem a agulha muito mais do que microtuning de JavaScript.
+
+**A correção que a migração trouxe a esse raciocínio (09/2026):** "o score é dominado por FCP/LCP" está errado como regra geral. Na ponderação atual do Lighthouse, **TBT pesa 30% e FCP pesa 10%** — o caminho de renderização domina enquanto ele é o gargalo, e deixa de dominar quando você o conserta. Foi o que aconteceu ao sair do CSR: FCP melhorou muito, TBT piorou um pouco, e o score andou menos do que a diferença de experiência sugere.
 
 ---
 
