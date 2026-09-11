@@ -19,3 +19,28 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+## Escopo desta licença / Scope of this license
+
+**PT-BR.** A licença MIT acima aplica-se ao **código-fonte** deste repositório.
+Ela **não** abrange, e nenhum direito é concedido sobre:
+
+- A marca, o nome e o logotipo da **JMV Soluções Industriais**;
+- Os **logotipos de empresas terceiras** em `src/assets/clients/` (entre elas
+  Petrobras, Raízen, Bunge, Cutrale, Ipiranga e demais), que são marcas
+  registradas de seus respectivos titulares e aparecem aqui apenas como
+  referência a clientes atendidos;
+- As **fotografias de obras e projetos** (`src/assets/portfolio/`,
+  `public/welder.webp`) e os **textos institucionais** do site.
+
+Esses materiais são de seus respectivos titulares e estão neste repositório
+somente para que o site funcione. Reutilizá-los exige autorização de quem os
+detém.
+
+**EN.** The MIT license above covers the **source code** only. It grants no
+rights over the JMV Soluções Industriais brand, over third-party company logos
+in `src/assets/clients/` (registered trademarks of their respective owners,
+shown here solely as client references), or over the project photography and
+marketing copy. Those remain the property of their respective owners.

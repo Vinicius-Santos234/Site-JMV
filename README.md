@@ -106,15 +106,19 @@ vez de esperar o bundle React montar a página.
 ## Destaques técnicos (as decisões)
 
 ### 1. Segurança real na API de contato
-O endpoint `api/contact.js` (Serverless Function) foi endurecido além do trivial:
+O endpoint `src/app/api/contact/route.js` (Route Handler) foi endurecido além do trivial:
 - **Honeypot validado no servidor** — o campo isca é checado no backend, não só no cliente (bypass via POST direto não passa).
 - **Rate limiting na borda** — regra do Vercel Firewall (5 req/600s por IP em `POST /api/contact`), aplicada antes de a requisição chegar à função. Sem banco e sem estado que expire. Ver [Rate limiting](#rate-limiting).
 - **Limites de tamanho** server-side em todos os campos.
 - **Sanitização anti-injeção** de quebras de linha no `subject` (evita header injection de e-mail).
 - **Checagem de origem** (`Origin` vs. host), agnóstica ao domínio.
-- **CAPTCHA invisível** (Cloudflare Turnstile) verificado no servidor — barra bots sem atrito para o usuário; desativa-se sozinho se as chaves não estiverem configuradas.
+- **CAPTCHA invisível** (Cloudflare Turnstile) verificado no servidor — barra bots sem atrito para o usuário. Em desenvolvimento ele se desliga sem as chaves; **em produção, chave ausente é erro, não modo degradado** (ver abaixo).
+- **Validação de tipo antes de validação de conteúdo** — um corpo como `{"nome": 123}` fazia `.trim()` lançar antes de chegar ao rate limit e ao CAPTCHA.
+- **Falha de envio nunca vira sucesso** — o SDK do Resend não lança em erro de API, devolve `{ data, error }`. Sem checar isso, chave inválida respondia "enviado com sucesso" e o orçamento sumia.
 
-**Por quê:** um formulário público é a superfície de ataque mais óbvia de um site institucional. Validar só no front é teatro de segurança. E rate limiting in-memory não basta em serverless — a memória é por instância e some no cold start; por isso o estado do limitador vive no KV.
+**Por quê:** um formulário público é a superfície de ataque mais óbvia de um site institucional. Validar só no front é teatro de segurança.
+
+> **A lição mais cara do projeto, em 09/2026:** defesa que degrada em silêncio para de proteger sem avisar. O rate limiting ficou **semanas sem efeito** porque o banco do Upstash foi removido por inatividade e o código caiu no fallback em memória — nada quebrou, o site seguiu respondendo 200. O mesmo padrão existia no CAPTCHA, que se desligava sozinho sem o segredo. Hoje: o limite vive na borda (sem estado para expirar) e o CAPTCHA recusa em produção em vez de liberar.
 
 ### 2. CMS headless com fallback (Sanity)
 O portfólio deixou de ser hardcoded em `src/data/` e passou a ser gerenciado no **Sanity Studio** — o cliente adiciona/edita projetos e imagens sem tocar em código nem esperar deploy.
@@ -136,9 +140,11 @@ Cada rota exporta sua própria `metadata` (título, description, canonical, Open
 **Por quê:** para um site que depende de ser achado no Google por buscas locais/técnicas, structured data melhora a elegibilidade a rich results e Knowledge Panel.
 
 ### 5. Testes + CI como rede de segurança
-**109 testes** (19 arquivos) cobrindo componentes, hooks, páginas, dados e a **API de contato** (método, origem, honeypot, tamanho, sanitização, rate limit, sucesso e falha). O CI (GitHub Actions) roda lint + testes + build a cada push.
+**106 testes** (19 arquivos) cobrindo componentes, páginas, dados e a **API de contato** (método, origem, honeypot, tipos, tamanho, sanitização, rate limit, recusa do provedor, sucesso e falha). O CI (GitHub Actions) roda lint + testes + build a cada push.
 
 **Por quê:** testes não são burocracia — são o que permite refatorar (ex.: a migração para o CMS) com confiança de que nada quebrou.
+
+E eles pegam o que revisão não pega: no conserto do escape de JSON-LD, uma barra invertida a menos fazia `"<"` virar o próprio `<`, e o replace virava um no-op perfeitamente silencioso. O diff parecia certo; só o teste reprovou.
 
 ### 6. Performance: atacando o caminho de renderização
 Numa SPA, o gargalo raramente é "código pesado" — o relatório mostrava `TBT` e `CLS` perfeitos, mas `FCP`/`LCP` altos. O HTML inicial é um `<div id="root">` vazio, então nada pinta até o bundle baixar, parsear e renderizar. As correções miram **quando** o navegador descobre e baixa os recursos críticos:
@@ -194,8 +200,8 @@ jmv-site/
 │   ├── lib/
 │   │   ├── content.js       # Busca do CMS no servidor (server-only)
 │   │   ├── sanity.js        # Client + urlFor
-│   │   ├── seo.js           # BASE_URL, schemas, título/descrição
-│   │   └── api/             # rate-limit, turnstile-verify
+│   │   ├── seo.js           # BASE_URL, schemas e socialMetadata() por rota
+│   │   └── api/             # rate-limit (canário), turnstile-verify
 │   ├── styles/              # base.css global + page-header.css
 │   ├── test/                # Testes (Vitest + Testing Library)
 │   ├── utils/               # scrollToSection, genId
@@ -285,17 +291,17 @@ npm run test:coverage # Relatório de cobertura
 
 ## Testes
 
-**101 testes** em 18 arquivos, cobrindo componentes, páginas, dados e a API de contato.
+**106 testes** em 19 arquivos, cobrindo componentes, páginas, dados e a API de contato.
 
 ```bash
 npm run test:run
 ```
 
 Áreas cobertas:
-- **Componentes:** `Contact`, `CookieBanner`, `FAQ`, `FadeInSection`, `FloatingButtons`, `Portfolio`, `PortfolioGrid`, `Quality`, `Services`, `Stats`, `Testimonials`
+- **Componentes:** `Contact`, `CookieBanner`, `FAQ`, `FadeInSection`, `FloatingButtons`, `JsonLd` (escape de conteúdo do CMS), `Portfolio`, `PortfolioGrid`, `Quality`, `Services`, `Stats`, `Testimonials`
 - **Hooks:** `useCountUp`
 - **Páginas:** `not-found`, `/portfolio` (inclusive a metadata da rota), `/privacidade`
-- **API:** `contact` (origem, honeypot, tamanho, sanitização, rate limit, CAPTCHA, sucesso/erro)
+- **API:** `contact` (origem, honeypot, tipos, tamanho, sanitização, rate limit, CAPTCHA, recusa do provedor, sucesso/erro)
 - **Dados:** `services`, `stats`
 
 ---
@@ -318,6 +324,15 @@ Pipeline no GitHub Actions a cada push/PR para `main`: **Lint → Testes → Bui
 (16) 99741-8402 · jpsantos@jmv.ind.br · Matão — SP
 
 ---
+
+## Licença
+
+O **código-fonte** deste repositório está sob [MIT](LICENSE).
+
+A licença **não** cobre a marca da JMV Soluções Industriais, os logotipos de
+empresas terceiras em `src/assets/clients/` (marcas registradas de seus
+titulares, exibidas como referência de clientes atendidos), nem as fotografias
+de obras e os textos institucionais. Detalhes em [LICENSE](LICENSE).
 
 ## Autor
 
