@@ -42,3 +42,7 @@ Allow: /
 Disallow: /node_modules/
 
 Sitemap: https://site-jmv.vercel.app/sitemap.xml
+
+# Resumo estruturado para assistentes de IA (convencao llms.txt)
+# https://llmstxt.org/
+LLM-Content: https://site-jmv.vercel.app/llms.txt

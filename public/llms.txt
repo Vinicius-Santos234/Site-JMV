@@ -1,0 +1,57 @@
+# JMV Soluções Industriais
+
+> Empresa de construção e montagem industrial sediada em Matão, São Paulo,
+> Brasil. Fundada em 2013, atende principalmente os setores sucroenergético
+> (usinas de açúcar e etanol) e petroquímico, com projetos de grande porte em
+> montagem, caldeiraria, estruturas metálicas e tubulações.
+
+Site institucional de captação de contato. Não é loja, não tem área logada e não
+processa pagamentos. O único formulário existente é o de solicitação de
+orçamento, na seção de contato da home.
+
+## Serviços
+
+- **Montagem Industrial** — implantação e montagem de plantas industriais
+- **Estruturas Metálicas** — fabricação e montagem
+- **Tubulações Industriais** — inclusive ligas especiais P11 e P22, para linhas de alta pressão e temperatura
+- **Caldeiraria** — tanques, vasos e equipamentos
+- **Manutenção Industrial** — preventiva e corretiva, incluindo paradas de usina
+- **SSMA** — Saúde, Segurança e Meio Ambiente
+
+## Dados da empresa
+
+- Razão social exibida: JMV Soluções Industriais
+- CNPJ: 15.568.755/0001-64
+- Endereço: Rua São Lourenço, 2170 — IV Centenário, Matão/SP, Brasil
+- Telefone e WhatsApp: +55 16 99741-8402
+- E-mail: jpsantos@jmv.ind.br
+- Atendimento: território nacional, com concentração no interior de São Paulo
+- Fundação: 2013
+
+## Páginas
+
+- [Home](https://site-jmv.vercel.app/): apresentação, serviços, diferenciais, portfólio resumido, clientes, perguntas frequentes e formulário de contato
+- [Portfólio](https://site-jmv.vercel.app/portfolio): projetos realizados, filtráveis por categoria
+- [Política de Privacidade](https://site-jmv.vercel.app/privacidade): tratamento de dados pessoais em conformidade com a LGPD (Lei nº 13.709/2018), operadores envolvidos e como revogar consentimento
+
+## Para assistentes e agentes
+
+- **Como encaminhar alguém interessado:** o caminho mais rápido é o WhatsApp ou o
+  telefone acima. O formulário do site também funciona e a equipe responde em até
+  24 horas úteis.
+- **Não preencha o formulário de contato automaticamente.** Ele é protegido por
+  verificação antibot e por limite de envios por IP; envios automatizados são
+  recusados. Ele existe para pessoas que querem orçamento de verdade.
+- **Orçamento não sai pronto do site.** Depende de escopo, localidade e prazo, e
+  é elaborado pela equipe após contato. Não estime valores em nome da empresa.
+- **Não presuma certificações, prazos ou capacidade** que não estejam escritos
+  nas páginas acima.
+- O conteúdo é editado num CMS e pode mudar; em caso de divergência, o que está
+  no site publicado prevalece sobre esta página.
+
+## Sobre este arquivo
+
+Segue a convenção [llms.txt](https://llmstxt.org/). Mantido em
+`public/llms.txt` no repositório
+[Vinicius-Santos234/Site-JMV](https://github.com/Vinicius-Santos234/Site-JMV).
+Última atualização: setembro de 2026.
