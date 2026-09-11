@@ -227,3 +227,22 @@ img {
     border-radius: 10px;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   MOVIMENTO REDUZIDO
+   Quem pediu menos movimento no sistema operacional recebe a
+   página parada. São 6 animações infinitas (o pulso do
+   WhatsApp, o brilho e as 4 faíscas da solda) que, sem isto,
+   rodam para sempre — custo de bateria e de main-thread para
+   quem explicitamente não quer o efeito.
+═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
