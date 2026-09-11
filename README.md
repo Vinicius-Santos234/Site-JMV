@@ -38,7 +38,7 @@ Medido em produção, mobile com throttling, Lighthouse 13.4.1 (11/09/2026):
 
 | Métrica | `/` | `/portfolio` |
 |---|---|---|
-| Performance | 88 | 89 |
+| Performance | 88–91 | 89 |
 | Acessibilidade | 95 | 95 |
 | Boas práticas | 100 | 100 |
 | SEO | 100 | 100 |
@@ -67,9 +67,19 @@ vez de esperar o bundle React montar a página.
 > payload RSC piora um pouco o **TBT**, que pesa 30%. Sair do CSR não sobe o
 > placar sozinho — troca uma métrica leve por uma pesada.
 >
-> Hoje o maior custo de main-thread nem é JavaScript: **Style & Layout com
-> ~859 ms**, contra ~490 ms de execução de script. O próximo alvo de performance
-> é o CSS, não o bundle.
+> **Correção (11/09, depois de medir melhor):** uma leitura anterior deste README
+> dizia que "o próximo alvo é o CSS", porque `Style & Layout` era a maior fatia
+> do main-thread. Os números não sustentam: são **28 KB de CSS, 229 seletores e
+> 539 elementos** — enxuto demais para produzir esse tempo. Aquela métrica soma o
+> **trace inteiro**, incluindo re-layout durante a hidratação e as animações; não
+> é o custo de casar seletores.
+>
+> O que de fato limita hoje é `elementRenderDelay` de ~2 s no LCP, **com a imagem
+> já baixada em 175 ms e nada a escondendo no HTML**. Ou seja: main-thread
+> ocupado hidratando — 14 Client Components e `FadeInSection` em 12 deles. O
+> caminho seria trocar o `whileInView` do Framer Motion por animação de rolagem
+> em CSS nativo, mas fica registrado como **hipótese a medir**, não como
+> diagnóstico fechado.
 
 **Otimizações do caminho de renderização** (detalhes em [Destaques técnicos #6](#6-performance-atacando-o-caminho-de-renderização)):
 
