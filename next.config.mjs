@@ -12,13 +12,21 @@
 // Aceito aqui porque o site é institucional — sem login, sem sessão, sem
 // conteúdo de terceiros renderizado. Se um dia houver área logada, trocar
 // por nonce e pagar o custo do dinâmico.
+//
+// `'unsafe-eval'` e o websocket entram SÓ em desenvolvimento. O React em modo
+// dev usa eval() para remontar stack traces, e o Turbopack fala por WebSocket
+// para o hot reload — sem isso o console enche de "eval() is not supported in
+// this environment". Em produção nenhum dos dois aparece: como diz a própria
+// mensagem do React, "React will never use eval() in production mode".
+const DEV = process.env.NODE_ENV === "development";
+
 const CSP = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://va.vercel-scripts.com https://challenges.cloudflare.com",
+  `script-src 'self' 'unsafe-inline'${DEV ? " 'unsafe-eval'" : ""} https://www.googletagmanager.com https://va.vercel-scripts.com https://challenges.cloudflare.com`,
   "style-src 'self' 'unsafe-inline'",
   "font-src 'self'",
   "img-src 'self' data: blob: https:",
-  "connect-src 'self' https://vitals.vercel-insights.com https://www.google-analytics.com https://*.sanity.io https://challenges.cloudflare.com",
+  `connect-src 'self'${DEV ? " ws: http://localhost:*" : ""} https://vitals.vercel-insights.com https://www.google-analytics.com https://*.sanity.io https://challenges.cloudflare.com`,
   "frame-src https://challenges.cloudflare.com",
   "frame-ancestors 'none'",
   "object-src 'none'",

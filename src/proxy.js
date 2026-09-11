@@ -2,9 +2,22 @@
 // `proxy` e passou a rodar no runtime Node por padrão (não mais Edge) — aqui
 // não muda nada, porque a checagem é só string de header.
 export const config = {
-  // _next/* entrou no negativo: no App Router os assets do build passam por
-  // aqui, e não faz sentido rodar a peneira de user-agent em cada chunk.
-  matcher: ['/((?!_next|_vercel|favicon\\.ico|robots\\.txt|sitemap\\.xml).*)'],
+  // So rotas navegaveis passam por aqui. Ficam de fora:
+  //
+  //   _next/*, _vercel/*  - assets do build; nao faz sentido peneirar cada chunk.
+  //   qualquer caminho com extensao (.webp, .ico, .txt, .xml, .woff2...)
+  //
+  // A segunda exclusao conserta um bug real: o otimizador de imagem do Next
+  // busca o arquivo de origem (`/welder.webp`) numa requisicao interna **sem
+  // user-agent**, e a regra de "sem UA = bloqueia" respondia 403. O otimizador
+  // recebia text/plain em vez de imagem e devolvia 400 - a imagem do heroi nao
+  // aparecia em `next start`. Nao acontecia no Vite porque nao havia otimizador
+  // no meio, e nao aparece na Vercel porque la a otimizacao roda na borda, fora
+  // desta cadeia. Ou seja: quebrava so no local.
+  //
+  // Peneirar asset estatico nunca foi o objetivo - o alvo sao scanners batendo
+  // em paginas e endpoints, e esses seguem cobertos (inclusive /api/*).
+  matcher: ['/((?!_next|_vercel|.*\\.[a-zA-Z0-9]+$).*)'],
 };
 
 const BLOCKED_UA_PATTERNS = [
