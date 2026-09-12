@@ -19,7 +19,7 @@ export const revalidate = 3600;
 // As 9 queries GROQ que saíam do navegador (uma por hook) viram UMA só, no
 // servidor. Era uma pendência anotada na migração do CMS de 08/07.
 const QUERY = `{
-  "services":     *[_type == "service"]      | order(order asc) { _id, iconName, title, description },
+  "services":     *[_type == "service"]      | order(order asc) { _id, iconName, title, description, norms },
   "stats":        *[_type == "stat"]         | order(order asc) { _id, number, label },
   "clients":      *[_type == "client"]       | order(order asc) { _id, name, logo },
   "testimonials": *[_type == "testimonial"]  | order(order asc) { _id, quote, author, role, company },
@@ -97,8 +97,22 @@ function transformar(res) {
   const projetosDoCms = orFallback(res.projects, null, mapProject);
 
   return {
+    // `norms` é opcional no Studio: serviço sem normas preenchidas renderiza o
+    // card sem a régua de chips, em vez de quebrar no `.map` do componente.
+    //
+    // O filtro não é paranoia: `Array.isArray` sozinho aprova um array de
+    // objetos, e um `{_type: ...}` chegaria até `<li>{norm}</li>`, onde React
+    // lança "Objects are not valid as a React child" e derruba a home inteira.
+    // O CMS não tem como produzir isso hoje, mas o schema pode mudar e a
+    // renderização do site não é o lugar de descobrir. Strings vazias também
+    // caem aqui — virariam um chip em branco, que é pior que nenhum chip.
     services: orFallback(res.services, FALLBACK.services, (d) => ({
       id: d._id, icon: d.iconName, title: d.title, description: d.description,
+      norms: Array.isArray(d.norms)
+        ? d.norms
+            .filter((n) => typeof n === "string" && n.trim() !== "")
+            .map((n) => n.trim())
+        : [],
     })),
     stats: orFallback(res.stats, FALLBACK.stats, (d) => ({
       id: d._id, number: d.number, label: d.label,

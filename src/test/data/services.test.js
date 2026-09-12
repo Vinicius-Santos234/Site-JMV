@@ -26,4 +26,40 @@ describe('SERVICES', () => {
       expect(service.description.trim()).not.toBe('')
     })
   })
+
+  /* As normas do CMS são validadas pelo schema do Studio. Estas aqui não —
+     src/data é o fallback, editado direto no arquivo, sem ninguém olhando.
+     Os limites abaixo são os mesmos de studio/schemaTypes/service.js, e existem
+     para o fallback não renderizar o que o CMS proibiria. */
+  describe('normas (chips)', () => {
+    it('cada serviço tem no máximo 3 normas', () => {
+      SERVICES.forEach((service) => {
+        expect((service.norms ?? []).length).toBeLessThanOrEqual(3)
+      })
+    })
+
+    it('normas são strings não vazias', () => {
+      SERVICES.forEach((service) => {
+        (service.norms ?? []).forEach((norm) => {
+          expect(typeof norm).toBe('string')
+          expect(norm.trim()).not.toBe('')
+        })
+      })
+    })
+
+    it('normas cabem no chip sem corte (26 caracteres)', () => {
+      SERVICES.forEach((service) => {
+        (service.norms ?? []).forEach((norm) => {
+          expect(norm.length).toBeLessThanOrEqual(26)
+        })
+      })
+    })
+
+    it('não repete norma dentro do mesmo serviço', () => {
+      SERVICES.forEach((service) => {
+        const norms = service.norms ?? []
+        expect(new Set(norms).size).toBe(norms.length)
+      })
+    })
+  })
 })
