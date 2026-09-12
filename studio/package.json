@@ -3,6 +3,9 @@
   "private": true,
   "version": "1.0.0",
   "description": "Sanity Studio — CMS de conteúdo do site JMV",
+  "engines": {
+    "node": ">=22.12"
+  },
   "scripts": {
     "dev": "sanity dev",
     "start": "sanity start",
@@ -10,9 +13,9 @@
     "deploy": "sanity deploy"
   },
   "dependencies": {
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "sanity": "^3.99.0",
-    "styled-components": "^6.1.13"
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "sanity": "^6.13.2",
+    "styled-components": "^6.1.15"
   }
 }
