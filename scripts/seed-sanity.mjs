@@ -117,6 +117,7 @@ async function run() {
       title: s.title,
       description: s.description,
       iconName: s.icon,
+      norms: s.norms ?? [],
       order: i + 1,
     });
   }

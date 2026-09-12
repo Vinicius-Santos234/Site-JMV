@@ -40,5 +40,9 @@ dist-ssr
 # Vercel CLI (link local do projeto)
 .vercel
 
-.vercel
-.env*
+# ⚠️ Aqui havia um `.env*` solto, que era largo demais: ele também casa com
+# `.env.example`, que PRECISA ser versionado — é o arquivo que documenta quais
+# variáveis o projeto espera. Hoje passava despercebido porque o `.env.example`
+# já estava rastreado (o gitignore não afeta arquivo no índice), mas sumiria no
+# primeiro clone que o removesse do índice. As três regras da seção acima
+# (`.env`, `.env.local`, `.env.*.local`) já cobrem todo arquivo com segredo.
