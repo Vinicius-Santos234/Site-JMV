@@ -21,8 +21,142 @@
 }
 
 .service-card {
-  transition: 0.35s;
+  transition: transform 0.35s, box-shadow 0.35s, border-color 0.35s;
   position: relative;
+}
+
+/* ─── SPOTLIGHT (luz radial que segue o cursor) ────────── */
+
+/* O gradiente é uma camada própria em vez de `background` do card: o card já
+   tem fundo branco sólido e trocá-lo no hover forçaria repintura da caixa
+   inteira a cada frame do mousemove. Aqui só a opacidade e a posição do
+   gradiente mudam, e o ::after fica fora do fluxo. */
+.spotlight-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    260px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(56, 189, 248, 0.16),
+    rgba(74, 143, 212, 0.06) 40%,
+    transparent 70%
+  );
+}
+
+.spotlight-card:hover::after {
+  opacity: 1;
+}
+
+/* ⚠️ O CONTEÚDO PRECISA FICAR ACIMA DA LUZ — isto é contraste, não estética.
+
+   Pseudo-elemento posicionado pinta DEPOIS do conteúdo em fluxo (passo 6 da
+   ordem de pintura, contra o passo 3 dos blocos não posicionados). Sem estas
+   regras a camada de luz cobre o texto também, e como ela empurra fundo E
+   tipografia na direção do mesmo ciano, o contraste desaba:
+
+     chip  #2563eb   4,70:1  →  3,61:1
+     texto #666      5,74:1  →  4,34:1
+
+   Os dois abaixo do mínimo de 4,5:1 da WCAG AA, e só enquanto o cursor está
+   sobre o card — some assim que se tenta conferir parado. Com o conteúdo por
+   cima, a luz ilumina a superfície do card e não mexe em contraste nenhum. */
+.spotlight-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Os dois decorativos são absolutos e precisam continuar sendo. Especificidade
+   (0,2,0) contra (0,1,0) da regra acima: vence independente da ordem no
+   arquivo — de propósito, porque empate resolvido por ordem já quebrou o menu
+   deste projeto uma vez. */
+.spotlight-card > .service-index,
+.spotlight-card > .card-crosshairs {
+  position: absolute;
+}
+
+.service-card:hover {
+  border-color: rgba(56, 189, 248, 0.35);
+}
+
+/* ─── CANTONEIRAS DE MIRA (marcadores de canto, estilo CAD) ─
+
+   Fica aqui, e não em Quality.css, pela mesma razão que a base de card:
+   Services.css é o arquivo compartilhado entre Serviços e Qualidade. Declarar
+   a classe aqui não a aplica a ninguém — quem decide é a marcação. Hoje só
+   Qualidade usa; se o Portfólio quiser, já está disponível.
+
+   São dois elementos de duas pontas cada porque um pseudo-elemento não desenha
+   quatro cantos, e os ::before/::after do card já estão ocupados (a barra do
+   topo e o spotlight). Os lados que não formam o "L" ficam com a borda
+   `transparent` em vez de largura zero: assim a caixa continua 13×13 e os
+   quatro cantos batem no mesmo alinhamento. */
+.card-crosshairs {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  height: 0;
+  pointer-events: none;
+  /* Acima do gradiente do spotlight, para a marca técnica continuar nítida
+     quando o card acende. */
+  z-index: 1;
+}
+
+.card-crosshairs--top    { top: 14px; }
+.card-crosshairs--bottom { bottom: 14px; }
+
+/* A cor vai por custom property de propósito. O caminho óbvio — trocar
+   `border-color` no hover — desenha um QUADRADO em vez do "L": o atalho
+   repinta os quatro lados, inclusive os dois que estavam `transparent`
+   formando o canto, e a regra de hover é mais específica que as de canto.
+   Mexendo só na variável, os `border-*-color: transparent` abaixo continuam
+   valendo e o "L" se mantém. */
+.card-crosshairs::before,
+.card-crosshairs::after {
+  content: "";
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  border: 1px solid var(--crosshair-color, rgba(74, 143, 212, 0.3));
+  transition: border-color 0.35s ease;
+}
+
+.card-crosshairs--top::before {
+  top: 0;
+  left: 0;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+}
+
+.card-crosshairs--top::after {
+  top: 0;
+  right: 0;
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+}
+
+.card-crosshairs--bottom::before {
+  bottom: 0;
+  left: 0;
+  border-right-color: transparent;
+  border-top-color: transparent;
+}
+
+.card-crosshairs--bottom::after {
+  bottom: 0;
+  right: 0;
+  border-left-color: transparent;
+  border-top-color: transparent;
+}
+
+/* Mesma resposta de hover do `//` dos Serviços: as duas seções acendem no
+   mesmo ciano, então lidas como um sistema só. */
+.service-card:hover .card-crosshairs::before,
+.service-card:hover .card-crosshairs::after {
+  --crosshair-color: rgba(56, 189, 248, 0.85);
 }
 
 .service-card::before {
@@ -76,6 +210,88 @@
   font-size: 15px;
 }
 
+/* ─── NUMERAÇÃO TÉCNICA  `01 //` ───────────────────────── */
+
+/* Absoluto de propósito: entrando no fluxo, empurraria o ícone para baixo e
+   os cards de Serviços deixariam de alinhar com os de Qualidade, que não têm
+   numeração e compartilham a mesma base de card. */
+.service-index {
+  position: absolute;
+  top: 24px;
+  right: 28px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  line-height: 1;
+  letter-spacing: 1px;
+  color: rgba(12, 28, 48, 0.16);
+  transition: color 0.35s ease;
+  user-select: none;
+}
+
+.service-index i {
+  font-style: normal;
+  margin-left: 4px;
+  color: rgba(74, 143, 212, 0.4);
+  transition: color 0.35s ease;
+}
+
+.service-card:hover .service-index {
+  color: rgba(12, 28, 48, 0.3);
+}
+
+.service-card:hover .service-index i {
+  color: #38bdf8;
+}
+
+/* ─── CHIPS DE NORMAS ──────────────────────────────────── */
+
+/* `margin-top: auto` gruda a régua na base mesmo com descrições de alturas
+   diferentes — daí o card precisar ser coluna flex. */
+.service-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.service-norms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 22px;
+  list-style: none;
+}
+
+.norm-chip {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: #2563eb;
+  background: rgba(74, 143, 212, 0.09);
+  border: 1px solid rgba(74, 143, 212, 0.18);
+  border-radius: 6px;
+  padding: 5px 10px;
+  transition: background 0.35s, border-color 0.35s;
+
+  /* `nowrap` é obrigatório: "ASME B31.3" quebrado em duas linhas deixa de ser
+     uma designação e vira duas palavras soltas. Mas nowrap sozinho transborda
+     o card com um valor longo vindo do Studio, e aí o estrago é no layout, não
+     só no chip. O par max-width + ellipsis dá o corte: o texto some com
+     reticências dentro do próprio chip e a régua continua alinhada.
+
+     O schema limita a 26 caracteres; isto é a rede para o que já estiver
+     gravado, que a validação nova não alcança. */
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.service-card:hover .norm-chip {
+  background: rgba(56, 189, 248, 0.14);
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
 /* ─── RESPONSIVE  (afeta services + quality) ───────────── */
 
 @media (min-width: 1440px) {
@@ -127,5 +343,33 @@
   .quality-card p {
     font-size: 17px;
     line-height: 1.7;
+  }
+
+  .service-index {
+    top: 34px;
+    right: 40px;
+    font-size: 36px;
+  }
+
+  .norm-chip {
+    font-size: 13.5px;
+    padding: 7px 13px;
+    border-radius: 8px;
+  }
+
+  /* O card cresce para 24px de raio nesta faixa; a cantoneira precisa recuar
+     junto, senão encosta na curva do canto. */
+  .card-crosshairs {
+    left: 22px;
+    right: 22px;
+  }
+
+  .card-crosshairs--top    { top: 22px; }
+  .card-crosshairs--bottom { bottom: 22px; }
+
+  .card-crosshairs::before,
+  .card-crosshairs::after {
+    width: 18px;
+    height: 18px;
   }
 }
