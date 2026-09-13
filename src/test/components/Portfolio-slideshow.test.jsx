@@ -114,3 +114,73 @@ describe('Portfolio — a animação não pode ser cortada por timer antigo', ()
     vi.useRealTimers()
   })
 })
+
+/**
+ * Teto de 6 e ordem por data de cadastro (pedido de 13/09/2026): a home lidera
+ * com o que entrou por último no Studio, para mudar sozinha conforme o
+ * portfólio cresce, e o custo de imagem não acompanha esse crescimento.
+ */
+function projetosComData(quantos) {
+  return Array.from({ length: quantos }, (_, i) => ({
+    id: i + 1,
+    placeholder: false,
+    category: 'Montagem',
+    image: `/p${i + 1}.jpg`,
+    title: `Projeto ${i + 1}`,
+    client: `Cliente ${i + 1}`,
+    year: 2020 + i,
+    // o índice 0 é o mais ANTIGO; o último da lista é o mais recente
+    createdAt: `2026-01-${String(i + 1).padStart(2, '0')}T00:00:00Z`,
+  }))
+}
+
+describe('Portfolio — teto de 6 e ordem por data de cadastro', () => {
+  it('mostra no máximo 6 slides mesmo com 10 projetos', () => {
+    const { container } = render(<Portfolio projects={projetosComData(10)} />)
+    expect(screen.getByRole('status')).toHaveTextContent('Projeto 1 de 6')
+    expect(container.querySelectorAll('.slideshow-dot')).toHaveLength(6)
+  })
+
+  it('lidera com o cadastrado mais recentemente', () => {
+    render(<Portfolio projects={projetosComData(10)} />)
+    // o mais recente é o Projeto 10
+    expect(screen.getByRole('status')).toHaveTextContent('Projeto 10')
+  })
+
+  it('sem createdAt, preserva a ordem recebida do Studio', () => {
+    // desestruturar para descartar deixaria uma variável não usada, que o
+    // eslint deste projeto trata como erro
+    const semData = projetosComData(8).map((p) => {
+      const copia = { ...p }
+      delete copia.createdAt
+      return copia
+    })
+    render(<Portfolio projects={semData} />)
+    expect(screen.getByRole('status')).toHaveTextContent('Projeto 1 —')
+  })
+
+  it('monta só a janela de vizinhos, e ela cresce ao navegar', async () => {
+    const { container } = render(<Portfolio projects={projetosComData(10)} />)
+    const montados = () => container.querySelectorAll('.slideshow-card').length
+
+    // atual + um vizinho de cada lado
+    expect(montados()).toBe(3)
+
+    await userEvent.click(screen.getByRole('button', { name: /próximo projeto/i }))
+    // o vizinho novo entra e nenhum sai — é isso que evita a piscada na volta
+    expect(montados()).toBe(4)
+  })
+
+  it('nunca desmonta um slide já visitado', async () => {
+    const { container } = render(<Portfolio projects={projetosComData(10)} />)
+    const proximo = screen.getByRole('button', { name: /próximo projeto/i })
+    const anterior = screen.getByRole('button', { name: /projeto anterior/i })
+
+    await userEvent.click(proximo)
+    const depoisDeAvancar = container.querySelectorAll('.slideshow-card').length
+    await userEvent.click(anterior)
+
+    expect(container.querySelectorAll('.slideshow-card').length)
+      .toBeGreaterThanOrEqual(depoisDeAvancar)
+  })
+})

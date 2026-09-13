@@ -1,17 +1,50 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import FadeInSection from "./FadeInSection";
 import "./Portfolio.css";
 
+// Teto de slides na home. A /portfolio continua mostrando todos: aqui o limite
+// existe porque os slides ficam montados para não piscar na troca, e sem teto o
+// custo de imagem cresceria junto com o portfólio, que vai crescer.
+const MAX_SLIDES = 6;
+
+/** Índices que ficam montados: o slide atual e um vizinho de cada lado. */
+function janela(indice, total) {
+  if (total === 0) return [];
+  return [indice, (indice + 1) % total, (indice - 1 + total) % total];
+}
+
 export default function Portfolio({ projects = [] }) {
-  const real = projects.filter((p) => !p.placeholder);
+  // Lidera com o que foi cadastrado por último, para a home mudar sozinha a
+  // cada projeto novo no Studio, sem ninguém reordenar nada.
+  //
+  // `createdAt` só existe no conteúdo do CMS — o fallback de src/data não tem
+  // data de inserção. Sem ela, a ordem recebida já é a escolhida no Studio
+  // (`order asc`), e cortar os primeiros é o comportamento certo.
+  const slides = useMemo(() => {
+    const reais = projects.filter((p) => !p.placeholder);
+    const temData = reais.some((p) => p.createdAt);
+    const ordenados = temData
+      ? [...reais].sort((a, b) =>
+          String(b.createdAt ?? "").localeCompare(String(a.createdAt ?? ""))
+        )
+      : reais;
+    return ordenados.slice(0, MAX_SLIDES);
+  }, [projects]);
 
   const [current, setCurrent] = useState(0);
   const [dir, setDir] = useState(null);
+
+  // Montados ACUMULAM e nunca saem. É o que mantém a troca sem piscada depois
+  // da primeira visita: o vizinho já está decodificado quando chega a vez, e
+  // voltar a um slide visitado não recarrega nada. O salto por um pontinho
+  // distante ainda carrega na hora — mas aí é a primeira exibição da imagem,
+  // não a recarga de uma que já estava na tela, que era o defeito de origem.
+  const [montados, setMontados] = useState(() => new Set(janela(0, slides.length)));
 
   // `current` entra na dependência junto com `dir`, e não é redundância:
   // duas trocas seguidas na MESMA direção gravam o mesmo valor em `dir`, o
@@ -34,17 +67,22 @@ export default function Portfolio({ projects = [] }) {
     if (proximo === current) return;
     setDir(direcao ?? (proximo > current ? "right" : "left"));
     setCurrent(proximo);
+    setMontados((antes) => {
+      const novo = new Set(antes);
+      janela(proximo, slides.length).forEach((i) => novo.add(i));
+      return novo;
+    });
   }
 
   function prev() {
-    go(current === 0 ? real.length - 1 : current - 1, "left");
+    go(current === 0 ? slides.length - 1 : current - 1, "left");
   }
 
   function next() {
-    go(current === real.length - 1 ? 0 : current + 1, "right");
+    go(current === slides.length - 1 ? 0 : current + 1, "right");
   }
 
-  const project = real[current];
+  const project = slides[current];
 
   return (
     <FadeInSection>
@@ -72,8 +110,8 @@ export default function Portfolio({ projects = [] }) {
               <ChevronLeft size={28} />
             </button>
 
-            {/* Todos os slides ficam montados, empilhados na mesma célula de
-                grade — ver .slideshow-track no CSS.
+            {/* Os slides montados ficam empilhados na mesma célula de grade —
+                ver .slideshow-track no CSS.
 
                 Antes havia UM card com `key={current}`, e a chave trocando a
                 cada avanço fazia o React destruir e recriar o <img>. O
@@ -83,11 +121,13 @@ export default function Portfolio({ projects = [] }) {
                 mesmo com o arquivo já em cache, porque o que se perde na
                 recriação é a decodificação, não o download.
 
-                Mantendo os elementos vivos, cada imagem é decodificada uma vez
-                só e toda troca posterior é instantânea, inclusive o salto
-                pelos pontinhos. */}
+                Mantendo vivos os elementos já montados, cada imagem é
+                decodificada uma vez só e a troca para um vizinho é
+                instantânea. Quem decide quais existem é `montados`, logo
+                acima: janela de vizinhos que só cresce. */}
             <div className="slideshow-track">
-              {real.map((p, i) => {
+              {slides.map((p, i) => {
+                if (!montados.has(i)) return null;
                 const ativo = i === current;
                 return (
                   <div
@@ -130,7 +170,7 @@ export default function Portfolio({ projects = [] }) {
           </div>
 
           <div className="slideshow-dots">
-            {real.map((_, i) => (
+            {slides.map((_, i) => (
               <button
                 key={i}
                 className={`slideshow-dot${i === current ? " slideshow-dot--active" : ""}`}
@@ -141,7 +181,7 @@ export default function Portfolio({ projects = [] }) {
           </div>
 
           <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
-            Projeto {current + 1} de {real.length}: {project.title} — {project.client}
+            Projeto {current + 1} de {slides.length}: {project.title} — {project.client}
           </div>
           </>
           )}
