@@ -170,28 +170,30 @@
 
 @media (max-width: 768px) {
   .clients-marquee {
-    --logo-w: 130px;
-    --logo-gap: 20px;
+    --logo-w: 170px;
+    --logo-gap: 24px;
   }
 
   .client-card img {
-    height: 60px;
+    height: 95px;
   }
 
   /* Sem cursor não há hover para pausar; encurtar o ciclo evita que a esteira
-     pareça travada em telas estreitas, onde cabem poucos logos por vez. */
+     pareça travada em telas estreitas, onde cabem poucos logos por vez.
+     Com logos maiores a trilha ficou mais larga, e o mesmo tempo significaria
+     mais pixels por segundo — daí o ciclo um pouco mais longo que antes. */
   .clients-track {
-    animation-duration: 32s;
+    animation-duration: 38s;
   }
 }
 
 @media (max-width: 480px) {
   .clients-marquee {
-    --logo-w: 110px;
-    --logo-gap: 16px;
+    --logo-w: 150px;
+    --logo-gap: 20px;
   }
 
   .client-card img {
-    height: 50px;
+    height: 82px;
   }
 }
