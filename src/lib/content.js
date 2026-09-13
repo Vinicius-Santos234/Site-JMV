@@ -26,7 +26,7 @@ const QUERY = `{
   "faqs":         *[_type == "faq"]          | order(order asc) { _id, question, answer },
   "differentials":*[_type == "differential"] | order(order asc) { _id, iconName, title, text },
   "qualityItems": *[_type == "qualityItem"]  | order(order asc) { _id, iconName, title, description },
-  "projects":     *[_type == "project"]      | order(order asc, year desc) { _id, title, client, year, category, image },
+  "projects":     *[_type == "project"]      | order(order asc, year desc) { _id, _createdAt, title, client, year, category, image },
   "settings":     *[_type == "siteSettings"][0] { cnpj, ctaHighlights }
 }`;
 
@@ -56,6 +56,14 @@ function orFallback(docs, fallback, map) {
 function mapProject(doc) {
   return {
     id:       doc._id,
+    // `_createdAt` é campo de sistema do Sanity: existe em todo documento e não
+    // passa pelos quatro lugares de um campo novo do AGENTS.md — não há o que
+    // declarar no Studio nem o que aplicar por patch nos documentos.
+    //
+    // Quem usa é o slideshow da home, para liderar com os projetos cadastrados
+    // mais recentemente. A ordem desta lista continua sendo a do Studio
+    // (`order asc`), porque é ela que a /portfolio mostra.
+    createdAt: doc._createdAt,
     title:    doc.title,
     client:   doc.client,
     year:     doc.year,
