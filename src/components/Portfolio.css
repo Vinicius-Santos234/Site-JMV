@@ -194,9 +194,46 @@
   }
 }
 
+/* No celular as setas consumiam ~112px da largura do container e a imagem 16/9
+   sobrava com pouco mais de 200px — pequena demais para ler o projeto. Elas
+   passam a flutuar sobre o card: a imagem usa a largura inteira e ganha uma
+   proporção mais alta. */
 @media (max-width: 600px) {
+  .slideshow {
+    position: relative;
+    gap: 0;
+    margin-top: 28px;
+  }
+
+  .slideshow-card {
+    aspect-ratio: 4 / 3;
+  }
+
   .slideshow-btn {
-    width: 40px;
-    height: 40px;
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    width: 44px;
+    height: 44px;
+    /* Sobre a foto, o branco chapado some em imagens claras; o fundo
+       semitransparente com sombra mantém a seta legível sobre qualquer uma. */
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 2px 10px rgba(8, 23, 38, 0.3);
+    /* O translateY precisa vir junto do scale do hover, senão a seta pula
+       meia altura ao ser tocada. */
+    transform: translateY(-50%);
+  }
+
+  .slideshow-btn--prev { left: 10px; }
+  .slideshow-btn--next { right: 10px; }
+
+  .slideshow-btn:hover {
+    transform: translateY(-50%) scale(1.08);
+  }
+
+  /* O texto do projeto fica no rodapé do card, então o gradiente não pode
+     começar tão alto a ponto de escurecer a foto toda num card mais baixo. */
+  .slideshow-card .portfolio-overlay {
+    padding: 18px;
   }
 }
