@@ -19,17 +19,22 @@ export default function Portfolio({ projects = [] }) {
     return () => clearTimeout(id);
   }, [dir]);
 
-  function go(next) {
-    setDir(next > current ? "right" : "left");
-    setCurrent(next);
+  // A direção vem de quem chamou, e não de comparar os índices: na volta da
+  // última para a primeira o índice DIMINUI, embora o movimento seja de
+  // avanço. Deduzir pelo número invertia a animação exatamente nas duas
+  // passagens de volta do ciclo.
+  function go(proximo, direcao) {
+    if (proximo === current) return;
+    setDir(direcao ?? (proximo > current ? "right" : "left"));
+    setCurrent(proximo);
   }
 
   function prev() {
-    go(current === 0 ? real.length - 1 : current - 1);
+    go(current === 0 ? real.length - 1 : current - 1, "left");
   }
 
   function next() {
-    go(current === real.length - 1 ? 0 : current + 1);
+    go(current === real.length - 1 ? 0 : current + 1, "right");
   }
 
   const project = real[current];
@@ -60,21 +65,52 @@ export default function Portfolio({ projects = [] }) {
               <ChevronLeft size={28} />
             </button>
 
-            <div className={`slideshow-track${dir ? ` slideshow-track--${dir}` : ""}`}>
-              <div className="portfolio-card slideshow-card" key={current}>
-                <Image
-                  src={project.image}
-                  alt={`${project.title} — ${project.client}`}
-                  className="portfolio-image"
-                  width={1200}
-                  height={800}
-                />
-                <div className="portfolio-overlay slideshow-overlay">
-                  <span className="portfolio-overlay-client">{project.client}</span>
-                  <h3>{project.title}</h3>
-                  <span className="portfolio-overlay-year">{project.year}</span>
-                </div>
-              </div>
+            {/* Todos os slides ficam montados, empilhados na mesma célula de
+                grade — ver .slideshow-track no CSS.
+
+                Antes havia UM card com `key={current}`, e a chave trocando a
+                cada avanço fazia o React destruir e recriar o <img>. O
+                elemento novo nascia vazio (`complete: false`,
+                `naturalWidth: 0` medidos logo apos o clique), então o card
+                ficava sem imagem nenhuma por um instante e a troca piscava —
+                mesmo com o arquivo já em cache, porque o que se perde na
+                recriação é a decodificação, não o download.
+
+                Mantendo os elementos vivos, cada imagem é decodificada uma vez
+                só e toda troca posterior é instantânea, inclusive o salto
+                pelos pontinhos. */}
+            <div className="slideshow-track">
+              {real.map((p, i) => {
+                const ativo = i === current;
+                return (
+                  <div
+                    key={p.id}
+                    className={
+                      "portfolio-card slideshow-card" +
+                      (ativo ? " slideshow-card--ativo" : "") +
+                      (ativo && dir ? ` slideshow-card--entra-${dir}` : "")
+                    }
+                    aria-hidden={ativo ? undefined : true}
+                  >
+                    <Image
+                      src={p.image}
+                      alt={`${p.title} — ${p.client}`}
+                      className="portfolio-image"
+                      width={1200}
+                      height={800}
+                      // Os slides de bastidor baixam junto, mas em prioridade
+                      // baixa: adiantar a próxima troca não pode custar atraso
+                      // na imagem que a pessoa está olhando agora.
+                      fetchPriority={ativo ? "auto" : "low"}
+                    />
+                    <div className="portfolio-overlay slideshow-overlay">
+                      <span className="portfolio-overlay-client">{p.client}</span>
+                      <h3>{p.title}</h3>
+                      <span className="portfolio-overlay-year">{p.year}</span>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
 
             <button

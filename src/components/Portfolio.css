@@ -88,16 +88,30 @@
   margin-top: 40px;
 }
 
+/* Grade de uma célula só: todos os slides ocupam `1 / 1` e ficam empilhados,
+   em vez de um único card trocando de conteúdo. A trilha continua sendo item
+   flex do `.slideshow`, e a altura dela é a do card — todos têm a mesma. */
 .slideshow-track {
   flex: 1;
   min-width: 0;
+  display: grid;
 }
 
 .slideshow-card {
+  grid-area: 1 / 1;
   width: 100%;
   aspect-ratio: 16 / 9;
   border-radius: 16px;
-  animation: slideFadeIn 0.4s ease;
+}
+
+/* O slide inativo CONTINUA no documento — é isso que faz a imagem dele já
+   estar baixada e decodificada quando chegar a vez.
+
+   `visibility: hidden` some com ele e o tira da árvore de acessibilidade e da
+   ordem de tabulação, mas mantém o <img> carregando; `display: none` seria o
+   que impediria o carregamento, e devolveria o pisca-pisca por outro caminho. */
+.slideshow-card:not(.slideshow-card--ativo) {
+  visibility: hidden;
 }
 
 .slideshow-overlay {
@@ -160,8 +174,29 @@
   to   { opacity: 1; transform: translateX(0); }
 }
 
-.slideshow-track--right .slideshow-card { animation: slideFadeIn     0.4s ease; }
-.slideshow-track--left  .slideshow-card { animation: slideFadeInLeft  0.4s ease; }
+/* A animação vive no slide que ESTÁ ENTRANDO, e só enquanto `dir` existe.
+   Como o elemento não é mais recriado a cada troca, não há remontagem para
+   reiniciar a animação sozinha: quem reinicia é a classe entrando e saindo. */
+.slideshow-card--entra-right { animation: slideFadeIn     0.4s ease; }
+.slideshow-card--entra-left  { animation: slideFadeInLeft  0.4s ease; }
+
+/* ═══════════════════════════════════════════════════════════
+   SEM CURSOR, SEM HOVER
+   No celular o overlay nunca aparecia: ele depende de
+   `.portfolio-card:hover`, e toque não tem hover. O efeito era
+   uma grade de fotos sem cliente, sem título e sem ano — a
+   informação existia no HTML e era inalcançável.
+   Aqui ele deixa de ser revelação e passa a ser legenda fixa.
+   `(hover: none)` pergunta pelo dispositivo de entrada, que é a
+   pergunta certa — largura de tela não diz se existe cursor. A
+   largura entra em OU só para a janela estreita de desktop, onde
+   o card já é pequeno, ler igual ao celular.
+═══════════════════════════════════════════════════════════ */
+@media (hover: none), (max-width: 768px) {
+  .portfolio-overlay {
+    opacity: 1;
+  }
+}
 
 /* ─── RESPONSIVE ───────────────────────────────────────── */
 
