@@ -1,11 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, act, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Portfolio from '@/components/Portfolio'
-
-vi.mock('framer-motion', () => ({
-  m: { div: ({ children, ...p }) => <div {...p}>{children}</div> },
-}))
 
 const PROJETOS = [
   { id: 1, placeholder: false, category: 'Caldeiraria', image: '/a.jpg', title: 'Projeto Alpha', client: 'Cliente A', year: 2023 },
@@ -76,5 +72,45 @@ describe('Portfolio — slideshow', () => {
     renderSlideshow()
     const dots = screen.getAllByRole('button', { name: /ir para projeto/i })
     expect(dots).toHaveLength(3) // 3 reais, 1 placeholder ignorado
+  })
+})
+
+/**
+ * Achado da revisão cruzada do Codex (13/09/2026).
+ *
+ * O timer que limpa `dir` vivia num efeito com dependência `[dir]`. Duas trocas
+ * seguidas na MESMA direção gravam o mesmo valor — React descarta a atualização
+ * idêntica, o efeito não re-roda, e o timer da primeira troca continua correndo:
+ * ele limpa `dir` no meio da animação da segunda, que salta para o repouso.
+ *
+ * Só aparece com duas trocas na mesma direção dentro de 400ms, e nenhuma
+ * asserção de texto pega — por isso o teste olha a classe de animação.
+ */
+describe('Portfolio — a animação não pode ser cortada por timer antigo', () => {
+  it('mantém a classe de entrada pelos 400ms do SEGUNDO avanço', () => {
+    vi.useFakeTimers()
+    const { container } = render(<Portfolio projects={PROJETOS} />)
+
+    const proximo = screen.getByRole('button', { name: /próximo projeto/i })
+
+    // fireEvent e não userEvent: userEvent agenda no relógio real e trava sob
+    // fake timers, que é exatamente o relógio que este teste precisa controlar.
+    act(() => { fireEvent.click(proximo) })
+    act(() => { vi.advanceTimersByTime(300) })
+
+    act(() => { fireEvent.click(proximo) })
+    // 150ms depois do segundo clique: a animação dele tem 400ms, então ainda
+    // deve estar correndo. É aqui que o timer órfão do primeiro clique batia.
+    act(() => { vi.advanceTimersByTime(150) })
+
+    expect(container.querySelector('.slideshow-card--ativo'))
+      .toHaveClass('slideshow-card--entra-right')
+
+    // e some sozinha quando os 400ms dela realmente terminam
+    act(() => { vi.advanceTimersByTime(300) })
+    expect(container.querySelector('.slideshow-card--ativo'))
+      .not.toHaveClass('slideshow-card--entra-right')
+
+    vi.useRealTimers()
   })
 })

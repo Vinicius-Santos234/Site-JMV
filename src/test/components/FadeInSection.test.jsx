@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
 import { render, screen, act } from '@testing-library/react'
+import { renderToStaticMarkup } from 'react-dom/server'
 import FadeInSection from '@/components/FadeInSection'
 
 /**
@@ -80,6 +81,24 @@ describe('FadeInSection', () => {
     expect(wrapper).toHaveClass('fade-in--visivel')
     expect(wrapper).not.toHaveClass('fade-in--oculto')
     expect(wrapper.getAttribute('style')).toBeNull()
+  })
+
+  /**
+   * Observação da revisão do Codex (13/09/2026): o teste acima roda no cliente,
+   * e o defeito que motivou a reescrita estava no HTML DO SERVIDOR — dez blocos
+   * saíam com `style="opacity:0"`. Sem renderizar pelo servidor, a guarda fica
+   * perto do alvo mas não nele. Este renderiza do jeito que o Next renderiza.
+   */
+  it('o HTML do servidor sai visível, sem opacity:0 nem transform', () => {
+    const html = renderToStaticMarkup(
+      <FadeInSection>
+        <p>Conteúdo servido</p>
+      </FadeInSection>
+    )
+    expect(html).toContain('Conteúdo servido')
+    expect(html).not.toMatch(/opacity\s*:\s*0/)
+    expect(html).not.toMatch(/translateY/)
+    expect(html).toContain('fade-in--visivel')
   })
 
   it('não esconde um bloco que já está na tela', () => {

@@ -13,11 +13,18 @@ export default function Portfolio({ projects = [] }) {
   const [current, setCurrent] = useState(0);
   const [dir, setDir] = useState(null);
 
+  // `current` entra na dependência junto com `dir`, e não é redundância:
+  // duas trocas seguidas na MESMA direção gravam o mesmo valor em `dir`, o
+  // React descarta a atualização idêntica e o efeito não re-rodava. O timer da
+  // primeira troca seguia correndo e limpava `dir` no meio da animação da
+  // segunda, que saltava para o repouso. Como `current` muda em toda troca
+  // (o `go` sai cedo quando o índice é o mesmo), ele é o que garante o
+  // reinício do relógio a cada slide.
   useEffect(() => {
     if (!dir) return;
     const id = setTimeout(() => setDir(null), 400);
     return () => clearTimeout(id);
-  }, [dir]);
+  }, [dir, current]);
 
   // A direção vem de quem chamou, e não de comparar os índices: na volta da
   // última para a primeira o índice DIMINUI, embora o movimento seja de
